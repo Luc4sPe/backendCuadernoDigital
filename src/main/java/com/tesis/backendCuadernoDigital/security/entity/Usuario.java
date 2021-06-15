@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.security.entity;
-
+//acceso a la base de datos
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
