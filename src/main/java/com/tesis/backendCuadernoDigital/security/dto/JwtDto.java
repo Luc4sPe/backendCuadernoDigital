@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-// cuando hacamos un login nos devuelve el response entity del controlador un json web token
+// cuando hacamos un login nos devuelve el response entity del controlador un json web token, Data Transferenc Objet
 public class JwtDto {
 
     private String token;
