@@ -13,6 +13,7 @@ import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,12 +26,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //Api Rest
 @RestController
 @RequestMapping ("/auth")
-@CrossOrigin
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -83,6 +85,29 @@ public class AuthController {
         return new ResponseEntity(jwtDto, HttpStatus.OK);
 
 
+    }
+    //@PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/list")
+    public ResponseEntity<List<Usuario>> list(){
+        List<Usuario> list = usuarioService.list();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<Usuario> getByNombre(@PathVariable("id") int id){
+        if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el usuario"),HttpStatus.NOT_FOUND);
+        Usuario usuario = usuarioService.getById(id).get();
+        return new ResponseEntity(usuario,HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id")int id){
+        if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el usuario"),HttpStatus.NOT_FOUND);
+        usuarioService.delete(id);
+        return new ResponseEntity(new Mensaje("Usuario eliminado con exito"),HttpStatus.OK);
     }
 
 }
