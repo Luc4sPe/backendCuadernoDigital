@@ -4,12 +4,14 @@ import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.security.dto.JwtDto;
 import com.tesis.backendCuadernoDigital.security.dto.LoginUsuario;
 import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
+import com.tesis.backendCuadernoDigital.security.dto.RolDto;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
 import com.tesis.backendCuadernoDigital.security.jwt.JwtProvider;
 import com.tesis.backendCuadernoDigital.security.service.RolService;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,6 +110,35 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("no existe el usuario"),HttpStatus.NOT_FOUND);
         usuarioService.delete(id);
         return new ResponseEntity(new Mensaje("Usuario eliminado con exito"),HttpStatus.OK);
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody NuevoUsuario nuevoUsuario){
+        if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
+        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id)
+            return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+
+        Usuario usuario = usuarioService.getById(id).get();
+        Set<Rol> roles = new HashSet<>();
+
+        if(nuevoUsuario.getRoles().contains("admin"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
+        usuario.setRoles(roles);
+        usuario.setNombre(nuevoUsuario.getNombre());
+        usuario.setApellido(nuevoUsuario.getApellido());
+        usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
+        usuario.setEmail(nuevoUsuario.getEmail());
+        usuario.setPassword(passwordEncoder.encode(nuevoUsuario.getPassword()));
+        usuario.setRoles(roles);
+        usuarioService.save(usuario);
+
+        return new ResponseEntity(new Mensaje("usuario actualizado"), HttpStatus.OK);
     }
 
 }
