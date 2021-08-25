@@ -53,4 +53,5 @@ public class EmailController {
         emailService.sendEmail(dto);
         return new ResponseEntity(new Mensaje("Te hemos enviado un correo"), HttpStatus.OK);
     }
+
 }
