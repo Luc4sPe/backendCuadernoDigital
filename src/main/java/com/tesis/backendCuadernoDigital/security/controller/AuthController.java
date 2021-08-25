@@ -1,10 +1,7 @@
 package com.tesis.backendCuadernoDigital.security.controller;
 
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
-import com.tesis.backendCuadernoDigital.security.dto.JwtDto;
-import com.tesis.backendCuadernoDigital.security.dto.LoginUsuario;
-import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
-import com.tesis.backendCuadernoDigital.security.dto.RolDto;
+import com.tesis.backendCuadernoDigital.security.dto.*;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
@@ -114,7 +111,7 @@ public class AuthController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody NuevoUsuario nuevoUsuario){
+    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody UsuarioDto nuevoUsuario){
         if(!usuarioService.existsById(id))
             return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
         if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id)
