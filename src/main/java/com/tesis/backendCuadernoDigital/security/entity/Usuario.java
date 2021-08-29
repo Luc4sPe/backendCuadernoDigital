@@ -22,12 +22,14 @@ public class Usuario {
      private String email;
      @NotNull
      private String password;
-     private String TokenPassword;
+     private String tokenPassword;
      @NotNull
      @ManyToMany
      @JoinTable(name="usuario_rol", joinColumns = @JoinColumn(name="id_usuario"),
      inverseJoinColumns = @JoinColumn(name = "id_rol"))
      private Set<Rol> roles = new HashSet<>();
+
+     private boolean estadoActivo;
 
      public Usuario() {
      }
@@ -38,6 +40,7 @@ public class Usuario {
           this.nombreUsuario = nombreUsuario;
           this.email = email;
           this.password = password;
+          this.estadoActivo=true;
      }
 
      public int getId() {
@@ -89,11 +92,19 @@ public class Usuario {
      }
 
      public String getTokenPassword() {
-          return TokenPassword;
+          return tokenPassword;
      }
 
      public void setTokenPassword(String tokenPassword) {
-          TokenPassword = tokenPassword;
+          tokenPassword = tokenPassword;
+     }
+
+     public boolean isEstadoActivo() {
+          return estadoActivo;
+     }
+
+     public void setEstadoActivo(boolean estadoActivo) {
+          this.estadoActivo = estadoActivo;
      }
 
      public Set<Rol> getRoles() {
@@ -102,5 +113,10 @@ public class Usuario {
 
      public void setRoles(Set<Rol> roles) {
           this.roles = roles;
+     }
+
+     public void modificarEstado(){
+          this.estadoActivo=!isEstadoActivo();
+
      }
 }

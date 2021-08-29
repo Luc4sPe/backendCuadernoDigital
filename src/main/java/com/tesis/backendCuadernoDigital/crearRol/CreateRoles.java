@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.crearRol;
-/*
+
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
 import com.tesis.backendCuadernoDigital.security.service.RolService;
@@ -21,4 +21,4 @@ public class CreateRoles implements CommandLineRunner {
     }
 }
 
-*/
+

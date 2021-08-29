@@ -46,4 +46,10 @@ public class UsuarioService {
     public void delete(int id){
          usuarioRepository.deleteById(id);
     }
+
+    public void modificarEstado(int id){
+        Usuario usuario = usuarioRepository.getById(id);
+        usuario.modificarEstado();
+        usuarioRepository.save(usuario);
+    }
 }
