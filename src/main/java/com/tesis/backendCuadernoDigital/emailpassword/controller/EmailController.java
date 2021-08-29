@@ -19,9 +19,10 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @RestController
 @RequestMapping("/email-password")
-@CrossOrigin
+@CrossOrigin("*")
 public class EmailController {
 
     @Autowired
@@ -37,24 +38,29 @@ public class EmailController {
     private String mailFrom;
 
     private static final String subject = "Cambio de Contraseña";
-
     @PostMapping("/send-email")
-    public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDTO dto) {
-        Optional<Usuario> usuarioOpt = usuarioService.getByNombreUsuarioOrEmail(dto.getMailTo());
-        if(!usuarioOpt.isPresent())
+    public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDTO emailValuesDto) {
+        Optional<Usuario> usuarioOpt = usuarioService.getByNombreUsuarioOrEmail(emailValuesDto.getMailTo());
+
+        if(!usuarioOpt.isPresent()) {
             return new ResponseEntity(new Mensaje("No existe ningún usuario con esas credenciales"), HttpStatus.NOT_FOUND);
+
+        }
         Usuario usuario = usuarioOpt.get();
-        dto.setMailFrom(mailFrom);
-        dto.setMailTo(usuario.getEmail());
-        dto.setSubject(subject);
-        dto.setUserName(usuario.getNombreUsuario());
+        emailValuesDto.setMailFrom(mailFrom);
+        emailValuesDto.setMailTo(usuario.getEmail());
+        emailValuesDto.setSubject(subject);
+        emailValuesDto.setUserName(usuario.getNombreUsuario());
         UUID uuid = UUID.randomUUID();
         String tokenPassword = uuid.toString();
-        dto.setTokenPassword(tokenPassword);
+        emailValuesDto.setTokenPassword(tokenPassword);
         usuario.setTokenPassword(tokenPassword);
         usuarioService.save(usuario);
-        emailService.sendEmail(dto);
+        //usuarioService.save(usuario);
+        emailService.sendEmail(emailValuesDto);
         return new ResponseEntity(new Mensaje("Te hemos enviado un correo"), HttpStatus.OK);
+
+
     }
 
     @PostMapping("/change-Password")
@@ -63,7 +69,17 @@ public class EmailController {
             return new ResponseEntity(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
         if(!dto.getPassword().equals(dto.getConfirmPassword()))
             return new ResponseEntity(new Mensaje("Las contraseñas no coinciden"), HttpStatus.BAD_REQUEST);
-        return null;
+
+        Optional<Usuario> usuarioOpt = usuarioService.getByTokenPassword(dto.getTokenPassword());
+        if(!usuarioOpt.isPresent())
+            return new ResponseEntity(new Mensaje("No existe ningún usuario con esas credenciales"), HttpStatus.NOT_FOUND);
+        Usuario usuario = usuarioOpt.get();
+        String newPassword = passwordEncoder.encode(dto.getPassword());
+        usuario.setPassword(newPassword);
+        //usuario.setTokenPassword(null);
+        usuarioService.save(usuario);
+        return new ResponseEntity(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
+
 
     }
 

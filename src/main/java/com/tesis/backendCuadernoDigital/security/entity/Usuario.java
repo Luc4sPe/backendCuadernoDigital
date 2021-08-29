@@ -1,7 +1,12 @@
 package com.tesis.backendCuadernoDigital.security.entity;
 //acceso a la base de datos
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,18 +16,26 @@ public class Usuario {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private int id;
+
      @NotNull
      private String nombre;
+
      @NotNull
      private String apellido;
+
+     @NotBlank
+     private String dni;
+
      @NotNull
      @Column(unique = true)
      private String nombreUsuario;
+
      @NotNull
      private String email;
+
      @NotNull
      private String password;
-     private String tokenPassword;
+
      @NotNull
      @ManyToMany
      @JoinTable(name="usuario_rol", joinColumns = @JoinColumn(name="id_usuario"),
@@ -31,16 +44,28 @@ public class Usuario {
 
      private boolean estadoActivo;
 
+     @CreationTimestamp
+     private Date fechaDeAlta;
+
+     @UpdateTimestamp
+     private Date fechaModificacion;
+
+     private String tokenPassword;
+
      public Usuario() {
      }
 
-     public Usuario(@NotNull String nombre,@NotNull String apellido,@NotNull String nombreUsuario,@NotNull String email,@NotNull String password) {
+     public Usuario(@NotNull String nombre,@NotNull String apellido,@NotNull String dni,@NotNull String nombreUsuario,@NotNull String email,@NotNull String password) {
           this.nombre = nombre;
           this.apellido = apellido;
+          this.dni = dni;
           this.nombreUsuario = nombreUsuario;
           this.email = email;
           this.password = password;
           this.estadoActivo=true;
+          this.fechaDeAlta=null;
+          this.fechaModificacion=null;
+
      }
 
      public int getId() {
@@ -67,6 +92,14 @@ public class Usuario {
           this.apellido = apellido;
      }
 
+     public String getDni() {
+          return dni;
+     }
+
+     public void setDni(String dni) {
+          this.dni = dni;
+     }
+
      public String getNombreUsuario() {
           return nombreUsuario;
      }
@@ -91,13 +124,6 @@ public class Usuario {
           this.password = password;
      }
 
-     public String getTokenPassword() {
-          return tokenPassword;
-     }
-
-     public void setTokenPassword(String tokenPassword) {
-          tokenPassword = tokenPassword;
-     }
 
      public boolean isEstadoActivo() {
           return estadoActivo;
@@ -105,6 +131,22 @@ public class Usuario {
 
      public void setEstadoActivo(boolean estadoActivo) {
           this.estadoActivo = estadoActivo;
+     }
+
+     public Date getFechaDeAlta() {
+          return fechaDeAlta;
+     }
+
+     public void setFechaDeAlta(Date fechaDeAlta) {
+          this.fechaDeAlta = fechaDeAlta;
+     }
+
+     public Date getFechaModificacion() {
+          return fechaModificacion;
+     }
+
+     public void setFechaModificacion(Date fechaModificacion) {
+          this.fechaModificacion = fechaModificacion;
      }
 
      public Set<Rol> getRoles() {
@@ -118,5 +160,13 @@ public class Usuario {
      public void modificarEstado(){
           this.estadoActivo=!isEstadoActivo();
 
+     }
+
+     public String getTokenPassword() {
+          return tokenPassword;
+     }
+
+     public void setTokenPassword(String tokenPassword) {
+          this.tokenPassword = tokenPassword;
      }
 }

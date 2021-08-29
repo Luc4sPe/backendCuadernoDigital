@@ -58,16 +58,24 @@ public class AuthController {
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
-                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
+                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
         Set<Rol> roles = new HashSet<>();
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
-        if(nuevoUsuario.getRoles().contains("admin"))
+        if(nuevoUsuario.getRoles().contains("Admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+        if(nuevoUsuario.getRoles().contains("Encargado Agricola"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ENCARGADO_AGRICOLA).get());
+        if (nuevoUsuario.getRoles().contains("Productor"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
         usuario.setRoles(roles);
-        usuarioService.save(usuario);
-        return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
+        try {
 
+            usuarioService.save(usuario);
+            return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/login")
@@ -85,6 +93,8 @@ public class AuthController {
 
 
     }
+
+
     //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
     public ResponseEntity<List<Usuario>> list(){
@@ -111,32 +121,78 @@ public class AuthController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody UsuarioDto nuevoUsuario){
-        if(!usuarioService.existsById(id))
-            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
-        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id)
+    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody UsuarioDto nuevoUsuario, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el usuario"), HttpStatus.NOT_FOUND);
+        if (usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id)
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-        if(StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
+        //if (usuarioService.existsByEmail(nuevoUsuario.getEmail()))
+          //  return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+
+        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
 
         Usuario usuario = usuarioService.getById(id).get();
         Set<Rol> roles = new HashSet<>();
 
-        if(nuevoUsuario.getRoles().contains("admin"))
+        if (nuevoUsuario.getRoles().contains("Admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+
+        if (nuevoUsuario.getRoles().contains("Encargado Agricola"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ENCARGADO_AGRICOLA).get());
+
+        if (nuevoUsuario.getRoles().contains("Productor")) ;
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
 
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         usuario.setRoles(roles);
         usuario.setNombre(nuevoUsuario.getNombre());
         usuario.setApellido(nuevoUsuario.getApellido());
+        usuario.setDni(nuevoUsuario.getDni());
         usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
         usuario.setEmail(nuevoUsuario.getEmail());
         usuario.setPassword(passwordEncoder.encode(nuevoUsuario.getPassword()));
         usuario.setRoles(roles);
-        usuarioService.save(usuario);
-
-        return new ResponseEntity(new Mensaje("usuario actualizado"), HttpStatus.OK);
+        try {
+            usuarioService.save(usuario);
+            return new ResponseEntity(new Mensaje("usuario actualizado"), HttpStatus.OK);
+         } catch (Exception e){
+        return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+         }
     }
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/baja/{id}")
+    public ResponseEntity<?> bajaUsuario(@PathVariable("id") int id){
+        if (!usuarioService.existsById(id)){
+            return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
+        }
+        Usuario usuario = usuarioService.getById(id).get();
+        if (!usuario.isEstadoActivo()) {
+            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Activo"), HttpStatus.BAD_REQUEST);
+        }
+        usuarioService.modificarEstado(id);
+        return  new ResponseEntity(new Mensaje("Usuario dado de alta correctamente"),HttpStatus.OK);
+    }
+
+
+    @PutMapping("/alta/{id}")
+    public ResponseEntity<?> altaUsuario(@PathVariable("id") int id){
+        if (!usuarioService.existsById(id)){
+            return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
+        }
+        Usuario usuario = usuarioService.getById(id).get();
+        if (usuario.isEstadoActivo()) {
+            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Activo"), HttpStatus.BAD_REQUEST);
+        }
+        usuarioService.modificarEstado(id);
+        return  new ResponseEntity(new Mensaje("Usuario dado de Alta exitosamente "),HttpStatus.OK);
+    }
+
 
 
 

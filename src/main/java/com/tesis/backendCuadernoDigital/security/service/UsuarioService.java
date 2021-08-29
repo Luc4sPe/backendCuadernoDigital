@@ -31,6 +31,10 @@ public class UsuarioService {
         return usuarioRepository.findByNombreUsuario(nombreUsuario);
     }
 
+    public Optional<Usuario> getByTokenPassword(String tokenPassword){
+        return usuarioRepository.findByTokenPassword(tokenPassword);
+    }
+
     public boolean existsByNombreUsuario(String nombreUsuario){
         return usuarioRepository.existsByNombreUsuario(nombreUsuario);
     }

@@ -12,12 +12,15 @@ public class NuevoUsuario {
     @NotBlank
     private String apellido;
     @NotBlank
+    private String dni;
+    @NotBlank
     private String nombreUsuario;
     @Email
     private String email;
     @NotBlank
     private String password;
     private Set<String> roles = new HashSet<>();
+    private boolean estadoActivo;
 
     public String getNombre() {
         return nombre;
@@ -33,6 +36,14 @@ public class NuevoUsuario {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getNombreUsuario() {
@@ -65,5 +76,13 @@ public class NuevoUsuario {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEstadoActivo() {
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(boolean estadoActivo) {
+        this.estadoActivo = estadoActivo;
     }
 }

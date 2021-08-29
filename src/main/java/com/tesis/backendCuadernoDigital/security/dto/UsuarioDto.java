@@ -11,6 +11,8 @@ public class UsuarioDto {
     @NotBlank
     private String apellido;
     @NotBlank
+    private  String dni;
+    @NotBlank
     private String nombreUsuario;
     @Email
     private String email;
@@ -32,6 +34,14 @@ public class UsuarioDto {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getNombreUsuario() {

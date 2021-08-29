@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,25 +13,32 @@ import java.util.stream.Collectors;
 public class UsuarioPrincipal implements UserDetails {
      private String nombre;
      private String apellido;
+     private String dni;
      private String nombreUsuario;
      private String email;
      private String password;
+     private boolean estadoActivo;
+     private Date fechaDeAlta;
+    private Date fechaModificacion;
      private Collection<? extends GrantedAuthority> authorities;
 
-    public UsuarioPrincipal(String nombre, String apellido, String nombreUsuario, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UsuarioPrincipal(String nombre, String apellido, String dni,String nombreUsuario, String email, String password, boolean estadoActivo,Collection<? extends GrantedAuthority> authorities) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
+        this.estadoActivo=estadoActivo;
         this.authorities = authorities;
     }
 
+    // asigna los privilegios a los usuarios
     public static UsuarioPrincipal build(Usuario usuario){
         List<GrantedAuthority> authorities =
                 usuario.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol
                 .getRolNombre().name())).collect(Collectors.toList());
-        return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellido(), usuario.getNombreUsuario(), usuario.getEmail(), usuario.getPassword(), authorities);
+        return new UsuarioPrincipal(usuario.getNombre(), usuario.getApellido(), usuario.getDni(),usuario.getNombreUsuario(), usuario.getEmail(), usuario.getPassword(), usuario.isEstadoActivo(),authorities);
 
     }
 
@@ -77,7 +85,18 @@ public class UsuarioPrincipal implements UserDetails {
         return apellido;
     }
 
+
+    public String getDni(){return dni;}
+
     public String getEmail() {
         return email;
+    }
+
+    public boolean isEstadoActivo() {
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(boolean estadoActivo) {
+        this.estadoActivo = estadoActivo;
     }
 }

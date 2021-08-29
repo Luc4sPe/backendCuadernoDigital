@@ -9,9 +9,12 @@ import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //Api Rest
 @RestController
@@ -36,6 +39,15 @@ public class UsuarioController {
     JwtProvider jwtProvider;
 
 
+    @GetMapping("/list")
+    public ResponseEntity<List<Usuario>> list(){
+        List<Usuario> list = usuarioService.list();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+
+
+   // @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/alta/{id}")
     public ResponseEntity<?> altaUsuario(@PathVariable("id") int id){
         if (!usuarioService.existsById(id)){
@@ -46,9 +58,9 @@ public class UsuarioController {
             return new ResponseEntity(new Mensaje("El usuario ya se encuentra Activo"), HttpStatus.BAD_REQUEST);
         }
         usuarioService.modificarEstado(id);
-        return  new ResponseEntity(new Mensaje("Usuario dado de alta correctamente"),HttpStatus.OK);
+        return  new ResponseEntity(new Mensaje("Usuario dado de Alta exitosamente "),HttpStatus.OK);
     }
-
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/baja/{id}")
     public ResponseEntity<?> bajaUsuario(@PathVariable("id") int id){
         if (!usuarioService.existsById(id)){
@@ -56,10 +68,12 @@ public class UsuarioController {
         }
         Usuario usuario = usuarioService.getById(id).get();
         if (!usuario.isEstadoActivo()) {
-            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Activo"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Dado de baja"), HttpStatus.BAD_REQUEST);
         }
         usuarioService.modificarEstado(id);
-        return  new ResponseEntity(new Mensaje("Usuario dado de alta correctamente"),HttpStatus.OK);
+        return  new ResponseEntity(new Mensaje("Usuario dado de Baja exitosamente"),HttpStatus.OK);
     }
+
+
 
 }
