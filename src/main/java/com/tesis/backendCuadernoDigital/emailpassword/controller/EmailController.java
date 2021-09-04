@@ -76,7 +76,7 @@ public class EmailController {
         Usuario usuario = usuarioOpt.get();
         String newPassword = passwordEncoder.encode(dto.getPassword());
         usuario.setPassword(newPassword);
-        //usuario.setTokenPassword(null);
+        usuario.setTokenPassword(null);
         usuarioService.save(usuario);
         return new ResponseEntity(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
 

@@ -121,7 +121,7 @@ public class AuthController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody UsuarioDto nuevoUsuario, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
@@ -156,7 +156,6 @@ public class AuthController {
         usuario.setDni(nuevoUsuario.getDni());
         usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
         usuario.setEmail(nuevoUsuario.getEmail());
-        usuario.setPassword(passwordEncoder.encode(nuevoUsuario.getPassword()));
         usuario.setRoles(roles);
         try {
             usuarioService.save(usuario);
