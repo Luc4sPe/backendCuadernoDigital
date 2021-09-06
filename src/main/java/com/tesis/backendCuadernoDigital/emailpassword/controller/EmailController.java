@@ -73,12 +73,18 @@ public class EmailController {
         Optional<Usuario> usuarioOpt = usuarioService.getByTokenPassword(dto.getTokenPassword());
         if(!usuarioOpt.isPresent())
             return new ResponseEntity(new Mensaje("No existe ningún usuario con esas credenciales"), HttpStatus.NOT_FOUND);
-        Usuario usuario = usuarioOpt.get();
-        String newPassword = passwordEncoder.encode(dto.getPassword());
-        usuario.setPassword(newPassword);
-        usuario.setTokenPassword(null);
-        usuarioService.save(usuario);
-        return new ResponseEntity(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
+
+        try {
+            Usuario usuario = usuarioOpt.get();
+            String newPassword = passwordEncoder.encode(dto.getPassword());
+            usuario.setPassword(newPassword);
+            usuario.setTokenPassword(null);
+            usuarioService.save(usuario);
+            return new ResponseEntity(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("La contraseña no fue cambiada"), HttpStatus.BAD_REQUEST);
+        }
+
 
 
     }

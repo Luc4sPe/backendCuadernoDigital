@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -83,14 +82,23 @@ public class AuthController {
 
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        return new ResponseEntity(jwtDto, HttpStatus.OK);
 
+        try {
+            Authentication authentication =
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtProvider.generateToken(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+            return new ResponseEntity(jwtDto, HttpStatus.OK);
+
+        }catch (InternalAuthenticationServiceException e) {
+            return new ResponseEntity(new Mensaje("Usuario Incorrecto"), HttpStatus.UNAUTHORIZED);
+        } catch (LockedException e){
+        return new ResponseEntity(new Mensaje("Usuario bloqueado"), HttpStatus.UNAUTHORIZED);
+        }catch (BadCredentialsException e) {
+            return new ResponseEntity(new Mensaje("Contraseña incorrecta"), HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
@@ -172,7 +180,7 @@ public class AuthController {
         }
         Usuario usuario = usuarioService.getById(id).get();
         if (!usuario.isEstadoActivo()) {
-            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Activo"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El usuario ya se encuentra Bloqueado"), HttpStatus.BAD_REQUEST);
         }
         usuarioService.modificarEstado(id);
         return  new ResponseEntity(new Mensaje("Usuario dado de alta correctamente"),HttpStatus.OK);
