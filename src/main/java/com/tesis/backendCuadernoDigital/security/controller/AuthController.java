@@ -94,10 +94,10 @@ public class AuthController {
 
         }catch (InternalAuthenticationServiceException e) {
             return new ResponseEntity(new Mensaje("Usuario Incorrecto"), HttpStatus.UNAUTHORIZED);
-        } catch (LockedException e){
-        return new ResponseEntity(new Mensaje("Usuario bloqueado"), HttpStatus.UNAUTHORIZED);
-        }catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             return new ResponseEntity(new Mensaje("Contraseña incorrecta"), HttpStatus.UNAUTHORIZED);
+        }catch (LockedException e){
+            return new ResponseEntity(new Mensaje("Usuario bloqueado"), HttpStatus.UNAUTHORIZED);
         }
 
     }
@@ -179,11 +179,15 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
         }
         Usuario usuario = usuarioService.getById(id).get();
+
+        if(usuario.getNombreUsuario().contains("admin"))
+            return new ResponseEntity(new Mensaje("El administrador no puede darse de baja."), HttpStatus.NOT_FOUND);
+
         if (!usuario.isEstadoActivo()) {
             return new ResponseEntity(new Mensaje("El usuario ya se encuentra Bloqueado"), HttpStatus.BAD_REQUEST);
         }
         usuarioService.modificarEstado(id);
-        return  new ResponseEntity(new Mensaje("Usuario dado de alta correctamente"),HttpStatus.OK);
+        return  new ResponseEntity(new Mensaje("Usuario dado de baja correctamente"),HttpStatus.OK);
     }
 
 

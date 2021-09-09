@@ -38,6 +38,7 @@ public class EmailController {
     private String mailFrom;
 
     private static final String subject = "Cambio de Contraseña";
+
     @PostMapping("/send-email")
     public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDTO emailValuesDto) {
         Optional<Usuario> usuarioOpt = usuarioService.getByNombreUsuarioOrEmail(emailValuesDto.getMailTo());
@@ -46,19 +47,24 @@ public class EmailController {
             return new ResponseEntity(new Mensaje("No existe ningún usuario con esas credenciales"), HttpStatus.NOT_FOUND);
 
         }
-        Usuario usuario = usuarioOpt.get();
-        emailValuesDto.setMailFrom(mailFrom);
-        emailValuesDto.setMailTo(usuario.getEmail());
-        emailValuesDto.setSubject(subject);
-        emailValuesDto.setUserName(usuario.getNombreUsuario());
-        UUID uuid = UUID.randomUUID();
-        String tokenPassword = uuid.toString();
-        emailValuesDto.setTokenPassword(tokenPassword);
-        usuario.setTokenPassword(tokenPassword);
-        usuarioService.save(usuario);
-        //usuarioService.save(usuario);
-        emailService.sendEmail(emailValuesDto);
-        return new ResponseEntity(new Mensaje("Te hemos enviado un correo"), HttpStatus.OK);
+        try {
+            Usuario usuario = usuarioOpt.get();
+            emailValuesDto.setMailFrom(mailFrom);
+            emailValuesDto.setMailTo(usuario.getEmail());
+            emailValuesDto.setSubject(subject);
+            emailValuesDto.setUserName(usuario.getNombreUsuario());
+            UUID uuid = UUID.randomUUID();
+            String tokenPassword = uuid.toString();
+            emailValuesDto.setTokenPassword(tokenPassword);
+            usuario.setTokenPassword(tokenPassword);
+            usuarioService.save(usuario);
+            //usuarioService.save(usuario);
+            emailService.sendEmail(emailValuesDto);
+            return new ResponseEntity(new Mensaje("Te hemos enviado un correo"), HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Error al eviar el mail"), HttpStatus.BAD_REQUEST);
+        }
 
 
     }
@@ -67,6 +73,7 @@ public class EmailController {
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDTO dto, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
+
         if(!dto.getPassword().equals(dto.getConfirmPassword()))
             return new ResponseEntity(new Mensaje("Las contraseñas no coinciden"), HttpStatus.BAD_REQUEST);
 
