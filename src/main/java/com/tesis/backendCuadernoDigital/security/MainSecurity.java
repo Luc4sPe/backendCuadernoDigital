@@ -58,13 +58,16 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**"
-                        ,"/email-password/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(
+                        "/auth/**"
+                        ,"/email-password/**"
+                ).permitAll()
+                .anyRequest().authenticated() //indica que toda ruta diferente de /auth/ tiene que estar logueado para acceder
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

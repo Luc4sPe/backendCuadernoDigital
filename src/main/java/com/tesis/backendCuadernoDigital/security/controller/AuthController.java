@@ -73,7 +73,7 @@ public class AuthController {
             usuarioService.save(usuario);
             return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
         } catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

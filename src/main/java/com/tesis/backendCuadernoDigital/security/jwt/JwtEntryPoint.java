@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.security.jwt;
-//comprueba si hay un token valido
+//comprueba si hay un token valido, de lo contrario devuelve una respuesta 401 no autorizado
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
-        logger.error("Falla en el método commence verificar ");
-        res.sendError(HttpServletResponse.SC_UNAUTHORIZED,"No autorizado");
+        logger.error("Falla en el método commence verificar " + e.getMessage());
+        res.sendError(HttpServletResponse.SC_UNAUTHORIZED,"No autorizado"+ e.getMessage());
     }
 }

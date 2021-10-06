@@ -23,7 +23,7 @@ public class Usuario {
      @NotNull
      private String apellido;
 
-     @NotBlank
+     @NotNull
      private String dni;
 
      @NotNull
@@ -31,13 +31,14 @@ public class Usuario {
      private String nombreUsuario;
 
      @NotNull
+     @Column(unique = true)
      private String email;
 
      @NotNull
      private String password;
 
      @NotNull
-     @ManyToMany
+     @ManyToMany (fetch = FetchType.EAGER)
      @JoinTable(name="usuario_rol", joinColumns = @JoinColumn(name="id_usuario"),
      inverseJoinColumns = @JoinColumn(name = "id_rol"))
      private Set<Rol> roles = new HashSet<>();

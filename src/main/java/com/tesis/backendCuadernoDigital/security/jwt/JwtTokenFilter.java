@@ -44,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
     // para extraer el token y eliminar el espacio y el Bearer
     private String getToken(HttpServletRequest request){
-        String header = request.getHeader("Autorization");
+        String header = request.getHeader("Authorization");
         if(header != null && header.startsWith("Bearer"))
             return header.replace("Bearer ","");
         return null;
