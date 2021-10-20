@@ -64,7 +64,7 @@ public class RiegoController {
 
 
     //@Secured({"ROLE_ADMIN","ROLE_PRODUCTOR"})
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/lista")
     public ResponseEntity<List<Riego>> lista(){
         List<Riego> lista = riegoService.listaRiego();
