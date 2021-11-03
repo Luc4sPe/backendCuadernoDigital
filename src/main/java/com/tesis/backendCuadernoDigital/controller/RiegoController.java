@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.controller;
 
 
+import com.tesis.backendCuadernoDigital.dto.EditarRiegoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.dto.RiegoDto;
 import com.tesis.backendCuadernoDigital.entity.Riego;
@@ -40,8 +41,8 @@ public class RiegoController {
         if(riegoService.existsById(riegoDto.getId()))
             return new ResponseEntity(new Mensaje("Ese Riego ya existe"), HttpStatus.BAD_REQUEST);
 
-        if (riegoService.existsByNumeroCuadro(riegoDto.getNumeroDeCuadro()))
-            return new ResponseEntity(new Mensaje("Ese cuadro ya se rego"), HttpStatus.BAD_REQUEST);
+       // if (riegoService.existsByNumeroCuadro(riegoDto.getNumeroDeCuadro()))
+         //   return new ResponseEntity(new Mensaje("Ese cuadro ya se rego"), HttpStatus.BAD_REQUEST);
 
         Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(riegoDto.getNombreUsuario());
 
@@ -51,7 +52,7 @@ public class RiegoController {
          Usuario usuario= usuarioOptional.get();
 
         Riego nuevoRiego = new Riego(riegoDto.getDuracionEnHoras(),riegoDto.getMilimetrosAplicados(),riegoDto.getNumeroDeCuadro()
-        ,riegoDto.getObservacionProductor(),riegoDto.getSemanaAplicada(),riegoDto.getSemanaTransplante(),usuario);
+        ,"",riegoDto.getObservacionProductor(),riegoDto.getSemanaAplicada(),riegoDto.getSemanaTransplante(),usuario);
 
         try {
             riegoService.save(nuevoRiego);
@@ -63,6 +64,8 @@ public class RiegoController {
 
 
 
+
+
     //@Secured({"ROLE_ADMIN","ROLE_PRODUCTOR"})
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/lista")
@@ -71,32 +74,64 @@ public class RiegoController {
         return new ResponseEntity<>(lista,HttpStatus.OK);
     }
 
+    @GetMapping("/detalle/{id}")
+    public ResponseEntity<Riego> getByNombre(@PathVariable("id") int id){
+        if(!riegoService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el riego"),HttpStatus.NOT_FOUND);
+
+        Riego riego = riegoService.getUnoById(id).get();
+        return new ResponseEntity(riego,HttpStatus.OK);
+    }
+
+
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @GetMapping("/riegoPorUsuario/{idUsuario}")
+    public ResponseEntity<List<Riego>> listadoRiegoDeUnUsuario(@PathVariable ("idUsuario") int idUsuario){
+        List<Riego> listado = riegoService.listadoRiegoDeUnUsuario(idUsuario);
+        return new ResponseEntity<>(listado,HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @GetMapping("/riegoPorNombreUsuario/{nombreUsuario}")
+    public ResponseEntity<List<Riego>> listadoRiegoDeUnUsuario(@PathVariable ("nombreUsuario") String nombreUsuario){
+        List<Riego> listado = riegoService.listadoRiegoDeUnUsuarioPorNombre(nombreUsuario);
+        return new ResponseEntity<>(listado,HttpStatus.OK);
+    }
+
+
+
+
+
+
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody RiegoDto riegoDto, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody EditarRiegoDto editarRiego, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
 
         if(!riegoService.existsById(id))
             return new ResponseEntity(new Mensaje("no existe ese Riego"), HttpStatus.NOT_FOUND);
 
-        if(!usuarioService.existsByNombreUsuario(riegoDto.getNombreUsuario()))
+        if(!usuarioService.existsByNombreUsuario(editarRiego.getNombreUsuario()))
             return new ResponseEntity(new Mensaje("El Usuario Productor No existe"),HttpStatus.NOT_FOUND);
 
-        if (StringUtils.isBlank(riegoDto.getNombreUsuario()))
+        if (StringUtils.isBlank(editarRiego.getNombreUsuario()))
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
 
         Riego riegoActualizar = riegoService.getUnoById(id).get();
-        Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(riegoDto.getNombreUsuario());
+        Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(editarRiego.getNombreUsuario());
         Usuario usuario= usuarioOptional.get();
 
-        riegoActualizar.setDuracionEnHoras(riegoDto.getDuracionEnHoras());
-        //riegoActualizar.setFechaAplicacion(riegoDto.getFechaAplicacion());
-        riegoActualizar.setMilimetrosAplicados(riegoDto.getMilimetrosAplicados());
-        riegoActualizar.setNumeroDeCuadro(riegoDto.getNumeroDeCuadro());
-        riegoActualizar.setObservacionProductor(riegoDto.getObservacionProductor());
-        riegoActualizar.setSemanaAplicada(riegoDto.getSemanaAplicada());
-        riegoActualizar.setSemanaTransplante(riegoDto.getSemanaTransplante());
+        riegoActualizar.setDuracionEnHoras(editarRiego.getDuracionEnHoras());
+        riegoActualizar.setMilimetrosAplicados(editarRiego.getMilimetrosAplicados());
+        riegoActualizar.setNumeroDeCuadro(editarRiego.getNumeroDeCuadro());
+        riegoActualizar.setObservacionAsesor(editarRiego.getObservacionAsesor());
+        //riegoActualizar.setObservacionProductor(riegoDto.getObservacionProductor());
+        riegoActualizar.setSemanaAplicada(editarRiego.getSemanaAplicada());
+        riegoActualizar.setSemanaTransplante(editarRiego.getSemanaTransplante());
         riegoActualizar.setNombreUsuario(usuario);
 
         try {

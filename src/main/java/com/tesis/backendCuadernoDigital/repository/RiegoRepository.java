@@ -17,6 +17,18 @@ public interface RiegoRepository extends JpaRepository<Riego, Integer> {
     //List<Riego> findByNombreUsuarioOrderByNombreUsuarioAs(String nombreUsuario);
     List<Riego> findAllByOrderByIdAsc();
 
+
+
+    // obtiene los riegos de un usuario por id
+    List<Riego> findByNombreUsuario_Id (int id);
+
+    // obtiene los riegos de un usuario por nombre de usuario
+    List<Riego> findByNombreUsuario_NombreUsuario (String nombreUsuario);
+
+
+
+
+
     boolean existsById(int id);
 
     boolean existsByNumeroDeCuadro( int numeroCuadro);

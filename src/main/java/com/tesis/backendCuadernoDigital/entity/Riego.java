@@ -22,8 +22,8 @@ public class Riego {
     private float milimetrosAplicados;
     @NotNull
     private int numeroDeCuadro;
-   // @NotNull
-    //private String observacionAsesor;
+    @NotNull
+    private String observacionAsesor;
     @NotNull
     private String observacionProductor;
     @NotNull
@@ -39,12 +39,13 @@ public class Riego {
     public Riego() {
     }
 
-    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull int numeroDeCuadro, @NotNull String observacionProductor, @NotNull int semanaAplicada, @NotNull int semanaTransplante
+    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull int numeroDeCuadro, @NotNull String observacionAsesor ,@NotNull String observacionProductor, @NotNull int semanaAplicada, @NotNull int semanaTransplante
     ,@NotNull Usuario nombreUsuario) {
         this.duracionEnHoras = duracionEnHoras;
         this.fechaAplicacion = null;
         this.milimetrosAplicados = milimetrosAplicados;
         this.numeroDeCuadro = numeroDeCuadro;
+        this.observacionAsesor=observacionAsesor;
         this.observacionProductor = observacionProductor;
         this.semanaAplicada = semanaAplicada;
         this.semanaTransplante = semanaTransplante;
@@ -91,6 +92,13 @@ public class Riego {
         this.numeroDeCuadro = numeroDeCuadro;
     }
 
+    public String getObservacionAsesor() {
+        return observacionAsesor;
+    }
+
+    public void setObservacionAsesor(String observacionAsesor) {
+        this.observacionAsesor = observacionAsesor;
+    }
 
     public String getObservacionProductor() {
         return observacionProductor;

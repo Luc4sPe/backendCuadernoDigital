@@ -29,6 +29,17 @@ public class RiegoService {
         return riegoRepository.findAllByOrderByIdAsc();
     }
 
+
+    public List<Riego> listadoRiegoDeUnUsuario(int idUsuario){
+        return riegoRepository.findByNombreUsuario_Id(idUsuario);
+    }
+
+
+    public List<Riego> listadoRiegoDeUnUsuarioPorNombre(String nombreUsuario){
+        return riegoRepository.findByNombreUsuario_NombreUsuario(nombreUsuario);
+    }
+
+
     public Optional <Riego> getUno(int id){
         return riegoRepository.findById(id);
     }
