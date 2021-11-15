@@ -69,7 +69,27 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.github.jhipster/jhipster-framework -->
+		<dependency>
+			<groupId>io.github.jhipster</groupId>
+			<artifactId>jhipster-framework</artifactId>
+			<version>3.9.1</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>

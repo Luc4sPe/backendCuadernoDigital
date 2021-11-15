@@ -43,6 +43,7 @@ public class Usuario {
      inverseJoinColumns = @JoinColumn(name = "id_rol"))
      private Set<Rol> roles = new HashSet<>();
 
+     @NotNull
      private boolean estadoActivo;
 
      @CreationTimestamp

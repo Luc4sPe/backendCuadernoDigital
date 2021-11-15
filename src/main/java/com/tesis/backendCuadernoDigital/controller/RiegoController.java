@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/riego")
@@ -88,7 +89,7 @@ public class RiegoController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
     @GetMapping("/riegoPorUsuario/{idUsuario}")
-    public ResponseEntity<List<Riego>> listadoRiegoDeUnUsuario(@PathVariable ("idUsuario") int idUsuario){
+    public ResponseEntity<List<Riego>> listadoRiegoDeUnUsuarioId(@PathVariable ("idUsuario") int idUsuario){
         List<Riego> listado = riegoService.listadoRiegoDeUnUsuario(idUsuario);
         return new ResponseEntity<>(listado,HttpStatus.OK);
     }

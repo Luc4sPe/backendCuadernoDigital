@@ -17,7 +17,7 @@ public class UsuarioService {
     UsuarioRepository usuarioRepository;
 
     public List<Usuario> list(){
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAllByOrderByIdAsc();
     }
     public Optional<Usuario> getById(int id){
         return usuarioRepository.findById(id);

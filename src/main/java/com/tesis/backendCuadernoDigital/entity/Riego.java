@@ -30,7 +30,6 @@ public class Riego {
     private int semanaAplicada;
     @NotNull
     private int semanaTransplante;
-
     @NotNull
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn (name = "nombreUsuarioProductor")
