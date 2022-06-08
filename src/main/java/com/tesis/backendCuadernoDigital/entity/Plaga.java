@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 
 import javax.persistence.*;
@@ -20,12 +21,15 @@ public class Plaga {
     private String descripcion;
     @NotNull
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn (name = "EncarcadoAgricola")
-    private Usuario nombreEncargadoAgricola;
+    @JoinColumn (name = "UsuarioEncarcadoAgricola")
+    private Usuario nombreEncargadoAgricola; //nombreUsuario
+
     @OneToMany(mappedBy = "plaga", fetch =  FetchType.EAGER)
+    @JsonIgnoreProperties
     private List<Agroquimico> agroquimico = new ArrayList<Agroquimico>();
 
     @OneToMany(mappedBy = "plaga", fetch =  FetchType.EAGER)
+    @JsonIgnoreProperties
     private List<AplicacionDeAgroquimico> aplicacionAgroquimico = new ArrayList<AplicacionDeAgroquimico>();
 
 

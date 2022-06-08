@@ -1,10 +1,14 @@
 package com.tesis.backendCuadernoDigital.security.service;
 
+import com.tesis.backendCuadernoDigital.excepcion.ExcepcionSolicitudIncorrecta;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +51,7 @@ public class UsuarioService {
     public void save(Usuario usuario){
         usuarioRepository.save(usuario);
     }
+
     public void delete(int id){
          usuarioRepository.deleteById(id);
     }
@@ -55,5 +60,13 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.getById(id);
         usuario.modificarEstado();
         usuarioRepository.save(usuario);
+    }
+
+
+    public Usuario getUsuarioLogeado(Authentication aut){
+        UserDetails userDetails = (UserDetails) aut.getPrincipal();
+        Usuario usuario = usuarioRepository.findByNombreUsuario(userDetails.getUsername())
+                .orElseThrow( () -> new ExcepcionSolicitudIncorrecta("El usuario no existe"));
+        return usuario;
     }
 }

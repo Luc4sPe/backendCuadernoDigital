@@ -103,10 +103,6 @@ public class RiegoController {
     }
 
 
-
-
-
-
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody EditarRiegoDto editarRiego, BindingResult bindingResult) {

@@ -19,6 +19,7 @@ public class Agroquimico {
     @NotNull
     private String lote;
     @NotNull
+    @Column(unique = true)
     private String nombreComun;
     @NotNull
     private String observaciones;

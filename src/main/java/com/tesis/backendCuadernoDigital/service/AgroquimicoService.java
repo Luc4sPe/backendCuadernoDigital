@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class AgriquimicoService {
+public class AgroquimicoService {
 
     @Autowired
     AgroquimicoRepository agroquimicoRepository;

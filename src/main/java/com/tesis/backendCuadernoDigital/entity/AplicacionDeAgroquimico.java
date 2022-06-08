@@ -2,9 +2,12 @@ package com.tesis.backendCuadernoDigital.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 public class AplicacionDeAgroquimico {
@@ -33,6 +36,13 @@ public class AplicacionDeAgroquimico {
     @JoinColumn(name = "nombreUsuarioProductor")
     private Usuario nombreUsuario;
 
+    @CreationTimestamp
+    private Date fechaDeAplicacion;
+
+    @UpdateTimestamp
+    private Date fechaModificacion;
+
+
 
     public AplicacionDeAgroquimico() {
     }
@@ -44,6 +54,8 @@ public class AplicacionDeAgroquimico {
         this.observaciones = observaciones;
         this.plaga = plaga;
         this.nombreUsuario = nombreUsuario;
+        this.fechaDeAplicacion=null;
+        this.fechaModificacion=null;
     }
 
     public long getId() {
@@ -100,5 +112,21 @@ public class AplicacionDeAgroquimico {
 
     public void setNombreUsuario(Usuario nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    public Date getFechaDeAplicacion() {
+        return fechaDeAplicacion;
+    }
+
+    public void setFechaDeAplicacion(Date fechaDeAplicacion) {
+        this.fechaDeAplicacion = fechaDeAplicacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }
