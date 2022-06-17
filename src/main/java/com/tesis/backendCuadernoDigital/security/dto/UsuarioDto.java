@@ -17,6 +17,8 @@ public class UsuarioDto {
     @Email
     private String email;
     @NotBlank
+    private String telefono;
+    @NotBlank
     private String password;
     private Set<String> roles = new HashSet<>();
 
@@ -58,6 +60,14 @@ public class UsuarioDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getPassword() {

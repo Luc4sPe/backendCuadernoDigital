@@ -16,6 +16,8 @@ public class EditarUsuarioDto {
     private String nombreUsuario;
     @Email
     private String email;
+    @NotBlank
+    private String telefono;
 
     private Set<String> roles = new HashSet<>();
 
@@ -57,6 +59,14 @@ public class EditarUsuarioDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public Set<String> getRoles() {

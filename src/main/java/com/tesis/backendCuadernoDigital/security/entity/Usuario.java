@@ -35,6 +35,9 @@ public class Usuario {
      private String email;
 
      @NotNull
+     @Column(unique = true)
+     private String telefono;
+     @NotNull
      private String password;
 
      @NotNull
@@ -57,12 +60,13 @@ public class Usuario {
      public Usuario() {
      }
 
-     public Usuario(@NotNull String nombre,@NotNull String apellido,@NotNull String dni,@NotNull String nombreUsuario,@NotNull String email,@NotNull String password) {
+     public Usuario(@NotNull String nombre,@NotNull String apellido,@NotNull String dni,@NotNull String nombreUsuario,@NotNull String email,@NotNull String telefono,@NotNull String password) {
           this.nombre = nombre;
           this.apellido = apellido;
           this.dni = dni;
           this.nombreUsuario = nombreUsuario;
           this.email = email;
+          this.telefono=telefono;
           this.password = password;
           this.estadoActivo=true;
           this.fechaDeAlta=null;
@@ -118,7 +122,15 @@ public class Usuario {
           this.email = email;
      }
 
-     public String getPassword() {
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getPassword() {
           return password;
      }
 

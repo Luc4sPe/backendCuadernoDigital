@@ -18,6 +18,8 @@ public class NuevoUsuario {
     @Email
     private String email;
     @NotBlank
+    private String telefono;
+    @NotBlank
     private String password;
     private Set<String> roles = new HashSet<>();
     private boolean estadoActivo;
@@ -60,6 +62,14 @@ public class NuevoUsuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getPassword() {
