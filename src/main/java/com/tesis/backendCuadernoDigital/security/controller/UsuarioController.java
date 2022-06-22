@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 //Api Rest
@@ -65,9 +66,9 @@ public class UsuarioController {
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
                 new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        passwordEncoder.encode(nuevoUsuario.getPassword()));
+                        nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));
         Set<Rol> roles = new HashSet<>();
-        if (nuevoUsuario.getRoles().contains("Usuario"))
+        if (nuevoUsuario.getRoles().contains("User"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         if(nuevoUsuario.getRoles().contains("Admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
@@ -93,52 +94,56 @@ public class UsuarioController {
 
    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
+    public ResponseEntity<Usuario> update(@PathVariable("id")int id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
         }
-        if (!usuarioService.existsById(id))
+        if (!usuarioService.existsById(id)) {
             return new ResponseEntity(new Mensaje("no existe el usuario"), HttpStatus.NOT_FOUND);
-        if (usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id)
+        }
+        Optional<Usuario> usuarioOpcional = usuarioService.getById(id);
+        Usuario usuario = usuarioOpcional.get();
+
+        if(usuario.getNombreUsuario().contains("Admin")) {
+           return new ResponseEntity(new Mensaje("El usuario administrador no se puede editar"), HttpStatus.BAD_REQUEST);
+        }
+        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()) && usuarioService.getByNombreUsuario(nuevoUsuario.getNombreUsuario()).get().getId() != id) {
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-        //if (usuarioService.existsByEmail(nuevoUsuario.getEmail()))
-        //  return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
-
-        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
+        }
+        if (usuarioService.existsByEmail(nuevoUsuario.getEmail())&& !usuario.getEmail().equals(nuevoUsuario.getEmail())) {
+            return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+        }
+        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario())) {
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
-        {
-
-            Usuario usuario = usuarioService.getById(id).get();
-            Set<Rol> roles = new HashSet<>();
-
-            if (nuevoUsuario.getRoles().contains("Admin"))
-                roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
-
-            if (nuevoUsuario.getRoles().contains("Encargado Agricola"))
-                roles.add(rolService.getByRolNombre(RolNombre.ROLE_ENCARGADO_AGRICOLA).get());
-
-            if (nuevoUsuario.getRoles().contains("Productor")) ;
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
-
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
-            usuario.setRoles(roles);
+        }
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
             usuario.setDni(nuevoUsuario.getDni());
             usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
             usuario.setEmail(nuevoUsuario.getEmail());
+            Set<Rol> roles = new HashSet<>();
+            if (nuevoUsuario.getRoles().contains("User"))
+                roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
+            if (nuevoUsuario.getRoles().contains("Admin"))
+                roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+            if (nuevoUsuario.getRoles().contains("Encargado Agricola"))
+                roles.add(rolService.getByRolNombre(RolNombre.ROLE_ENCARGADO_AGRICOLA).get());
+            if (nuevoUsuario.getRoles().contains("Productor"))
+                roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
+       if (nuevoUsuario.getRoles().contains("Gerente"))
+           roles.add(rolService.getByRolNombre(RolNombre.ROLE_GERENTE).get());
             usuario.setRoles(roles);
             try {
                 Authentication aut = SecurityContextHolder.getContext().getAuthentication();
                 Usuario usuarioLogueado = usuarioService.getUsuarioLogeado(aut);
                 usuarioService.save(usuario);
-                logService.guardarModificacionUsuario(usuario,usuarioLogueado);
+                logService.guardarModificacionUsuario(usuario, usuarioLogueado);
                 return new ResponseEntity(new Mensaje("usuario actualizado"), HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
+
 
     }
 
