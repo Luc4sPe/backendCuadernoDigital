@@ -16,6 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     Optional<Usuario> findByTokenPassword(String tokenPassword);
     boolean existsByNombreUsuario(String nombreUsuario);
     boolean existsByEmail(String email);
+    boolean existsByTelefono(String telefono);
     int countUsuariosByEstadoActivoIsTrue();
     int countUsuariosByEstadoActivoIsFalse();
 
