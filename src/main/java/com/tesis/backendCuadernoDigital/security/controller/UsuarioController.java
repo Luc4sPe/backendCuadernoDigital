@@ -122,6 +122,7 @@ public class UsuarioController {
             usuario.setDni(nuevoUsuario.getDni());
             usuario.setNombreUsuario(nuevoUsuario.getNombreUsuario());
             usuario.setEmail(nuevoUsuario.getEmail());
+            usuario.setTelefono(nuevoUsuario.getTelefono());
             Set<Rol> roles = new HashSet<>();
             if (nuevoUsuario.getRoles().contains("User"))
                 roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
