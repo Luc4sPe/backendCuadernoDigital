@@ -60,7 +60,7 @@ public class EmailController {
             usuarioService.save(usuario);
             //usuarioService.save(usuario);
             emailService.sendEmail(emailValuesDto);
-            return new ResponseEntity(new Mensaje("Te hemos enviado un correo"), HttpStatus.OK);
+            return new ResponseEntity(new Mensaje("Te hemos enviado un correo exitosamente"), HttpStatus.OK);
 
         }catch (Exception e){
             return new ResponseEntity(new Mensaje("Error al eviar el mail"), HttpStatus.BAD_REQUEST);
