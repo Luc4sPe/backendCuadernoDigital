@@ -19,8 +19,10 @@ public class Finca {
     private String direccion;
 
     @NotNull
+    @Column(unique = true)
     private float longitud;
     @NotNull
+    @Column(unique = true)
     private float latitud;
 
     @OneToMany(cascade = CascadeType.MERGE)

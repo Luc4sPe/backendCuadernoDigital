@@ -10,7 +10,6 @@ public class Cuadro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCuadro;
     @NotNull
-    @Column(unique = true)
     private int numeroCuadro;
     @NotNull
     private float superficieHectarea;
