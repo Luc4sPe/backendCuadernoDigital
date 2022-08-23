@@ -1,10 +1,9 @@
 package com.tesis.backendCuadernoDigital.entity;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 public class Plantacion {
@@ -19,10 +18,9 @@ public class Plantacion {
     private Date fechaTrasplante;
     @NotNull
     private Date fechaSiembra;
-    @NotNull
-    @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "Id Cuadro")
-    private Cuadro idCuadro;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "tipoPlantacion",fetch = FetchType.LAZY)
+    private List<Cuadro> numerosDeCuadros = new ArrayList<>();
     @NotNull
     private String observacion;
     @NotNull
@@ -32,13 +30,26 @@ public class Plantacion {
     @NotNull
     private String sistemaTrasplante;
     @NotNull
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "Tipo Cultivo")
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "TipoCultivo")
     private Cultivo tipoCultivo;
     @NotNull
     private int cantidadPlantines;
 
     public Plantacion() {
+    }
+
+    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, Date fechaTrasplante, @NotNull Date fechaSiembra, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo tipoCultivo, @NotNull int cantidadPlantines) {
+        this.entreIleras = entreIleras;
+        this.entrePlantas = entrePlantas;
+        this.fechaTrasplante = fechaTrasplante;
+        this.fechaSiembra = fechaSiembra;
+        this.observacion = observacion;
+        this.justificacion = justificacion;
+        this.sistemaRiego = sistemaRiego;
+        this.sistemaTrasplante = sistemaTrasplante;
+        this.tipoCultivo = tipoCultivo;
+        this.cantidadPlantines = cantidadPlantines;
     }
 
     public Long getIdPlantacion() {
@@ -81,12 +92,12 @@ public class Plantacion {
         this.fechaSiembra = fechaSiembra;
     }
 
-    public Cuadro getIdCuadro() {
-        return idCuadro;
+    public List<Cuadro> getNumerosDeCuadros() {
+        return numerosDeCuadros;
     }
 
-    public void setIdCuadro(Cuadro idCuadro) {
-        this.idCuadro = idCuadro;
+    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
+        this.numerosDeCuadros = numerosDeCuadros;
     }
 
     public String getObservacion() {

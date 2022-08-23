@@ -1,7 +1,11 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Cuadro {
@@ -14,6 +18,13 @@ public class Cuadro {
     @NotNull
     private float superficieHectarea;
 
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("numerosDeCuadros")
+    @JoinColumn(name = "TipoPlantacion")
+    private Plantacion tipoPlantacion;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
+    private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
 
     public Cuadro() {
     }
@@ -21,6 +32,7 @@ public class Cuadro {
     public Cuadro(@NotNull int numeroCuadro, @NotNull float superficieHectarea) {
         this.numeroCuadro = numeroCuadro;
         this.superficieHectarea = superficieHectarea;
+
     }
 
     public Long getIdCuadro() {
@@ -45,5 +57,13 @@ public class Cuadro {
 
     public void setSuperficieHectarea(float superficieHectarea) {
         this.superficieHectarea = superficieHectarea;
+    }
+
+    public List<LaborSuelo> getLaboresDeSuelo() {
+        return laboresDeSuelo;
+    }
+
+    public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
+        this.laboresDeSuelo = laboresDeSuelo;
     }
 }

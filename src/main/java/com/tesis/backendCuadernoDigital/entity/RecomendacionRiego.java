@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 
 import javax.persistence.*;
@@ -12,9 +12,9 @@ public class RecomendacionRiego {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRecomendacion;
-    private Cuadro cuadro;
+    //private Cuadro cuadro;
     private LocalTime duracionDelRiego;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "Nombre Productor")
     private Usuario encargado;
     private String nombreProductor;
@@ -22,4 +22,6 @@ public class RecomendacionRiego {
     private Date fechaDeAplicar;
     private boolean estadoAplicacion;
 
+
 }
+*/

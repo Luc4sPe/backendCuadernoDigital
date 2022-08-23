@@ -1,5 +1,7 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -16,8 +18,9 @@ public class LaborSuelo {
     @NotNull
     private String herramientasUtilizadas;
     @NotNull
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "Id Cuadro")
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("laboresDeSuelo")
+    @JoinColumn(name = "IdCuadro")
     private Cuadro idCuadro;
     @NotNull
     private String labor;
@@ -27,6 +30,16 @@ public class LaborSuelo {
     private String justificacion;
 
     public LaborSuelo() {
+    }
+
+    public LaborSuelo(@NotNull String cultivoAnterior, @NotNull Date fechaLabor, @NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
+        this.cultivoAnterior = cultivoAnterior;
+        this.fechaLabor = fechaLabor;
+        this.herramientasUtilizadas = herramientasUtilizadas;
+        this.idCuadro = idCuadro;
+        this.labor = labor;
+        this.observacion = observacion;
+        this.justificacion = justificacion;
     }
 
     public Long getId() {
@@ -93,3 +106,5 @@ public class LaborSuelo {
         this.justificacion = justificacion;
     }
 }
+
+

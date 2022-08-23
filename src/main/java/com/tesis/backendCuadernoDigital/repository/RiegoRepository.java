@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.repository;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.Riego;
 
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -31,3 +31,4 @@ public interface RiegoRepository extends JpaRepository<Riego, Integer> {
 
     boolean existsByNombreUsuario(String nombreUsuario);
 }
+*/

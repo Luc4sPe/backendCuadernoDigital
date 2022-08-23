@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -123,3 +123,4 @@ public class Riego {
         this.nombreUsuario = nombreUsuario;
     }
 }
+*/

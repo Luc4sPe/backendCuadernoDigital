@@ -32,6 +32,7 @@ public class Agroquimico {
     private String principioActivo;
     @NotNull
     private int tiempoDeCarencia;
+
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JsonIgnoreProperties("agroquimico")
