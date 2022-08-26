@@ -9,14 +9,14 @@ import java.util.List;
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
 
-    List<Log> findByUsuario_IdOrderByFechaAsc(int id);
+    List<Log> findByUsuario_IdOrderByFechaAsc(Long id);
 
-    List<Log> findByUsuario_IdOrderByFechaDesc(int id);
+    List<Log> findByUsuario_IdOrderByFechaDesc(Long id);
 
     List<Log> findAllByOrderByFechaDesc();
 
     List<Log> findByUsuario_NombreUsuarioOrderByFechaDesc(String nombreUsuario);
 
-    Integer countByUsuario_Id(int id);
+    Integer countByUsuario_Id(Long id);
 
 }

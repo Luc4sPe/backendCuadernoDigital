@@ -32,7 +32,7 @@ public class LogController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/actividadUsuario/{idUsuario}")
-    public ResponseEntity<List<Log>> listadoLogsPorUsuario(@PathVariable ("idUsuario") int idUsuario){
+    public ResponseEntity<List<Log>> listadoLogsPorUsuario(@PathVariable ("idUsuario") Long idUsuario){
         if(!usuarioService.existsById(idUsuario))
             throw new ExcepcionRecursoNoEncontrado("No existe el usuario con el ID: "+idUsuario);
         List<Log> listado = logService.logsPorUsuario(idUsuario);

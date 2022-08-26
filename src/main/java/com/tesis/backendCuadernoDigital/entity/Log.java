@@ -33,12 +33,12 @@ public class Log {
     private String descripcion;
 
     @NotNull
-    private int objeto_id;
+    private Long objeto_id;
 
     public Log() {
     }
 
-    public Log(@NotNull Usuario usuario, @NotNull LogAccion logAccion, @NotNull String descripcion, @NotNull int objeto_id) {
+    public Log(@NotNull Usuario usuario, @NotNull LogAccion logAccion, @NotNull String descripcion, @NotNull Long objeto_id) {
         this.fecha = null;
         this.usuario = usuario;
         this.logAccion = logAccion;
@@ -88,11 +88,11 @@ public class Log {
         this.descripcion = descripcion;
     }
 
-    public int getObjeto_id() {
+    public Long getObjeto_id() {
         return objeto_id;
     }
 
-    public void setObjeto_id(int objeto_id) {
+    public void setObjeto_id(Long objeto_id) {
         this.objeto_id = objeto_id;
     }
 }

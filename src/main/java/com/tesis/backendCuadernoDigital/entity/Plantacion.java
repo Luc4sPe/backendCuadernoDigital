@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,10 +15,12 @@ public class Plantacion {
     private float entreIleras;
     @NotNull
     private float entrePlantas;
+
     @CreationTimestamp
-    private Date fechaTrasplante;
-    @NotNull
-    private Date fechaSiembra;
+    private Date fechaCreacionPlantacion;
+
+    @UpdateTimestamp
+    private Date fechaModificacionPlantacion;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "tipoPlantacion",fetch = FetchType.LAZY)
     private List<Cuadro> numerosDeCuadros = new ArrayList<>();
@@ -32,24 +35,24 @@ public class Plantacion {
     @NotNull
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "TipoCultivo")
-    private Cultivo tipoCultivo;
+    private Cultivo nombreTipoCultivo;
     @NotNull
     private int cantidadPlantines;
 
     public Plantacion() {
     }
 
-    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, Date fechaTrasplante, @NotNull Date fechaSiembra, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo tipoCultivo, @NotNull int cantidadPlantines) {
+    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull int cantidadPlantines) {
         this.entreIleras = entreIleras;
         this.entrePlantas = entrePlantas;
-        this.fechaTrasplante = fechaTrasplante;
-        this.fechaSiembra = fechaSiembra;
         this.observacion = observacion;
         this.justificacion = justificacion;
         this.sistemaRiego = sistemaRiego;
         this.sistemaTrasplante = sistemaTrasplante;
-        this.tipoCultivo = tipoCultivo;
+        this.nombreTipoCultivo = nombreTipoCultivo;
         this.cantidadPlantines = cantidadPlantines;
+        this.fechaCreacionPlantacion = null;
+        this.fechaModificacionPlantacion = null;
     }
 
     public Long getIdPlantacion() {
@@ -76,20 +79,20 @@ public class Plantacion {
         this.entrePlantas = entrePlantas;
     }
 
-    public Date getFechaTrasplante() {
-        return fechaTrasplante;
+    public Date getFechaCreacionPlantacion() {
+        return fechaCreacionPlantacion;
     }
 
-    public void setFechaTrasplante(Date fechaTrasplante) {
-        this.fechaTrasplante = fechaTrasplante;
+    public void setFechaCreacionPlantacion(Date fechaCreacionPlantacion) {
+        this.fechaCreacionPlantacion = fechaCreacionPlantacion;
     }
 
-    public Date getFechaSiembra() {
-        return fechaSiembra;
+    public Date getFechaModificacionPlantacion() {
+        return fechaModificacionPlantacion;
     }
 
-    public void setFechaSiembra(Date fechaSiembra) {
-        this.fechaSiembra = fechaSiembra;
+    public void setFechaModificacionPlantacion(Date fechaModificacionPlantacion) {
+        this.fechaModificacionPlantacion = fechaModificacionPlantacion;
     }
 
     public List<Cuadro> getNumerosDeCuadros() {
@@ -132,12 +135,12 @@ public class Plantacion {
         this.sistemaTrasplante = sistemaTrasplante;
     }
 
-    public Cultivo getTipoCultivo() {
-        return tipoCultivo;
+    public Cultivo getNombreTipoCultivo() {
+        return nombreTipoCultivo;
     }
 
-    public void setTipoCultivo(Cultivo tipoCultivo) {
-        this.tipoCultivo = tipoCultivo;
+    public void setNombreTipoCultivo(Cultivo nombreTipoCultivo) {
+        this.nombreTipoCultivo = nombreTipoCultivo;
     }
 
     public int getCantidadPlantines() {

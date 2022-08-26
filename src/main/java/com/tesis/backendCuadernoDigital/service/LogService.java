@@ -1,6 +1,8 @@
 package com.tesis.backendCuadernoDigital.service;
 
+import com.tesis.backendCuadernoDigital.entity.Cultivo;
 import com.tesis.backendCuadernoDigital.entity.Log;
+import com.tesis.backendCuadernoDigital.entity.Plantacion;
 import com.tesis.backendCuadernoDigital.enums.LogAccion;
 import com.tesis.backendCuadernoDigital.repository.LogRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -35,7 +37,7 @@ public class LogService {
         return listado;
     }
 
-    public List<Log> logsPorUsuario(int id){
+    public List<Log> logsPorUsuario(Long id){
         List<Log> listadoLogs = logRepository.findByUsuario_IdOrderByFechaAsc(id);
         return listadoLogs;
     }
@@ -46,14 +48,14 @@ public class LogService {
         return listadoLogs;
     }
 
-    public Log ultimoLogDeUsuario(int id){
+    public Log ultimoLogDeUsuario(Long id){
         List<Log> listaLogs= logsPorUsuario(id);
         int size = listaLogs.size();
         Log ultimoLog = listaLogs.get(size -1);
         return ultimoLog;
     }
 
-    public void elmininarActividadUsuario(int id){
+    public void elmininarActividadUsuario(Long id){
         List<Log> actividad = logsPorUsuario(id);
         logRepository.deleteAll(actividad);
     }
@@ -88,7 +90,7 @@ public class LogService {
     }
 
     // En Prueba
-    public List<Log> getUltimosNLogPorUsuario(int idUsuario, Integer cantidadMaxima){
+    public List<Log> getUltimosNLogPorUsuario(Long idUsuario, Integer cantidadMaxima){
         List<Log> ultimosN = logRepository.findByUsuario_IdOrderByFechaDesc(idUsuario).stream().limit(cantidadMaxima).collect(Collectors.toList());
         return ultimosN;
     }
@@ -127,6 +129,29 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodos logs de Cultivo
+
+    public void guardarAltaCultivo(Cultivo cultivo, Usuario usuarioCreador){
+        Log log = new Log(usuarioCreador, LogAccion.CREACION_CULTIVO,"El Encargado Agricola: "+usuarioCreador.getNombreUsuario()+"Creo el Cultivo: "+cultivo.getNombre(),cultivo.getIdCultivo());
+        logRepository.save(log);
+    }
+
+    public void modificarCultivo(Cultivo cultivo, Usuario usuarioModificador){
+        Log log = new Log(usuarioModificador, LogAccion.MODIFICACION_CULTIVO,"El Encargado Agricola:  "+usuarioModificador.getNombreUsuario()+" Modifico el Cultivo: "+cultivo.getNombre(), cultivo.getIdCultivo());
+        logRepository.save(log);
+    }
+
+    //Metodos Logs de Plantacion
+
+    public void guardarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
+        Log log = new Log(usuarioProductor,LogAccion.CREACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+" Creao la Plantacion: "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        logRepository.save(log);
+    }
+
+    public void modificarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
+        Log log = new Log(usuarioProductor,LogAccion.MODIFICACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+"Modifico la plantacion "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        logRepository.save(log);
+    }
 
 
 }

@@ -1,10 +1,13 @@
 package com.tesis.backendCuadernoDigital.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,12 +29,20 @@ public class Cuadro {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
     private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
 
+    @CreationTimestamp
+    private Date fechaCreacionCuadro;
+
+    @UpdateTimestamp
+    private Date fechaModificacionCuadro;
+
     public Cuadro() {
     }
 
     public Cuadro(@NotNull int numeroCuadro, @NotNull float superficieHectarea) {
         this.numeroCuadro = numeroCuadro;
         this.superficieHectarea = superficieHectarea;
+        this.fechaCreacionCuadro = null;
+        this.fechaModificacionCuadro = null;
 
     }
 
@@ -66,4 +77,6 @@ public class Cuadro {
     public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
         this.laboresDeSuelo = laboresDeSuelo;
     }
+
+
 }

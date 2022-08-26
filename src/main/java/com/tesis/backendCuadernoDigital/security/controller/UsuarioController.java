@@ -96,7 +96,7 @@ public class UsuarioController {
 
    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable("id")int id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
+    public ResponseEntity<Usuario> update(@PathVariable("id")Long id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
@@ -162,7 +162,7 @@ public class UsuarioController {
 
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Usuario> getByNombre(@PathVariable("id") int id){
+    public ResponseEntity<Usuario> getByNombre(@PathVariable("id") Long id){
         if(!usuarioService.existsById(id))
             return new ResponseEntity(new Mensaje("no existe el usuario"),HttpStatus.NOT_FOUND);
         Usuario usuario = usuarioService.getById(id).get();
@@ -173,7 +173,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/alta/{id}")
-    public ResponseEntity<?> altaUsuario(@PathVariable("id") int id){
+    public ResponseEntity<?> altaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){
             return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
         }
@@ -192,7 +192,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/baja/{id}")
-    public ResponseEntity<?> bajaUsuario(@PathVariable("id") int id){
+    public ResponseEntity<?> bajaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){
             return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
         }

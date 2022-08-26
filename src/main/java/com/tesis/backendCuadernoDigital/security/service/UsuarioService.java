@@ -23,7 +23,7 @@ public class UsuarioService {
     public List<Usuario> list(){
         return usuarioRepository.findAllByOrderByIdAsc();
     }
-    public Optional<Usuario> getById(int id){
+    public Optional<Usuario> getById(Long id){
         return usuarioRepository.findById(id);
     }
 
@@ -48,18 +48,18 @@ public class UsuarioService {
 
     public boolean existsByTelefono(String telefono) {return  usuarioRepository.existsByTelefono(telefono);}
 
-    public boolean existsById(int id){
+    public boolean existsById(Long id){
         return usuarioRepository.existsById(id);
     }
     public void save(Usuario usuario){
         usuarioRepository.save(usuario);
     }
 
-    public void delete(int id){
+    public void delete(Long id){
          usuarioRepository.deleteById(id);
     }
 
-    public void modificarEstado(int id){
+    public void modificarEstado(Long id){
         Usuario usuario = usuarioRepository.getById(id);
         usuario.modificarEstado();
         usuarioRepository.save(usuario);
