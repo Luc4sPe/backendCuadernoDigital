@@ -17,17 +17,16 @@ public class Cuadro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCuadro;
     @NotNull
-    private int numeroCuadro;
+    private String numeroCuadro;
     @NotNull
     private float superficieHectarea;
 
-    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("numerosDeCuadros")
-    @JoinColumn(name = "TipoPlantacion")
-    private Plantacion tipoPlantacion;
+   // @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
+    //private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
-    private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
+    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    //private List<AplicacionDeAgroquimico> aplicacionDeAgroquimicos = new ArrayList<>();
+    //falta lista de riego
 
     @CreationTimestamp
     private Date fechaCreacionCuadro;
@@ -38,12 +37,9 @@ public class Cuadro {
     public Cuadro() {
     }
 
-    public Cuadro(@NotNull int numeroCuadro, @NotNull float superficieHectarea) {
+    public Cuadro(@NotNull String numeroCuadro, @NotNull float superficieHectarea) {
         this.numeroCuadro = numeroCuadro;
         this.superficieHectarea = superficieHectarea;
-        this.fechaCreacionCuadro = null;
-        this.fechaModificacionCuadro = null;
-
     }
 
     public Long getIdCuadro() {
@@ -54,11 +50,11 @@ public class Cuadro {
         this.idCuadro = idCuadro;
     }
 
-    public int getNumeroCuadro() {
+    public String getNumeroCuadro() {
         return numeroCuadro;
     }
 
-    public void setNumeroCuadro(int numeroCuadro) {
+    public void setNumeroCuadro(String numeroCuadro) {
         this.numeroCuadro = numeroCuadro;
     }
 
@@ -70,13 +66,31 @@ public class Cuadro {
         this.superficieHectarea = superficieHectarea;
     }
 
-    public List<LaborSuelo> getLaboresDeSuelo() {
-        return laboresDeSuelo;
+   // public List<LaborSuelo> getLaboresDeSuelo() {
+     //   return laboresDeSuelo;
+   // }
+
+    //public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
+      //  this.laboresDeSuelo = laboresDeSuelo;
+    //}
+
+    public Date getFechaCreacionCuadro() {
+        return fechaCreacionCuadro;
     }
 
-    public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
-        this.laboresDeSuelo = laboresDeSuelo;
+    public void setFechaCreacionCuadro(Date fechaCreacionCuadro) {
+        this.fechaCreacionCuadro = fechaCreacionCuadro;
     }
 
+    public Date getFechaModificacionCuadro() {
+        return fechaModificacionCuadro;
+    }
 
+    public void setFechaModificacionCuadro(Date fechaModificacionCuadro) {
+        this.fechaModificacionCuadro = fechaModificacionCuadro;
+    }
+
+    public void enviarMiId(){
+        this.idCuadro = idCuadro;
+    }
 }

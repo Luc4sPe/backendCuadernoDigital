@@ -22,10 +22,13 @@ public class Plantacion {
     @UpdateTimestamp
     private Date fechaModificacionPlantacion;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "tipoPlantacion",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Cuadro> numerosDeCuadros = new ArrayList<>();
+
     @NotNull
     private String observacion;
+    @NotNull
+
     @NotNull
     private String justificacion;
     @NotNull
@@ -151,3 +154,4 @@ public class Plantacion {
         this.cantidadPlantines = cantidadPlantines;
     }
 }
+

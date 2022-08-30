@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.service;
 
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
 import com.tesis.backendCuadernoDigital.entity.Log;
 import com.tesis.backendCuadernoDigital.entity.Plantacion;
@@ -149,8 +150,17 @@ public class LogService {
     }
 
     public void modificarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
-        Log log = new Log(usuarioProductor,LogAccion.MODIFICACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+"Modifico la plantacion "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        Log log = new Log(usuarioProductor,LogAccion.MODIFICACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+" Modifico la plantacion "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
         logRepository.save(log);
+    }
+
+    //Metodos Logs Cuadro
+
+    public void guardarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.CREACION_CULTIVO, "El Encargado Agricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Creao el Cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
+    }
+    public void modificarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.MODIFICACION_CULTIVO,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Modifico el cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
     }
 
 

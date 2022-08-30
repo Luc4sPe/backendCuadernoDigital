@@ -2,23 +2,28 @@ package com.tesis.backendCuadernoDigital.dto;
 
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
 
+
+import javax.validation.constraints.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlantacionDto {
-    @NotBlank(message = "No puede ser un valor nulo")
-    @Min(value = 1, message = "El minimo de id 1")
+
+    @NotNull(message = "No puede ser un valor nulo")
     private Long idPlantacion;
-    @NotBlank(message = "No puede ser un valor nulo")
+    @NotNull(message = "No puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de entre ileras es 1")
     private float entreIleras;
-    @NotBlank(message = "No puede ser un valor nulo")
+    @NotNull(message = "No puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de entre plantas es 1")
     private float entrePlantas;
 
-    private List<Cuadro> numerosDeCuadros = new ArrayList<>();
+    @NotEmpty(message = "La lista no puede estar ")
+    private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
+
 
     @NotBlank(message = "El campo observacion no puede estar vacio")
     private String observacion;
