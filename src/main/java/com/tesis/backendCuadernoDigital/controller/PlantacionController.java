@@ -93,7 +93,7 @@ public class PlantacionController {
             }
             return new ResponseEntity(new Mensaje("Fallo la operacion, Plantacion no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion Soy yo, Plantacion no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, Plantacion no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -3,6 +3,7 @@ package com.tesis.backendCuadernoDigital.controller;
 import com.tesis.backendCuadernoDigital.dto.CuadroDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
+import com.tesis.backendCuadernoDigital.entity.Log;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import com.tesis.backendCuadernoDigital.service.CuadroService;
@@ -66,4 +67,41 @@ public class CuadroController {
         return new ResponseEntity<>(listado, HttpStatus.OK);
 
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/modificarCuadro/{id}")
+    public ResponseEntity<?> modificarFinca(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
+
+        if (cuadroService.existsByIDCuadro(id))
+            return new ResponseEntity(new Mensaje("no existe ese Cuadro"), HttpStatus.NOT_FOUND);
+
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+            Cuadro modificarCuadro = cuadroService.getCuadro(id).get();
+            modificarCuadro.setNumeroCuadro(cuadroDto.getNumeroCuadro());
+            modificarCuadro.setSuperficieHectarea(cuadroDto.getSuperficieHectarea());
+            cuadroService.actualizarCuadro(modificarCuadro);
+            if(modificarCuadro!=null) {
+                logService.modificarCuadro(modificarCuadro, usuario);
+                return new ResponseEntity<>(new Mensaje(" Finca actualizada correctamente"), HttpStatus.OK);
+            }
+            return new ResponseEntity(new Mensaje("Fallo la operacion, Cuadro no Actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, Cuadro no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/CantidadCuadro")
+    public ResponseEntity<Integer> cantidadTotalDeCuadros(){
+        Integer cantidad =cuadroService.getCantidadDeCuadros();
+        return new ResponseEntity<>(cantidad, HttpStatus.OK);
+    }
+
+
 }

@@ -15,7 +15,8 @@ public interface CuadroRepository extends JpaRepository<Cuadro, Long> {
     Optional<Cuadro> findByIdCuadro(Long id);
     Optional<Cuadro> findByNumeroCuadro(String numeroCuadro);
     boolean existsByNumeroCuadro(String numeroCuadro);
-    //Integer countByIdCuadro();
+    boolean existsByIdCuadro(Long id);
+    Integer countCuadroBy();
 
 
 }

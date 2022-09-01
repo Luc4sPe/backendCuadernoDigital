@@ -1,6 +1,8 @@
 package com.tesis.backendCuadernoDigital.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +16,10 @@ public class LaborSuelo {
     @NotNull
     private String cultivoAnterior;
     @NotNull
+    @CreationTimestamp
     private Date fechaLabor;
+    @UpdateTimestamp
+    private Date fechaModificacionLabor;
     @NotNull
     private String herramientasUtilizadas;
     @NotNull
@@ -32,9 +37,10 @@ public class LaborSuelo {
     public LaborSuelo() {
     }
 
-    public LaborSuelo(@NotNull String cultivoAnterior, @NotNull Date fechaLabor, @NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
+    public LaborSuelo(@NotNull String cultivoAnterior, @NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
         this.cultivoAnterior = cultivoAnterior;
-        this.fechaLabor = fechaLabor;
+        this.fechaLabor = null;
+        this.fechaModificacionLabor = null;
         this.herramientasUtilizadas = herramientasUtilizadas;
         this.idCuadro = idCuadro;
         this.labor = labor;
@@ -64,6 +70,14 @@ public class LaborSuelo {
 
     public void setFechaLabor(Date fechaLabor) {
         this.fechaLabor = fechaLabor;
+    }
+
+    public Date getFechaModificacionLabor() {
+        return fechaModificacionLabor;
+    }
+
+    public void setFechaModificacionLabor(Date fechaModificacionLabor) {
+        this.fechaModificacionLabor = fechaModificacionLabor;
     }
 
     public String getHerramientasUtilizadas() {

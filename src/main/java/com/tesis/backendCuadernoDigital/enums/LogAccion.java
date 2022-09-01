@@ -53,6 +53,11 @@ public enum LogAccion {
     ALTA_CUADRO,
     BAJA_CUADRO,
 
+    CREACION_FINCA,
+    ALTA_FINCA,
+    BAJA_FINCA,
+    MODIFICACION_FINCA
+
 
 
 

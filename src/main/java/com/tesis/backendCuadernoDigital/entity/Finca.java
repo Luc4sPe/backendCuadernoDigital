@@ -24,7 +24,6 @@ public class Finca {
     private float latitud;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "NumeroCuadro")
     private List<Cuadro> cuadros = new ArrayList<>();
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -39,7 +38,6 @@ public class Finca {
         this.direccion = direccion;
         this.longitud = longitud;
         this.latitud = latitud;
-
         this.productor = productor;
 
     }

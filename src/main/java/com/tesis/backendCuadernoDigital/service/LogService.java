@@ -1,9 +1,6 @@
 package com.tesis.backendCuadernoDigital.service;
 
-import com.tesis.backendCuadernoDigital.entity.Cuadro;
-import com.tesis.backendCuadernoDigital.entity.Cultivo;
-import com.tesis.backendCuadernoDigital.entity.Log;
-import com.tesis.backendCuadernoDigital.entity.Plantacion;
+import com.tesis.backendCuadernoDigital.entity.*;
 import com.tesis.backendCuadernoDigital.enums.LogAccion;
 import com.tesis.backendCuadernoDigital.repository.LogRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -163,5 +160,13 @@ public class LogService {
         Log log = new Log(usuarioEncargadoAgricola,LogAccion.MODIFICACION_CULTIVO,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Modifico el cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
     }
 
+     //Metodos Logs Finca
+    public void guardarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Creao la Finca: "+finca.getNombre(),finca.getIdFinca());
+    }
+
+    public void modificarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.MODIFICACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Modifico la Finca: "+finca.getNombre(),finca.getIdFinca());
+    }
 
 }

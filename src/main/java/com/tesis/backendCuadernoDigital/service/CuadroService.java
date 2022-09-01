@@ -42,13 +42,17 @@ public class CuadroService {
         return cuadroRepository.existsByNumeroCuadro(numeroCuadro);
     }
 
+    public boolean existsByIDCuadro(Long id){
+        return cuadroRepository.existsByIdCuadro(id);
+    }
+
 
     // lo utilizo en la lista de los cuadros
     public Cuadro obtenerCuadro(String numeroCuadro){
         Cuadro cuadro = getByNumeroCuadro(numeroCuadro).orElseThrow(() -> new ResourceNotFoundException("El N° de Cuadro: "+numeroCuadro+" no Esiste"));
         return cuadro;
     }
-    //public Integer getCantidadDeCuadros(){
-      //  return cuadroRepository.countByIdCuadro();
-   // }
+    public Integer getCantidadDeCuadros(){
+        return cuadroRepository.countCuadroBy();
+    }
 }
