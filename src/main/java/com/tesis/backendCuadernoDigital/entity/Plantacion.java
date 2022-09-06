@@ -153,5 +153,23 @@ public class Plantacion {
     public void setCantidadPlantines(int cantidadPlantines) {
         this.cantidadPlantines = cantidadPlantines;
     }
+
+    @Override
+    public String toString() {
+        return "Plantacion{" +
+                "idPlantacion=" + idPlantacion +
+                ", entreIleras=" + entreIleras +
+                ", entrePlantas=" + entrePlantas +
+                ", fechaCreacionPlantacion=" + fechaCreacionPlantacion +
+                ", fechaModificacionPlantacion=" + fechaModificacionPlantacion +
+                ", numerosDeCuadros=" + numerosDeCuadros +
+                ", observacion='" + observacion + '\'' +
+                ", justificacion='" + justificacion + '\'' +
+                ", sistemaRiego='" + sistemaRiego + '\'' +
+                ", sistemaTrasplante='" + sistemaTrasplante + '\'' +
+                ", nombreTipoCultivo=" + nombreTipoCultivo +
+                ", cantidadPlantines=" + cantidadPlantines +
+                '}';
+    }
 }
 

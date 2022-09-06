@@ -152,6 +152,7 @@ public class PlantacionController {
             modificarPlantacion.setJustificacion(modificacionPlantacionDto.getJustificacion());
             modificarPlantacion.setSistemaRiego(modificacionPlantacionDto.getSistemaRiego());
             modificarPlantacion.setSistemaTrasplante(modificacionPlantacionDto.getSistemaTrasplante());
+            modificarPlantacion.setNombreTipoCultivo(nombreCultivo);
             modificarPlantacion.setCantidadPlantines(modificacionPlantacionDto.getCantidadPlantines());
             modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
             plantacionService.actualizarPlantacion(modificarPlantacion);
@@ -165,6 +166,17 @@ public class PlantacionController {
             return new ResponseEntity(new Mensaje("Fallo la operacion, Plantación no Modificada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @GetMapping("/detallePlantacion/{id}")
+    ResponseEntity<Plantacion> obteberDetalleDeUnaPlantacion(@PathVariable("id") Long id){
+        if(!plantacionService.existsByIdPlantacion(id))
+            return new ResponseEntity(new Mensaje("no existe esa plantacion"),HttpStatus.NOT_FOUND);
+        Plantacion plantacion = plantacionService.getPlantacion(id).get();
+        return new ResponseEntity(plantacion,HttpStatus.OK);
+    }
+
+
 
 
 

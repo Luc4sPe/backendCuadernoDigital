@@ -21,8 +21,8 @@ public class Cuadro {
     @NotNull
     private float superficieHectarea;
 
-   // @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
-    //private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
+   @OneToMany(cascade = CascadeType.ALL,mappedBy = "idCuadro",fetch = FetchType.LAZY)
+    private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
 
     //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     //private List<AplicacionDeAgroquimico> aplicacionDeAgroquimicos = new ArrayList<>();
@@ -66,13 +66,13 @@ public class Cuadro {
         this.superficieHectarea = superficieHectarea;
     }
 
-   // public List<LaborSuelo> getLaboresDeSuelo() {
-     //   return laboresDeSuelo;
-   // }
+    public List<LaborSuelo> getLaboresDeSuelo() {
+        return laboresDeSuelo;
+    }
 
-    //public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
-      //  this.laboresDeSuelo = laboresDeSuelo;
-    //}
+    public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
+        this.laboresDeSuelo = laboresDeSuelo;
+    }
 
     public Date getFechaCreacionCuadro() {
         return fechaCreacionCuadro;

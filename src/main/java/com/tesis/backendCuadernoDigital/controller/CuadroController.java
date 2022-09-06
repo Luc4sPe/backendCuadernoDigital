@@ -103,5 +103,14 @@ public class CuadroController {
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalle/{id}")
+    ResponseEntity<Cuadro> obteberDetalleDeUnCuadro(@PathVariable("id") Long id){
+        if(!cuadroService.existsByIDCuadro(id))
+            return new ResponseEntity(new Mensaje("no existe ese Cuadro"),HttpStatus.NOT_FOUND);
+        Cuadro cuadro = cuadroService.getCuadro(id).get();
+        return new ResponseEntity(cuadro,HttpStatus.OK);
+    }
+
 
 }

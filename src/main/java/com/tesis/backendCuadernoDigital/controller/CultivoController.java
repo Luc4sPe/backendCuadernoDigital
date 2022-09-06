@@ -98,7 +98,17 @@ public class CultivoController {
         }
 
 
-
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalle/{id}")
+    ResponseEntity<Cultivo> obteberDetalleDeUnCultivo(@PathVariable("id") Long id){
+        if(!cultivoService.existsByIdCultivo(id))
+            return new ResponseEntity(new Mensaje("no existe ese Cultivo"),HttpStatus.NOT_FOUND);
+        Cultivo cultivo = cultivoService.getUnCultivo(id).get();
+        return new ResponseEntity(cultivo,HttpStatus.OK);
+    }
+
+
 
 }

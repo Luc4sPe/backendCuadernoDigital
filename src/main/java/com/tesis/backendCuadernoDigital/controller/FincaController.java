@@ -66,9 +66,7 @@ public class FincaController {
                     .map(cuadro -> new Cuadro(cuadro.getNumeroCuadro(),cuadro.getSuperficieHectarea()))
                     .collect(Collectors.toList());
             nuevaFinca.setCuadros(cuadros);
-
             boolean resultado = fincaService.guardarFinca(nuevaFinca);
-
             if(resultado) {
                 logService.guardarFinca(nuevaFinca, usuario);
                 return new ResponseEntity<>(new Mensaje("La finca se guardado correctamente"), HttpStatus.CREATED);
@@ -86,6 +84,13 @@ public class FincaController {
     public ResponseEntity<List<Finca>> listadoFinca(){
         List<Finca> listado = fincaService.listarFinca();
         return new ResponseEntity<>(listado, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/fincaPorNombreUsuario/{nombreUsuario}")
+    public ResponseEntity<List<Finca>> listadoLaborPorUsuario(@PathVariable ("nombreUsuario") String nombreUsuario){
+        List<Finca> listadoPorUsuario = fincaService.listadoFincaDeUnUsuarioPorNombreUsuario(nombreUsuario);
+        return new ResponseEntity<>(listadoPorUsuario,HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
@@ -143,6 +148,15 @@ public class FincaController {
     public ResponseEntity<Integer> cantidadTotalDeCuadros(){
         Integer cantidad = fincaService.getCantidadDeCuadrosFincas();
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalle/{id}")
+    ResponseEntity<Finca> obteberDetalleDeUnaFinca(@PathVariable("id") Long id){
+        if(!fincaService.existsByIdFinca(id))
+            return new ResponseEntity(new Mensaje("no existe la finca"),HttpStatus.NOT_FOUND);
+        Finca finca = fincaService.getFinca(id).get();
+        return new ResponseEntity(finca,HttpStatus.OK);
     }
 
 }

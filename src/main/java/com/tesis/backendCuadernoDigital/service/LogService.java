@@ -155,18 +155,34 @@ public class LogService {
 
     public void guardarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
         Log log = new Log(usuarioEncargadoAgricola,LogAccion.CREACION_CULTIVO, "El Encargado Agricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Creao el Cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
+        logRepository.save(log);
     }
     public void modificarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
         Log log = new Log(usuarioEncargadoAgricola,LogAccion.MODIFICACION_CULTIVO,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Modifico el cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
+        logRepository.save(log);
     }
 
      //Metodos Logs Finca
     public void guardarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
         Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Creao la Finca: "+finca.getNombre(),finca.getIdFinca());
+        logRepository.save(log);
     }
 
     public void modificarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
         Log log = new Log(usuarioEcargadoAgricola, LogAccion.MODIFICACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Modifico la Finca: "+finca.getNombre(),finca.getIdFinca());
+        logRepository.save(log);
+    }
+
+    //Metodos Logs Labor de Suelo
+
+    public void guardarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
+        Log log = new Log(productor,LogAccion.CREACION_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Creao la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
+        Log log = new Log(productor,LogAccion.MODIFICACION_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Modifico la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        logRepository.save(log);
     }
 
 }

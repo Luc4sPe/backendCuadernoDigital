@@ -1,7 +1,10 @@
 package com.tesis.backendCuadernoDigital.security.service;
 
 import com.tesis.backendCuadernoDigital.excepcion.ExcepcionSolicitudIncorrecta;
+import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
+import com.tesis.backendCuadernoDigital.security.repository.RolRepository;
 import com.tesis.backendCuadernoDigital.security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,8 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,13 +23,19 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+    @Autowired
+    RolService rolService;
 
     public List<Usuario> list(){
         return usuarioRepository.findAllByOrderByIdAsc();
     }
+
+
+
     public Optional<Usuario> getById(Long id){
         return usuarioRepository.findById(id);
     }
+
 
     public Optional<Usuario> getByNombreUsuarioOrEmail(String nombreOrEmail){
         return usuarioRepository.findByNombreUsuarioOrEmail(nombreOrEmail, nombreOrEmail);
@@ -72,4 +82,13 @@ public class UsuarioService {
                 .orElseThrow( () -> new ExcepcionSolicitudIncorrecta("El usuario no existe"));
         return usuario;
     }
+
+    /*
+    public List<Usuario> listadoUsuarioPorRol(Long num,String nombreUsuario){
+        return usuarioRepository.findByRolesContains(num,nombreUsuario);
+    }
+
+     */
+
+
 }

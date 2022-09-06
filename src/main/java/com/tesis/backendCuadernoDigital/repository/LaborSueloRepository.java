@@ -13,12 +13,10 @@ public interface LaborSueloRepository extends JpaRepository<LaborSuelo,Long> {
     List<LaborSuelo> findAllByOrderByLaborAsc();
     Optional<LaborSuelo> findById(Long id);
     Optional<LaborSuelo> findByLabor(String labor);
+    List<LaborSuelo> findByIdCuadro_IdCuadro(Long idCuadro);
     boolean existsByLabor(String labor);
-    boolean existsById(Long id);
+    boolean existsById(Long idLabor);
     Integer countLaborSueloBy();
-
-
-
 
 }
 

@@ -161,6 +161,7 @@ public class UsuarioController {
     }
 
 
+
     @GetMapping("/detail/{id}")
     public ResponseEntity<Usuario> getByNombre(@PathVariable("id") Long id){
         if(!usuarioService.existsById(id))
@@ -209,6 +210,50 @@ public class UsuarioController {
         return  new ResponseEntity(new Mensaje("Usuario dado de Baja exitosamente"),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
+    @PostMapping("/nuevoProductor")
+    public ResponseEntity<?> nuevoProductor(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal puestos o email invalido"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("Ese nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
+
+        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("El nombre de Usuario no puede estar vacio"), HttpStatus.BAD_REQUEST);
+
+        if (StringUtils.isBlank(nuevoUsuario.getEmail()))
+            return new ResponseEntity(new Mensaje("El mail no puede estar vacio"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
+            return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByTelefono(nuevoUsuario.getTelefono()))
+            return new ResponseEntity(new Mensaje("ese Número de Telefono ya existe"), HttpStatus.BAD_REQUEST);
+
+        Usuario usuario =
+                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
+                        nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));
+        Set<Rol> roles = new HashSet<>();
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
+        usuario.setRoles(roles);
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuarioLogeado =  usuarioService.getUsuarioLogeado(auth);
+            usuarioService.save(usuario);
+            logService.guardarLogCreacionUsuario(usuario,usuarioLogeado);
+            return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+// falta listar usuario por rol
+   // @GetMapping("/fincaPorNombreUsuario/{id}/{nombreRol}")
+    //public ResponseEntity<List<Usuario>> listadoLaborPorUsuario(@PathVariable ("id")Long id, @PathVariable ("nombreRol") String nombreRol){
+      //  List<Usuario> listadoPorUsuario = usuarioService.listadoUsuarioPorRol(id,nombreRol);
+        //return new ResponseEntity<>(listadoPorUsuario,HttpStatus.OK);
+    //}
 
 
 }
