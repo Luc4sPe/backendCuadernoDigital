@@ -45,11 +45,10 @@ public class LaborSueloController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
+        /*
         if (laborSueloService.existsByIdLabor(laborsueloDto.getId()))
             return new ResponseEntity(new Mensaje("Esa labor ya existe"), HttpStatus.BAD_REQUEST);
-
-        if (StringUtils.isBlank(laborsueloDto.getCultivoAnterior()))
-            return new ResponseEntity(new Mensaje("El cultivo es obligatoria"), HttpStatus.BAD_REQUEST);
+        */
 
         if (StringUtils.isBlank(laborsueloDto.getHerramientasUtilizadas()))
             return new ResponseEntity(new Mensaje("La Herramienta es obligatoria"), HttpStatus.BAD_REQUEST);
@@ -69,8 +68,9 @@ public class LaborSueloController {
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Optional<Cuadro> cuadroOptional = cuadroService.getCuadro(laborsueloDto.getIdCuadro());
             Cuadro cuadroEnviar = cuadroOptional.get();
-            LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getCultivoAnterior(),laborsueloDto.getHerramientasUtilizadas(),
+            LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
                     cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"");
+
               laborSueloService.guardarLaborSuelo(nuevaLabor);
             if (nuevaLabor!=null){
                 logService.guardarLaborSuelo(nuevaLabor,usuario);
@@ -109,8 +109,6 @@ public class LaborSueloController {
         if (!laborSueloService.existsByIdLabor(id))
             return new ResponseEntity(new Mensaje("Esa labor no existe"), HttpStatus.BAD_REQUEST);
 
-        if (StringUtils.isBlank(modificarLaborSueloDto.getCultivoAnterior()))
-            return new ResponseEntity(new Mensaje("El cultivo es obligatoria"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(modificarLaborSueloDto.getHerramientasUtilizadas()))
             return new ResponseEntity(new Mensaje("La Herramienta es obligatoria"), HttpStatus.BAD_REQUEST);
@@ -140,7 +138,6 @@ public class LaborSueloController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             LaborSuelo modificarLabor = laborSueloService.getLaborSuelo(id).get();
-            modificarLabor.setCultivoAnterior(modificarLabor.getCultivoAnterior());
             modificarLabor.setHerramientasUtilizadas(modificarLaborSueloDto.getHerramientasUtilizadas());
             modificarLabor.setIdCuadro(getIdCuadro);
             modificarLabor.setLabor(modificarLaborSueloDto.getLabor());

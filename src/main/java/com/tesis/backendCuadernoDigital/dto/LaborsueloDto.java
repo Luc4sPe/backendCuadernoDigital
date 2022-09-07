@@ -7,8 +7,6 @@ public class LaborsueloDto {
 
     @NotNull(message = "No puede ser un valor nulo")
     private Long id;
-    @NotBlank(message = "El Cultivo Anterior no puede estar vacio")
-    private String cultivoAnterior;
     @NotBlank(message = "Las Herramentas no pueden estar vacias")
     private String herramientasUtilizadas;
     @NotNull(message = "El id no puede ser un valor nulo")
@@ -27,13 +25,7 @@ public class LaborsueloDto {
         this.id = id;
     }
 
-    public String getCultivoAnterior() {
-        return cultivoAnterior;
-    }
 
-    public void setCultivoAnterior(String cultivoAnterior) {
-        this.cultivoAnterior = cultivoAnterior;
-    }
 
     public String getHerramientasUtilizadas() {
         return herramientasUtilizadas;

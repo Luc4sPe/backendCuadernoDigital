@@ -22,6 +22,9 @@ public class CuadroDto {
 
     private List<LaborSuelo> laboresDeSuelo = new ArrayList<>();
 
+    @NotBlank(message = "El Cultivo Anterior no puede estar vacio")
+    private String cultivoAnterior;
+
 
     public Long getIdCuadro() {
         return idCuadro;
@@ -53,5 +56,13 @@ public class CuadroDto {
 
     public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
         this.laboresDeSuelo = laboresDeSuelo;
+    }
+
+    public String getCultivoAnterior() {
+        return cultivoAnterior;
+    }
+
+    public void setCultivoAnterior(String cultivoAnterior) {
+        this.cultivoAnterior = cultivoAnterior;
     }
 }

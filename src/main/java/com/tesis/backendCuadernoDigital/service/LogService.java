@@ -162,6 +162,11 @@ public class LogService {
         logRepository.save(log);
     }
 
+    public void agregarCultivoAnterior(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.CREACION_CULTIVOANTERIOR,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Agrego el Cultivo Anterior: "+cuadro.getCultivoAnterior(),cuadro.getIdCuadro());
+        logRepository.save(log);
+    }
+
      //Metodos Logs Finca
     public void guardarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
         Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Creao la Finca: "+finca.getNombre(),finca.getIdFinca());

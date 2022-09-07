@@ -1,6 +1,8 @@
 package com.tesis.backendCuadernoDigital.entity;
 
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,13 @@ public class Finca {
     @JoinColumn(name = "nombreUsuarioProductor")
     private Usuario productor;
 
+    @CreationTimestamp
+    private Date fechaCreacionFinca;
+
+    @UpdateTimestamp
+    private Date fechaModificacionFinca;
+
+
     public Finca() {
     }
 
@@ -39,6 +48,8 @@ public class Finca {
         this.longitud = longitud;
         this.latitud = latitud;
         this.productor = productor;
+        this.fechaCreacionFinca=null;
+        this.fechaModificacionFinca=null;
 
     }
 
@@ -96,6 +107,22 @@ public class Finca {
 
     public void setProductor(Usuario productor) {
         this.productor = productor;
+    }
+
+    public Date getFechaCreacionFinca() {
+        return fechaCreacionFinca;
+    }
+
+    public void setFechaCreacionFinca(Date fechaCreacionFinca) {
+        this.fechaCreacionFinca = fechaCreacionFinca;
+    }
+
+    public Date getFechaModificacionFinca() {
+        return fechaModificacionFinca;
+    }
+
+    public void setFechaModificacionFinca(Date fechaModificacionFinca) {
+        this.fechaModificacionFinca = fechaModificacionFinca;
     }
 }
 

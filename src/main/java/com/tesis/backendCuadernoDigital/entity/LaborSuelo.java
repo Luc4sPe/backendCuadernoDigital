@@ -14,8 +14,6 @@ public class LaborSuelo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String cultivoAnterior;
-    @NotNull
     @CreationTimestamp
     private Date fechaLabor;
     @UpdateTimestamp
@@ -37,8 +35,8 @@ public class LaborSuelo {
     public LaborSuelo() {
     }
 
-    public LaborSuelo(@NotNull String cultivoAnterior, @NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
-        this.cultivoAnterior = cultivoAnterior;
+    public LaborSuelo(@NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
+
         this.fechaLabor = null;
         this.fechaModificacionLabor = null;
         this.herramientasUtilizadas = herramientasUtilizadas;
@@ -54,14 +52,6 @@ public class LaborSuelo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCultivoAnterior() {
-        return cultivoAnterior;
-    }
-
-    public void setCultivoAnterior(String cultivoAnterior) {
-        this.cultivoAnterior = cultivoAnterior;
     }
 
     public Date getFechaLabor() {

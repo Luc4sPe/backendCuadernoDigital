@@ -34,12 +34,17 @@ public class Cuadro {
     @UpdateTimestamp
     private Date fechaModificacionCuadro;
 
+    @NotNull
+    private String cultivoAnterior;
+
     public Cuadro() {
     }
 
     public Cuadro(@NotNull String numeroCuadro, @NotNull float superficieHectarea) {
         this.numeroCuadro = numeroCuadro;
         this.superficieHectarea = superficieHectarea;
+        this.fechaCreacionCuadro=null;
+        this.fechaModificacionCuadro=null;
     }
 
     public Long getIdCuadro() {
@@ -92,5 +97,13 @@ public class Cuadro {
 
     public void enviarMiId(){
         this.idCuadro = idCuadro;
+    }
+
+    public String getCultivoAnterior() {
+        return cultivoAnterior;
+    }
+
+    public void setCultivoAnterior(String cultivoAnterior) {
+        this.cultivoAnterior = cultivoAnterior;
     }
 }
