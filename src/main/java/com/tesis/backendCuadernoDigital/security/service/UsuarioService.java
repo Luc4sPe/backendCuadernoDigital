@@ -6,6 +6,7 @@ import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
 import com.tesis.backendCuadernoDigital.security.repository.RolRepository;
 import com.tesis.backendCuadernoDigital.security.repository.UsuarioRepository;
+import org.hibernate.type.EnumType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -83,12 +84,10 @@ public class UsuarioService {
         return usuario;
     }
 
-    /*
-    public List<Usuario> listadoUsuarioPorRol(Long num,String nombreUsuario){
-        return usuarioRepository.findByRolesContains(num,nombreUsuario);
+    public List<Usuario> listadoUsuarioPorRoles(Optional<Rol> nombre){
+        return usuarioRepository.findByRoles(nombre);
     }
 
-     */
 
 
 }

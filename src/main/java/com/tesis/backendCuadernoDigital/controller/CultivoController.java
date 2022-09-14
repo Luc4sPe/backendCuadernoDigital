@@ -3,10 +3,15 @@ package com.tesis.backendCuadernoDigital.controller;
 import com.tesis.backendCuadernoDigital.dto.CultivoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
+import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
+import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
+import com.tesis.backendCuadernoDigital.security.service.RolService;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import com.tesis.backendCuadernoDigital.service.CultivoService;
 import com.tesis.backendCuadernoDigital.service.LogService;
+import org.hibernate.type.EnumType;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +21,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/cultivo")
@@ -34,6 +43,12 @@ public class CultivoController {
 
     @Autowired
     LogService logService;
+    @Autowired
+    RolService rolService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PostMapping("/crearCultivo")
@@ -108,6 +123,53 @@ public class CultivoController {
         Cultivo cultivo = cultivoService.getUnCultivo(id).get();
         return new ResponseEntity(cultivo,HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
+    @PostMapping("/nuevo")
+    public ResponseEntity<?> nuevoProductor(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal puestos o email invalido"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("Ese nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
+
+        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("El nombre de Usuario no puede estar vacio"), HttpStatus.BAD_REQUEST);
+
+        if (StringUtils.isBlank(nuevoUsuario.getEmail()))
+            return new ResponseEntity(new Mensaje("El mail no puede estar vacio"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
+            return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByTelefono(nuevoUsuario.getTelefono()))
+            return new ResponseEntity(new Mensaje("ese Número de Telefono ya existe"), HttpStatus.BAD_REQUEST);
+
+        Usuario usuario =
+                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
+                        nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));
+        Set<Rol> roles = new HashSet<>();
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
+        usuario.setRoles(roles);
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuarioLogeado =  usuarioService.getUsuarioLogeado(auth);
+            usuarioService.save(usuario);
+            logService.guardarLogCreacionUsuario(usuario,usuarioLogeado);
+            return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
+        } catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
+    @GetMapping("/usuariosPorNombreRol/{nombre}")
+    public ResponseEntity<List<Usuario>> listadoUsuarioDeUnRol(@PathVariable ("nombre") String nombre){
+        List<Usuario> listadoUsuarioPorRol = usuarioService.listadoUsuarioPorRoles(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));
+        return new ResponseEntity<>(listadoUsuarioPorRol,HttpStatus.OK);
+    }
+
+
 
 
 

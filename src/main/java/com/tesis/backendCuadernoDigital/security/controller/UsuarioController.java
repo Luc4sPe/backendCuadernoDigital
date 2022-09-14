@@ -210,6 +210,8 @@ public class UsuarioController {
         return  new ResponseEntity(new Mensaje("Usuario dado de Baja exitosamente"),HttpStatus.OK);
     }
 
+    /*
+
     @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
     @PostMapping("/nuevoProductor")
     public ResponseEntity<?> nuevoProductor(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
@@ -247,6 +249,8 @@ public class UsuarioController {
             return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+     */
 
 // falta listar usuario por rol
    // @GetMapping("/fincaPorNombreUsuario/{id}/{nombreRol}")

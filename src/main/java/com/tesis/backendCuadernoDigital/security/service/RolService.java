@@ -25,10 +25,6 @@ public class RolService {
         return rolRepository.findAll();
     }
 
-
-
-
-
     public void save(Rol rol){
         rolRepository.save(rol);
     }
