@@ -82,7 +82,7 @@ public class PlantacionController {
 
            List<Cuadro> cuadros = plantacionDto.getNumerosDeCuadros()
                    .stream()
-                   .map(cuadro -> cuadroService.obtenerCuadro(cuadro.getNumeroCuadro()))
+                   .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                    .distinct()
                    .collect(Collectors.toList());
            nuevaPlantacion.setNumerosDeCuadros(cuadros);
@@ -143,7 +143,7 @@ public class PlantacionController {
 
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
-                    .map(cuadro -> cuadroService.obtenerCuadro(cuadro.getNumeroCuadro()))
+                    .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                     .collect(Collectors.toList());
             Plantacion modificarPlantacion = plantacionService.getPlantacion(id).get();
             modificarPlantacion.setEntreIleras(modificacionPlantacionDto.getEntreIleras());

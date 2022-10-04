@@ -2,6 +2,7 @@ package com.tesis.backendCuadernoDigital.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CultivoDto {
 
@@ -16,6 +17,9 @@ public class CultivoDto {
     private String variedadCultivo;
     @NotBlank(message = "El vivero proveedor no debe estar vacio")
     private String viveroProvedor;
+
+
+
 
     public String getNombre() {
         return nombre;

@@ -28,6 +28,9 @@ public class Cuadro {
     //private List<AplicacionDeAgroquimico> aplicacionDeAgroquimicos = new ArrayList<>();
     //falta lista de riego
 
+    @ManyToOne
+    private Finca finca;
+
     @CreationTimestamp
     private Date fechaCreacionCuadro;
 
@@ -105,5 +108,13 @@ public class Cuadro {
 
     public void setCultivoAnterior(String cultivoAnterior) {
         this.cultivoAnterior = cultivoAnterior;
+    }
+
+    public Finca getFinca() {
+        return finca;
+    }
+
+    public void setFinca(Finca finca) {
+        this.finca = finca;
     }
 }

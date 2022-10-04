@@ -66,7 +66,7 @@ public class LaborSueloController {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Optional<Cuadro> cuadroOptional = cuadroService.getCuadro(laborsueloDto.getIdCuadro());
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
             Cuadro cuadroEnviar = cuadroOptional.get();
             LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
                     cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"");
@@ -131,7 +131,7 @@ public class LaborSueloController {
         if (!justificacion.getJustificacion().isEmpty())
             return new ResponseEntity(new Mensaje("El archivo ya ha sido modificado anteriormente "), HttpStatus.BAD_REQUEST);
 
-        Optional<Cuadro> cuadroOptional = cuadroService.getCuadro(modificarLaborSueloDto.getIdCuadro());
+        Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modificarLaborSueloDto.getIdCuadro());
         Cuadro getIdCuadro = cuadroOptional.get();
 
         try {

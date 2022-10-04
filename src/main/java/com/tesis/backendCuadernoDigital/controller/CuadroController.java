@@ -3,10 +3,12 @@ package com.tesis.backendCuadernoDigital.controller;
 import com.tesis.backendCuadernoDigital.dto.CuadroDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
+import com.tesis.backendCuadernoDigital.entity.Finca;
 import com.tesis.backendCuadernoDigital.entity.Log;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import com.tesis.backendCuadernoDigital.service.CuadroService;
+import com.tesis.backendCuadernoDigital.service.FincaService;
 import com.tesis.backendCuadernoDigital.service.LogService;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,18 +37,23 @@ public class CuadroController {
     @Autowired
     LogService logService;
 
+    @Autowired
+    FincaService fincaService;
+
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PostMapping("/crearcuadro")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
-        if (cuadroService.existsByNumeroCuadro(cuadroDto.getNumeroCuadro()))
+        if (cuadroService.existsByIDCuadro(cuadroDto.getIdCuadro()))
             return new ResponseEntity(new Mensaje("Ese Cuadro ya existe"), HttpStatus.BAD_REQUEST);
 
         try {
+            Finca finca = fincaService.getFincas(cuadroDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Cuadro nuevoCuadro = new Cuadro(cuadroDto.getNumeroCuadro(),cuadroDto.getSuperficieHectarea());
+            nuevoCuadro.setFinca(finca);
             boolean result = cuadroService.guardarCuadro(nuevoCuadro);
             if(result) {
                 logService.guardarCuadro(nuevoCuadro, usuario);
@@ -81,7 +88,7 @@ public class CuadroController {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Cuadro modificarCuadro = cuadroService.getCuadro(id).get();
+            Cuadro modificarCuadro = cuadroService.getCuadro(id);
             modificarCuadro.setNumeroCuadro(cuadroDto.getNumeroCuadro());
             modificarCuadro.setSuperficieHectarea(cuadroDto.getSuperficieHectarea());
             modificarCuadro.setCultivoAnterior(cuadroDto.getCultivoAnterior());
@@ -109,7 +116,8 @@ public class CuadroController {
     ResponseEntity<Cuadro> obteberDetalleDeUnCuadro(@PathVariable("id") Long id){
         if(!cuadroService.existsByIDCuadro(id))
             return new ResponseEntity(new Mensaje("no existe ese Cuadro"),HttpStatus.NOT_FOUND);
-        Cuadro cuadro = cuadroService.getCuadro(id).get();
+        //el servicio genera notfound exception si no se encuentra  el cuadro;
+        Cuadro cuadro = cuadroService.getCuadro(id);
         return new ResponseEntity(cuadro,HttpStatus.OK);
     }
 
@@ -126,7 +134,7 @@ public class CuadroController {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Cuadro agregarCualtivoAnterior = cuadroService.getCuadro(id).get();
+            Cuadro agregarCualtivoAnterior = cuadroService.getCuadro(id);
             agregarCualtivoAnterior.setCultivoAnterior(cuadroDto.getCultivoAnterior());
             cuadroService.actualizarCuadro(agregarCualtivoAnterior);
             if(agregarCualtivoAnterior!=null) {
@@ -139,6 +147,14 @@ public class CuadroController {
             return new ResponseEntity(new Mensaje("Fallo la operacion, Cultivo Anterior no agregado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/finca/{idFinca}")
+    public ResponseEntity<List<Cuadro>> listaCuadrosDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+        Finca finca = fincaService.getFincas(idFinca);
+        List<Cuadro> cudros = cuadroService.getListadoCuadroDeUnaFinca(finca.getIdFinca());
+        return new ResponseEntity(finca,HttpStatus.OK);
     }
 
 

@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.service;
 
 import com.tesis.backendCuadernoDigital.entity.Finca;
+import com.tesis.backendCuadernoDigital.excepcion.ResourceNotFoundException;
 import com.tesis.backendCuadernoDigital.repository.FincaRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.repository.UsuarioRepository;
@@ -33,6 +34,10 @@ public class FincaService {
         return fincaRepository.findByNombre(nombreFinca);
     }
 
+    public Optional<Finca> getById(Long id){
+        return fincaRepository.findByIdFinca(id);
+    }
+
     public List<Finca> listarFinca(){
         return  fincaRepository.findAllByOrderByNombreAsc();
     }
@@ -51,5 +56,11 @@ public class FincaService {
     public Integer getCantidadDeCuadrosFincas(){
         return fincaRepository.countFincaBy();
     }
+
+    public  Finca getFincas(Long id){
+        Finca finca = getById(id).orElseThrow(()-> new ResourceNotFoundException("EL Club con ID: " + id + " no existe"));
+        return finca;
+    }
+
 
 }

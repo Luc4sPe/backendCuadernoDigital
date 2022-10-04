@@ -26,7 +26,7 @@ public class CuadroService {
         return cuadroRepository.save(cuadro);
     }
 
-    public Optional<Cuadro> getCuadro(Long idCuadro){
+    public Optional<Cuadro> findByIdCuadro(Long idCuadro){
         return cuadroRepository.findByIdCuadro(idCuadro);
     }
 
@@ -36,6 +36,10 @@ public class CuadroService {
 
     public List<Cuadro> listarCuadros(){
         return cuadroRepository.findAllByOrderByNumeroCuadroAsc();
+    }
+
+    public List<Cuadro> getListadoCuadroDeUnaFinca(Long idFinca){
+        return cuadroRepository.findByFinca_IdFinca(idFinca);
     }
 
     public boolean existsByNumeroCuadro(String numeroCuadro){
@@ -52,6 +56,16 @@ public class CuadroService {
         Cuadro cuadro = getByNumeroCuadro(numeroCuadro).orElseThrow(() -> new ResourceNotFoundException("El N° de Cuadro: "+numeroCuadro+" no Esiste"));
         return cuadro;
     }
+
+
+
+    // lo utilizo en la lista de los cuadros en el controller de finca
+    public  Cuadro getCuadro(Long id){
+        Cuadro cuadro = findByIdCuadro(id).orElseThrow(()-> new ResourceNotFoundException("EL Club con ID: " + id + " no existe"));
+        return cuadro;
+    }
+
+
     public Integer getCantidadDeCuadros(){
         return cuadroRepository.countCuadroBy();
     }

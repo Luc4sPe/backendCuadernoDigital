@@ -25,6 +25,9 @@ public class CuadroDto {
     @NotBlank(message = "El Cultivo Anterior no puede estar vacio")
     private String cultivoAnterior;
 
+    @NotNull(message = "La finca es obligatoria es obligatorio")
+    private Long idFinca;
+
 
     public Long getIdCuadro() {
         return idCuadro;
@@ -64,5 +67,13 @@ public class CuadroDto {
 
     public void setCultivoAnterior(String cultivoAnterior) {
         this.cultivoAnterior = cultivoAnterior;
+    }
+
+    public Long getIdFinca() {
+        return idFinca;
+    }
+
+    public void setIdFinca(Long idFinca) {
+        this.idFinca = idFinca;
     }
 }

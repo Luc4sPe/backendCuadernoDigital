@@ -94,7 +94,7 @@ public class UsuarioController {
 
 
 
-   @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")
     public ResponseEntity<Usuario> update(@PathVariable("id")Long id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
 
@@ -161,7 +161,7 @@ public class UsuarioController {
     }
 
 
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/detail/{id}")
     public ResponseEntity<Usuario> getByNombre(@PathVariable("id") Long id){
         if(!usuarioService.existsById(id))
@@ -172,7 +172,7 @@ public class UsuarioController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/alta/{id}")
     public ResponseEntity<?> altaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){
@@ -191,7 +191,7 @@ public class UsuarioController {
 
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/baja/{id}")
     public ResponseEntity<?> bajaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){

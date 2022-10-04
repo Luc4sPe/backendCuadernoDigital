@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.security.service;
 
 import com.tesis.backendCuadernoDigital.excepcion.ExcepcionSolicitudIncorrecta;
+import com.tesis.backendCuadernoDigital.excepcion.ResourceNotFoundException;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
@@ -88,6 +89,13 @@ public class UsuarioService {
         return usuarioRepository.findByRoles(nombre);
     }
 
+
+
+    // lo utilizo en la lista de la finca
+    public Usuario productoresDueños(String nombreProductor){
+        Usuario productores = getByNombreUsuario(nombreProductor).orElseThrow(() -> new ResourceNotFoundException("El productor: "+nombreProductor+" no existe"));
+        return productores;
+    }
 
 
 }

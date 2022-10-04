@@ -50,14 +50,17 @@ public class CultivoController {
 
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @PostMapping("/crearCultivo")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody CultivoDto cultivoDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        if (cultivoService.existByNombre(cultivoDto.getNombre()))
-            return new ResponseEntity(new Mensaje("Ese Cultivo ya existe"), HttpStatus.BAD_REQUEST);
+        if (cultivoService.existByRemito(cultivoDto.getRemito()))
+            return new ResponseEntity(new Mensaje("Ese remito ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(cultivoDto.getTimpoCarencia()<0)
+            return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -69,21 +72,21 @@ public class CultivoController {
                 logService.guardarAltaCultivo(nuevoCultivo,usuario);
                 return new ResponseEntity<>(new Mensaje("Cultivo guardado correctamente"),HttpStatus.CREATED);
             }
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Cultivo no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, cultivo no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Cultivo no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, cultivo no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @GetMapping("/listado")
     public ResponseEntity<List<Cultivo>> listadoCultivo(){
         List<Cultivo> listado = cultivoService.listadoCultivoPorNombre();
         return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @PutMapping("/modificar/{id}")
     public ResponseEntity<?> modificarCultivo(@PathVariable ("id") Long id, @Valid @RequestBody CultivoDto cultivoDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
@@ -115,7 +118,7 @@ public class CultivoController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Cultivo> obteberDetalleDeUnCultivo(@PathVariable("id") Long id){
         if(!cultivoService.existsByIdCultivo(id))

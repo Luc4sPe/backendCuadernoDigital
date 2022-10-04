@@ -12,7 +12,9 @@ public interface FincaRepository extends JpaRepository<Finca, Long> {
 
     List<Finca> findAllByOrderByNombreAsc();
     // obtiene las fincas de un usuario por nombre de usuario
+
     List<Finca> findByProductor_NombreUsuario(String nombreUsuario);
+
     Optional<Finca> findByIdFinca(Long id);
     Optional<Finca> findByNombre(String nombreFinca);
     boolean existsByNombre(String nombreFinca);
