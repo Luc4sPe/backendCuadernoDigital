@@ -15,6 +15,7 @@ public interface PlantacionRepository extends JpaRepository<Plantacion, Long> {
     //obtener las plantaciones de un cultivo por nombre de cultivo
     List<Plantacion> findByNombreTipoCultivo_Nombre(String nombre);
     List<Plantacion> findByNombreTipoCultivo_IdCultivo(Long id);
+
     Optional<Plantacion> findByIdPlantacion(Long id);
     Optional<Plantacion> findByNombreTipoCultivo(String nombre);
     Optional<Plantacion> findByJustificacion(String justificacion);

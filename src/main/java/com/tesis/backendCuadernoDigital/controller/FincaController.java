@@ -62,17 +62,15 @@ public class FincaController {
 
 
             Usuario productor= usuarioService.getByNombreUsuario(fincaDto.getNombreProductor()).get();
-            Finca nuevaFinca = new Finca(fincaDto.getNombre(), fincaDto.getDireccion(), fincaDto.getLongitud(),
-                    fincaDto.getLatitud(), usuarioCapturado);
+            Finca nuevaFinca = new Finca(fincaDto.getNombre(), fincaDto.getDireccion(), usuarioCapturado);
 
             //nuevaFinca.setProductor(productor);
 
             List<Cuadro> cuadros = fincaDto.getCuadros()
                     .stream()
-                    .map(cuadro -> new Cuadro(cuadro.getNumeroCuadro(), cuadro.getSuperficieHectarea()))
+                    .map(cuadro -> new Cuadro(cuadro.getNumeroCuadro(), cuadro.getSuperficieHectarea(),cuadro.getFinca()))
                     .collect(Collectors.toList());
             nuevaFinca.setCuadros(cuadros);
-
 
             boolean resultado = fincaService.guardarFinca(nuevaFinca);
             if (resultado) {
@@ -94,9 +92,9 @@ public class FincaController {
         return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR')")
     @GetMapping("/fincaPorNombreUsuario/{nombreUsuario}")
-    public ResponseEntity<List<Finca>> listadoLaborPorUsuario(@PathVariable("nombreUsuario") String nombreUsuario) {
+    public ResponseEntity<List<Finca>> listadoFincaPorUsuario(@PathVariable("nombreUsuario") String nombreUsuario) {
         List<Finca> listadoPorUsuario = fincaService.listadoFincaDeUnUsuarioPorNombreUsuario(nombreUsuario);
         return new ResponseEntity<>(listadoPorUsuario, HttpStatus.OK);
     }
@@ -134,8 +132,8 @@ public class FincaController {
             Finca modificarFinca = fincaService.getFinca(id).get();
             modificarFinca.setNombre(fincaDto.getNombre());
             modificarFinca.setDireccion(fincaDto.getDireccion());
-            modificarFinca.setLongitud(fincaDto.getLongitud());
-            modificarFinca.setLatitud(fincaDto.getLatitud());
+           // modificarFinca.setLongitud(fincaDto.getLongitud());
+           // modificarFinca.setLatitud(fincaDto.getLatitud());
             modificarFinca.setProductor(usuarioCapturado);
             //modificarFinca.setCuadros(cuadros);
             fincaService.guardarFinca(modificarFinca);
@@ -153,13 +151,13 @@ public class FincaController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
-    @GetMapping("/CantidadCuadroDeFinca")
-    public ResponseEntity<Integer> cantidadTotalDeCuadros() {
+    @GetMapping("/CantidadDeFinca")
+    public ResponseEntity<Integer> cantidadTotalFincas() {
         Integer cantidad = fincaService.getCantidadDeCuadrosFincas();
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Finca> obteberDetalleDeUnaFinca(@PathVariable("id") Long id) {
         if (!fincaService.existsByIdFinca(id))

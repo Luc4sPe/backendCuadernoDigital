@@ -46,6 +46,8 @@ public class FincaService {
         return fincaRepository.findByProductor_NombreUsuario(nombreUsuario);
     }
 
+
+
     public boolean existsByNombreFinca(String nombreFinca){
         return fincaRepository.existsByNombre(nombreFinca);
     }

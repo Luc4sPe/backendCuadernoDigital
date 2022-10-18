@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,7 @@ public class CuadroController {
     @Autowired
     FincaService fincaService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @PostMapping("/crearcuadro")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -52,8 +53,11 @@ public class CuadroController {
             Finca finca = fincaService.getFincas(cuadroDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Cuadro nuevoCuadro = new Cuadro(cuadroDto.getNumeroCuadro(),cuadroDto.getSuperficieHectarea());
-            nuevoCuadro.setFinca(finca);
+            Cuadro nuevoCuadro = new Cuadro(cuadroDto.getNumeroCuadro(),cuadroDto.getSuperficieHectarea(),finca);
+            //nuevoCuadro.setFinca(finca);
+            List<Cuadro> cuadros = new ArrayList<>();
+            cuadros.add(nuevoCuadro);
+            finca.setCuadros(cuadros);
             boolean result = cuadroService.guardarCuadro(nuevoCuadro);
             if(result) {
                 logService.guardarCuadro(nuevoCuadro, usuario);
@@ -67,7 +71,7 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoCuadro")
     public ResponseEntity<List<Cuadro>> listadoCuadro() {
         List<Cuadro> listado = cuadroService.listarCuadros();
@@ -75,7 +79,7 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @PutMapping("/modificarCuadro/{id}")
     public ResponseEntity<?> modificarFinca(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
 
@@ -104,14 +108,14 @@ public class CuadroController {
         }
 
     }
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @GetMapping("/CantidadCuadro")
     public ResponseEntity<Integer> cantidadTotalDeCuadros(){
         Integer cantidad =cuadroService.getCantidadDeCuadros();
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Cuadro> obteberDetalleDeUnCuadro(@PathVariable("id") Long id){
         if(!cuadroService.existsByIDCuadro(id))
@@ -149,12 +153,12 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
-    @GetMapping("/finca/{idFinca}")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR')")
+    @GetMapping("/detalleCuadros/{idFinca}")
     public ResponseEntity<List<Cuadro>> listaCuadrosDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
-        Finca finca = fincaService.getFincas(idFinca);
+       Finca finca = fincaService.getFincas(idFinca);
         List<Cuadro> cudros = cuadroService.getListadoCuadroDeUnaFinca(finca.getIdFinca());
-        return new ResponseEntity(finca,HttpStatus.OK);
+        return new ResponseEntity(cudros,HttpStatus.OK);
     }
 
 

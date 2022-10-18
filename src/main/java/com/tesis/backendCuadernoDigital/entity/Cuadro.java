@@ -29,6 +29,8 @@ public class Cuadro {
     //falta lista de riego
 
     @ManyToOne
+    @JoinColumn(name = "IdFinca")
+    @JsonIgnoreProperties("cuadros")
     private Finca finca;
 
     @CreationTimestamp
@@ -43,11 +45,13 @@ public class Cuadro {
     public Cuadro() {
     }
 
-    public Cuadro(@NotNull String numeroCuadro, @NotNull float superficieHectarea) {
+    public Cuadro(@NotNull String numeroCuadro, @NotNull float superficieHectarea, @NotNull Finca finca) {
         this.numeroCuadro = numeroCuadro;
         this.superficieHectarea = superficieHectarea;
         this.fechaCreacionCuadro=null;
         this.fechaModificacionCuadro=null;
+        this.finca=finca;
+
     }
 
     public Long getIdCuadro() {

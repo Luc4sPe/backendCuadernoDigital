@@ -1,4 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,6 +24,7 @@ public class Plantacion {
     private Date fechaModificacionPlantacion;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("finca")
     private List<Cuadro> numerosDeCuadros = new ArrayList<>();
 
     @NotNull
@@ -40,12 +42,12 @@ public class Plantacion {
     @JoinColumn(name = "TipoCultivo")
     private Cultivo nombreTipoCultivo;
     @NotNull
-    private int cantidadPlantines;
+    private float cantidadPlantines;
 
     public Plantacion() {
     }
 
-    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull int cantidadPlantines) {
+    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull float cantidadPlantines) {
         this.entreIleras = entreIleras;
         this.entrePlantas = entrePlantas;
         this.observacion = observacion;
@@ -146,11 +148,11 @@ public class Plantacion {
         this.nombreTipoCultivo = nombreTipoCultivo;
     }
 
-    public int getCantidadPlantines() {
+    public float getCantidadPlantines() {
         return cantidadPlantines;
     }
 
-    public void setCantidadPlantines(int cantidadPlantines) {
+    public void setCantidadPlantines(float cantidadPlantines) {
         this.cantidadPlantines = cantidadPlantines;
     }
 

@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.repository;
 
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Finca;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,9 +13,7 @@ public interface FincaRepository extends JpaRepository<Finca, Long> {
 
     List<Finca> findAllByOrderByNombreAsc();
     // obtiene las fincas de un usuario por nombre de usuario
-
     List<Finca> findByProductor_NombreUsuario(String nombreUsuario);
-
     Optional<Finca> findByIdFinca(Long id);
     Optional<Finca> findByNombre(String nombreFinca);
     boolean existsByNombre(String nombreFinca);

@@ -18,12 +18,10 @@ public class FincaDto {
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String direccion;
 
-    @NotNull(message = "No puede ser un valor nulo")
-    @Min(value = 1, message = "El minimo de entre ileras es 1")
+
     private float longitud;
 
-    @NotNull(message = "No puede ser un valor nulo")
-    @Min(value = 1, message = "El minimo de entre ileras es 1")
+
     private float latitud;
 
     @NotEmpty(message = "La lista no puede estar vacia")

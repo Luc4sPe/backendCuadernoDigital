@@ -12,7 +12,8 @@ import java.util.Optional;
 public interface CuadroRepository extends JpaRepository<Cuadro, Long> {
 
     List<Cuadro> findAllByOrderByNumeroCuadroAsc();
-    List<Cuadro> findByFinca_IdFinca(Long idFinca);
+    List<Cuadro> findByFinca_IdFinca(Long id);
+    List<Cuadro> findCuadroByFinca_IdFinca(Long id);
     Optional<Cuadro> findByIdCuadro(Long id);
     Optional<Cuadro> findByNumeroCuadro(String numeroCuadro);
     boolean existsByNumeroCuadro(String numeroCuadro);

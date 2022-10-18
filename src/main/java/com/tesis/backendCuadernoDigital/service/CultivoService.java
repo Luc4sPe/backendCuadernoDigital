@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.service;
 
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
+import com.tesis.backendCuadernoDigital.excepcion.ResourceNotFoundException;
 import com.tesis.backendCuadernoDigital.repository.CultivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,8 @@ public class CultivoService {
     }
 
 
-
+    public  Cultivo getCultivo(Long id){
+        Cultivo cultivo= getUnCultivo(id).orElseThrow(()-> new ResourceNotFoundException("EL Club con ID: " + id + " no existe"));
+        return cultivo;
+    }
 }

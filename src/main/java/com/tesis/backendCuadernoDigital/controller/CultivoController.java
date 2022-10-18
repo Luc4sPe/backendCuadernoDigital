@@ -79,7 +79,7 @@ public class CultivoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA', 'PRODUCTOR')")
     @GetMapping("/listado")
     public ResponseEntity<List<Cultivo>> listadoCultivo(){
         List<Cultivo> listado = cultivoService.listadoCultivoPorNombre();

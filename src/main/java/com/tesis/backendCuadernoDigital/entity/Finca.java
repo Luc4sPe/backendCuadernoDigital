@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,14 +19,17 @@ public class Finca {
     private String nombre;
     @NotNull
     private String direccion;
-
+    /*
     @NotNull
     private float longitud;
     @NotNull
     @Column(unique = true)
     private float latitud;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+     */
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "finca",fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("finca")
     private List<Cuadro> cuadros = new ArrayList<>();
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -42,11 +46,10 @@ public class Finca {
     public Finca() {
     }
 
-    public Finca(@NotNull String nombre, @NotNull String direccion, @NotNull float longitud, @NotNull float latitud, Usuario productor) {
+    public Finca(@NotNull String nombre, @NotNull String direccion, Usuario productor) {
         this.nombre = nombre;
         this.direccion = direccion;
-        this.longitud = longitud;
-        this.latitud = latitud;
+
         this.productor = productor;
         this.fechaCreacionFinca=null;
         this.fechaModificacionFinca=null;
@@ -77,21 +80,7 @@ public class Finca {
         this.direccion = direccion;
     }
 
-    public float getLongitud() {
-        return longitud;
-    }
 
-    public void setLongitud(float longitud) {
-        this.longitud = longitud;
-    }
-
-    public float getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(float latitud) {
-        this.latitud = latitud;
-    }
 
     public List<Cuadro> getCuadros() {
         return cuadros;

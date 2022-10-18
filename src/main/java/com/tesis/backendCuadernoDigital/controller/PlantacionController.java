@@ -47,7 +47,7 @@ public class PlantacionController {
     @Autowired
     CuadroService cuadroService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @PostMapping("/crearPlantacion")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody PlantacionDto plantacionDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -68,7 +68,7 @@ public class PlantacionController {
         if(plantacionDto.getCantidadPlantines()<0)
             return new ResponseEntity(new Mensaje("La cantidad de plantines tiene q ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Optional<Cultivo> cultivoOptional = cultivoService.getByNombre(plantacionDto.getTipoCultivo());
+        Optional<Cultivo> cultivoOptional = cultivoService.getUnCultivo(plantacionDto.getTipoCultivo());
         Cultivo nombreCultivo= cultivoOptional.get();
 
         try {
@@ -97,14 +97,14 @@ public class PlantacionController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @GetMapping("/listadoPlantacion")
     public ResponseEntity<List<Plantacion>> listadoPlantacion(){
         List<Plantacion> listado = plantacionService.ListarPlantacion();
         return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @PutMapping("/modificar/{id}")
     public ResponseEntity<?> modificarPlantacion(@PathVariable ("id") Long id, @Valid @RequestBody ModificacionPlantacionDto modificacionPlantacionDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
@@ -167,7 +167,7 @@ public class PlantacionController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @GetMapping("/detallePlantacion/{id}")
     ResponseEntity<Plantacion> obteberDetalleDeUnaPlantacion(@PathVariable("id") Long id){
         if(!plantacionService.existsByIdPlantacion(id))
@@ -175,6 +175,18 @@ public class PlantacionController {
         Plantacion plantacion = plantacionService.getPlantacion(id).get();
         return new ResponseEntity(plantacion,HttpStatus.OK);
     }
+
+
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @GetMapping("/listadoPlantacionPorCultivo/{idCultivo}")
+    public ResponseEntity<List<Plantacion>> listadoPlantacionPorCultivo(@PathVariable ("idCultivo") Long idCultivo){
+        //Finca finca = fincaService.getFincas(idFinca);
+        Cultivo cultivo = cultivoService.getCultivo(idCultivo);
+        List<Plantacion> plantacion = plantacionService.listadoPlantacionDeUnCultivoPorId(cultivo.getIdCultivo());
+        return new ResponseEntity(plantacion,HttpStatus.OK);
+    }
+
+
 
 
 
