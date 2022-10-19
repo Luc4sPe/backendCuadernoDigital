@@ -44,10 +44,15 @@ public class Plantacion {
     @NotNull
     private float cantidadPlantines;
 
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("cuadros")
+    @JoinColumn(name = "idFinca")
+    private Finca finca;
+
     public Plantacion() {
     }
 
-    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull float cantidadPlantines) {
+    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull float cantidadPlantines,@NotNull Finca finca) {
         this.entreIleras = entreIleras;
         this.entrePlantas = entrePlantas;
         this.observacion = observacion;
@@ -58,6 +63,7 @@ public class Plantacion {
         this.cantidadPlantines = cantidadPlantines;
         this.fechaCreacionPlantacion = null;
         this.fechaModificacionPlantacion = null;
+        this.finca=finca;
     }
 
     public Long getIdPlantacion() {
@@ -156,6 +162,14 @@ public class Plantacion {
         this.cantidadPlantines = cantidadPlantines;
     }
 
+    public Finca getFinca() {
+        return finca;
+    }
+
+    public void setFinca(Finca finca) {
+        this.finca = finca;
+    }
+
     @Override
     public String toString() {
         return "Plantacion{" +
@@ -171,6 +185,7 @@ public class Plantacion {
                 ", sistemaTrasplante='" + sistemaTrasplante + '\'' +
                 ", nombreTipoCultivo=" + nombreTipoCultivo +
                 ", cantidadPlantines=" + cantidadPlantines +
+                ", finca=" + finca +
                 '}';
     }
 }

@@ -21,7 +21,7 @@ public class PlantacionDto {
     @Min(value = 1, message = "El minimo de entre plantas es 1")
     private float entrePlantas;
 
-    @NotEmpty(message = "La lista no puede estar ")
+    @NotEmpty(message = "La lista no puede estar vacia")
     private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
 
 
@@ -33,11 +33,13 @@ public class PlantacionDto {
     private String sistemaRiego;
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String sistemaTrasplante;
-    @NotBlank(message = "El campo Tipo de Cultivo no puede estar vacio")
+    @NotNull(message = "El campo Tipo de Cultivo no puede estar vacio")
     private Long tipoCultivo;
-    @NotBlank(message = "No puede ser un valor nulo")
+    @NotNull(message = "No puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de plantines es 1")
     private float cantidadPlantines;
+    @NotNull(message = "La finca es obligatoria ")
+    private Long idFinca;
 
 
     public Long getIdPlantacion() {
@@ -112,5 +114,13 @@ public class PlantacionDto {
 
     public void setCantidadPlantines(float cantidadPlantines) {
         this.cantidadPlantines = cantidadPlantines;
+    }
+
+    public Long getIdFinca() {
+        return idFinca;
+    }
+
+    public void setIdFinca(Long idFinca) {
+        this.idFinca = idFinca;
     }
 }

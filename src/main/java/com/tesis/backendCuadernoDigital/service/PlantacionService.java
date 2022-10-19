@@ -48,6 +48,10 @@ public class PlantacionService {
         return plantacionRepository.findByNombreTipoCultivo_IdCultivo(idCultivo);
     }
 
+    public List<Plantacion> getListadoPlantacionDeUnaFinca(Long idFinca){
+        return plantacionRepository.findByFinca_IdFinca(idFinca);
+    }
+
     public boolean existsByIdPlantacion(Long id){
         return plantacionRepository.existsByIdPlantacion(id);
     }

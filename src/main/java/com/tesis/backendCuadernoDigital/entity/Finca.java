@@ -33,6 +33,7 @@ public class Finca {
     private List<Cuadro> cuadros = new ArrayList<>();
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     @JoinColumn(name = "nombreUsuarioProductor")
     private Usuario productor;
 

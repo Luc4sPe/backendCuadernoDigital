@@ -37,6 +37,9 @@ public class ModificacionPlantacionDto {
     @Min(value = 1, message = "El minimo de plantines es 1")
     private int cantidadPlantines;
 
+    @NotNull(message = "La finca es obligatoria ")
+    private Long idFinca;
+
     public Long getIdPlantacion() {
         return idPlantacion;
     }
@@ -115,5 +118,13 @@ public class ModificacionPlantacionDto {
 
     public void setCantidadPlantines(int cantidadPlantines) {
         this.cantidadPlantines = cantidadPlantines;
+    }
+
+    public Long getIdFinca() {
+        return idFinca;
+    }
+
+    public void setIdFinca(Long idFinca) {
+        this.idFinca = idFinca;
     }
 }

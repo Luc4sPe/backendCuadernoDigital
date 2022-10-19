@@ -5,13 +5,11 @@ import com.tesis.backendCuadernoDigital.dto.ModificacionPlantacionDto;
 import com.tesis.backendCuadernoDigital.dto.PlantacionDto;
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
+import com.tesis.backendCuadernoDigital.entity.Finca;
 import com.tesis.backendCuadernoDigital.entity.Plantacion;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
-import com.tesis.backendCuadernoDigital.service.CuadroService;
-import com.tesis.backendCuadernoDigital.service.CultivoService;
-import com.tesis.backendCuadernoDigital.service.LogService;
-import com.tesis.backendCuadernoDigital.service.PlantacionService;
+import com.tesis.backendCuadernoDigital.service.*;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +44,8 @@ public class PlantacionController {
     CultivoService cultivoService;
     @Autowired
     CuadroService cuadroService;
+    @Autowired
+    FincaService fincaService;
 
     @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @PostMapping("/crearPlantacion")
@@ -72,11 +72,12 @@ public class PlantacionController {
         Cultivo nombreCultivo= cultivoOptional.get();
 
         try {
+            Finca finca = fincaService.getFincas(plantacionDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Plantacion nuevaPlantacion = new Plantacion(plantacionDto.getEntreIleras(),plantacionDto.getEntrePlantas(),plantacionDto.getObservacion(),
                     "",plantacionDto.getSistemaRiego(),plantacionDto.getSistemaTrasplante(),nombreCultivo,
-                    plantacionDto.getCantidadPlantines());
+                    plantacionDto.getCantidadPlantines(),finca);
 
             // recorre la lista para ir guardando cada plantacion en un cuadro de la lista
 
@@ -141,6 +142,8 @@ public class PlantacionController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
+            Optional<Finca> fincaOptional = fincaService.getFinca(modificacionPlantacionDto.getIdFinca());
+            Finca fincaCapturado = fincaOptional.get();
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
@@ -154,6 +157,7 @@ public class PlantacionController {
             modificarPlantacion.setSistemaTrasplante(modificacionPlantacionDto.getSistemaTrasplante());
             modificarPlantacion.setNombreTipoCultivo(nombreCultivo);
             modificarPlantacion.setCantidadPlantines(modificacionPlantacionDto.getCantidadPlantines());
+            modificarPlantacion.setFinca(fincaCapturado);
             modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
             plantacionService.actualizarPlantacion(modificarPlantacion);
             if(modificarPlantacion!=null) {
@@ -180,15 +184,19 @@ public class PlantacionController {
     @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @GetMapping("/listadoPlantacionPorCultivo/{idCultivo}")
     public ResponseEntity<List<Plantacion>> listadoPlantacionPorCultivo(@PathVariable ("idCultivo") Long idCultivo){
-        //Finca finca = fincaService.getFincas(idFinca);
         Cultivo cultivo = cultivoService.getCultivo(idCultivo);
         List<Plantacion> plantacion = plantacionService.listadoPlantacionDeUnCultivoPorId(cultivo.getIdCultivo());
         return new ResponseEntity(plantacion,HttpStatus.OK);
     }
 
 
-
-
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @GetMapping("/listadoPlantacionDeUnaFinca/{idFinca}")
+    public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+        Finca finca = fincaService.getFincas(idFinca);
+        List<Plantacion> plantacion = plantacionService.getListadoPlantacionDeUnaFinca(finca.getIdFinca());
+        return new ResponseEntity(plantacion,HttpStatus.OK);
+    }
 
 
 
