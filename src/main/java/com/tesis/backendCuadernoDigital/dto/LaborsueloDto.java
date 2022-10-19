@@ -17,6 +17,10 @@ public class LaborsueloDto {
     @NotBlank(message = "La observacion no puede estar vacio")
     private String observacion;
 
+    @NotNull(message = "La finca es obligatoria ")
+    private Long idFinca;
+
+
     public Long getId() {
         return id;
     }
@@ -59,5 +63,11 @@ public class LaborsueloDto {
         this.observacion = observacion;
     }
 
+    public Long getIdFinca() {
+        return idFinca;
+    }
 
+    public void setIdFinca(Long idFinca) {
+        this.idFinca = idFinca;
+    }
 }

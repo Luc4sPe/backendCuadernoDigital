@@ -14,6 +14,7 @@ public interface LaborSueloRepository extends JpaRepository<LaborSuelo,Long> {
     Optional<LaborSuelo> findById(Long id);
     Optional<LaborSuelo> findByLabor(String labor);
     List<LaborSuelo> findByIdCuadro_IdCuadro(Long idCuadro);
+    List<LaborSuelo> findByFinca_IdFinca(Long idFinca);
     boolean existsByLabor(String labor);
     boolean existsById(Long idLabor);
     Integer countLaborSueloBy();

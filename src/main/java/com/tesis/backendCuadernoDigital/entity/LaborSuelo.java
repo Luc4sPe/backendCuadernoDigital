@@ -32,10 +32,15 @@ public class LaborSuelo {
     @NotNull
     private String justificacion;
 
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("cuadros")
+    @JoinColumn(name = "idFinca")
+    private Finca finca;
+
     public LaborSuelo() {
     }
 
-    public LaborSuelo(@NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion) {
+    public LaborSuelo(@NotNull String herramientasUtilizadas, @NotNull Cuadro idCuadro, @NotNull String labor, @NotNull String observacion, @NotNull String justificacion,  @NotNull Finca finca) {
 
         this.fechaLabor = null;
         this.fechaModificacionLabor = null;
@@ -44,6 +49,7 @@ public class LaborSuelo {
         this.labor = labor;
         this.observacion = observacion;
         this.justificacion = justificacion;
+        this.finca = finca;
     }
 
     public Long getId() {
@@ -108,6 +114,14 @@ public class LaborSuelo {
 
     public void setJustificacion(String justificacion) {
         this.justificacion = justificacion;
+    }
+
+    public Finca getFinca() {
+        return finca;
+    }
+
+    public void setFinca(Finca finca) {
+        this.finca = finca;
     }
 }
 

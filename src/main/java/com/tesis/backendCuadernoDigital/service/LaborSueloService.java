@@ -40,6 +40,11 @@ public class LaborSueloService {
         return laborSueloRepository.findByIdCuadro_IdCuadro(idCuadro);
     }
 
+    public List<LaborSuelo> getListadoLaboresDeUnaFincaPorId(Long idFinca){
+        return laborSueloRepository.findByFinca_IdFinca(idFinca);
+    }
+
+
     public boolean existsByLaborSuelo(String labor){
         return laborSueloRepository.existsByLabor(labor);
     }

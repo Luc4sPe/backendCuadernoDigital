@@ -5,10 +5,12 @@ import com.tesis.backendCuadernoDigital.dto.LaborsueloDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.dto.ModificarLaborSueloDto;
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
+import com.tesis.backendCuadernoDigital.entity.Finca;
 import com.tesis.backendCuadernoDigital.entity.LaborSuelo;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import com.tesis.backendCuadernoDigital.service.CuadroService;
+import com.tesis.backendCuadernoDigital.service.FincaService;
 import com.tesis.backendCuadernoDigital.service.LaborSueloService;
 import com.tesis.backendCuadernoDigital.service.LogService;
 import org.junit.platform.commons.util.StringUtils;
@@ -38,6 +40,8 @@ public class LaborSueloController {
     CuadroService cuadroService;
     @Autowired
     LaborSueloService laborSueloService;
+    @Autowired
+    FincaService fincaService;
 
     @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @PostMapping("/crearLabor")
@@ -64,12 +68,13 @@ public class LaborSueloController {
 
         try {
 
+            Finca finca = fincaService.getFincas(laborsueloDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
             Cuadro cuadroEnviar = cuadroOptional.get();
             LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
-                    cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"");
+                    cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"",finca);
 
               laborSueloService.guardarLaborSuelo(nuevaLabor);
             if (nuevaLabor!=null){
@@ -131,18 +136,26 @@ public class LaborSueloController {
         if (!justificacion.getJustificacion().isEmpty())
             return new ResponseEntity(new Mensaje("El archivo ya ha sido modificado anteriormente "), HttpStatus.BAD_REQUEST);
 
-        Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modificarLaborSueloDto.getIdCuadro());
-        Cuadro getIdCuadro = cuadroOptional.get();
+
 
         try {
+
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modificarLaborSueloDto.getIdCuadro());
+            Cuadro getIdCuadro = cuadroOptional.get();
+
+            Optional<Finca> fincaOptional = fincaService.getFinca(modificarLaborSueloDto.getIdFinca());
+            Finca fincaCapturado = fincaOptional.get();
+
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+
             LaborSuelo modificarLabor = laborSueloService.getLaborSuelo(id).get();
             modificarLabor.setHerramientasUtilizadas(modificarLaborSueloDto.getHerramientasUtilizadas());
             modificarLabor.setIdCuadro(getIdCuadro);
             modificarLabor.setLabor(modificarLaborSueloDto.getLabor());
             modificarLabor.setObservacion(modificarLaborSueloDto.getObservacion());
             modificarLabor.setJustificacion(modificarLaborSueloDto.getJustificacion());
+            modificarLabor.setFinca(fincaCapturado);
             laborSueloService.modificarLabor(modificarLabor);
             if(modificarLabor!=null){
                 logService.modificarLaborSuelo(modificarLabor,usuario);
@@ -170,6 +183,14 @@ public class LaborSueloController {
             return new ResponseEntity(new Mensaje("no existe esa Labor"),HttpStatus.NOT_FOUND);
         LaborSuelo laborSuelo = laborSueloService.getLaborSuelo(id).get();
         return new ResponseEntity(laborSuelo,HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @GetMapping("/listadoLaboresDeUnaFinca/{idFinca}")
+    public ResponseEntity<List<Cuadro>> listadoLaboresDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+        Finca finca = fincaService.getFincas(idFinca);
+        List<LaborSuelo> labor = laborSueloService.getListadoLaboresDeUnaFincaPorId(finca.getIdFinca());
+        return new ResponseEntity(labor,HttpStatus.OK);
     }
 
 

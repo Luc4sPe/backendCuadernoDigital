@@ -21,6 +21,8 @@ public class ModificarLaborSueloDto {
     @NotBlank(message = "La Justificación no puede estar vacio")
     private String justificacion;
 
+    @NotNull(message = "La finca es obligatoria ")
+    private Long idFinca;
 
 
     public String getCultivoAnterior() {
@@ -69,5 +71,13 @@ public class ModificarLaborSueloDto {
 
     public void setJustificacion(String justificacion) {
         this.justificacion = justificacion;
+    }
+
+    public Long getIdFinca() {
+        return idFinca;
+    }
+
+    public void setIdFinca(Long idFinca) {
+        this.idFinca = idFinca;
     }
 }
