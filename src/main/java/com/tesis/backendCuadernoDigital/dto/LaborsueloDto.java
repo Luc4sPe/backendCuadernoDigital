@@ -20,6 +20,9 @@ public class LaborsueloDto {
     @NotNull(message = "La finca es obligatoria ")
     private Long idFinca;
 
+    @NotBlank(message = "El Cultivo Anterior no puede estar vacio")
+    private String cultivoAnterior;
+
 
     public Long getId() {
         return id;
@@ -69,5 +72,13 @@ public class LaborsueloDto {
 
     public void setIdFinca(Long idFinca) {
         this.idFinca = idFinca;
+    }
+
+    public String getCultivoAnterior() {
+        return cultivoAnterior;
+    }
+
+    public void setCultivoAnterior(String cultivoAnterior) {
+        this.cultivoAnterior = cultivoAnterior;
     }
 }

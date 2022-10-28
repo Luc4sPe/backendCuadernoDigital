@@ -24,8 +24,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/laborSuelo")
@@ -46,13 +48,9 @@ public class LaborSueloController {
     @PreAuthorize("hasAnyRole('PRODUCTOR')")
     @PostMapping("/crearLabor")
     public ResponseEntity<?> crearLaborDesuelo(@Valid @RequestBody LaborsueloDto laborsueloDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
-
-        /*
-        if (laborSueloService.existsByIdLabor(laborsueloDto.getId()))
-            return new ResponseEntity(new Mensaje("Esa labor ya existe"), HttpStatus.BAD_REQUEST);
-        */
 
         if (StringUtils.isBlank(laborsueloDto.getHerramientasUtilizadas()))
             return new ResponseEntity(new Mensaje("La Herramienta es obligatoria"), HttpStatus.BAD_REQUEST);
@@ -61,32 +59,44 @@ public class LaborSueloController {
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(laborsueloDto.getLabor()))
-            return new ResponseEntity(new Mensaje("La observacion es obligatoria"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("La labor es obligatoria"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(laborsueloDto.getObservacion()))
             return new ResponseEntity(new Mensaje("La observacion es obligatoria"), HttpStatus.BAD_REQUEST);
+        if (laborsueloDto.getIdFinca()<0)
+            return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
+        Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
+        Cuadro cuadroEnviar = cuadroOptional.get();
         try {
+
 
             Finca finca = fincaService.getFincas(laborsueloDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
-            Cuadro cuadroEnviar = cuadroOptional.get();
+
             LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
                     cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"",finca);
 
-              laborSueloService.guardarLaborSuelo(nuevaLabor);
+            if (cuadroEnviar.getCultivoAnterior().contains(laborsueloDto.getCultivoAnterior())) {
+                cuadroEnviar.setCultivoAnterior(laborsueloDto.getCultivoAnterior());
+                return new ResponseEntity(new Mensaje("El cultivo anterior solo se carga una vez por cuadro"), HttpStatus.BAD_REQUEST);
+            }
+            List<LaborSuelo> laboresSuelo = new ArrayList<>();
+            laboresSuelo.add(nuevaLabor);
+            cuadroEnviar.setLaboresDeSuelo(laboresSuelo);
+
+            this.laborSueloService.guardarLaborSuelo(nuevaLabor);
+
             if (nuevaLabor!=null){
                 logService.guardarLaborSuelo(nuevaLabor,usuario);
                 return new ResponseEntity<>(new Mensaje("La Labro de Suelo se guardado correctamente"), HttpStatus.CREATED);
             }
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Labor no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, Labor nooo Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }catch (Exception e){
             return new ResponseEntity(new Mensaje("Fallo la operacion, Labor no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
 
     }
 

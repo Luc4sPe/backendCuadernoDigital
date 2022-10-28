@@ -87,6 +87,7 @@ public class PlantacionController {
                    .distinct()
                    .collect(Collectors.toList());
            nuevaPlantacion.setNumerosDeCuadros(cuadros);
+
             boolean result = plantacionService.guardarPlantacion(nuevaPlantacion);
             if(result) {
                 logService.guardarPlantacion(nuevaPlantacion, usuario);

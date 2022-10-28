@@ -13,14 +13,14 @@ public class LaborSuelo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
     @CreationTimestamp
     private Date fechaLabor;
     @UpdateTimestamp
     private Date fechaModificacionLabor;
     @NotNull
     private String herramientasUtilizadas;
-    @NotNull
+
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("laboresDeSuelo")
     @JoinColumn(name = "IdCuadro")

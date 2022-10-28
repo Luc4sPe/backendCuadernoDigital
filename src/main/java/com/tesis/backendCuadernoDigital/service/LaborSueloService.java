@@ -20,6 +20,8 @@ public class LaborSueloService {
          laborSueloRepository.save(laborSuelo);
     }
 
+
+
     public LaborSuelo modificarLabor(LaborSuelo laborSuelo){
       return laborSueloRepository.save(laborSuelo);
     }
