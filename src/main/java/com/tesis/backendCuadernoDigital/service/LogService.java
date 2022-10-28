@@ -80,6 +80,12 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodo cambio contraseña
+    public void guardarCambioContrasenia(Usuario usuario){
+        Log log = new Log(usuario,LogAccion.CAMBIO_CONTRASENIA,"El usuario "+usuario.getNombre()+" cambio la contraseña",usuario.getId());
+        logRepository.save(log);
+    }
+
     // Falta implementar en el login el metodo dar de baja despues de n intentos de accesos fallidos
 
     public void guardarLogBajaUsuarioLuegoNIntentoDeAccesoFAllido(Usuario usuario){
@@ -189,5 +195,9 @@ public class LogService {
         Log log = new Log(productor,LogAccion.MODIFICACION_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Modifico la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
         logRepository.save(log);
     }
+
+
+
+
 
 }

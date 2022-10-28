@@ -2,6 +2,7 @@ package com.tesis.backendCuadernoDigital.security.controller;
 
 
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
+import com.tesis.backendCuadernoDigital.security.dto.CambioPasswordDto;
 import com.tesis.backendCuadernoDigital.security.dto.EditarUsuarioDto;
 import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
@@ -22,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -210,54 +212,36 @@ public class UsuarioController {
         return  new ResponseEntity(new Mensaje("Usuario dado de Baja exitosamente"),HttpStatus.OK);
     }
 
-    /*
+    @PreAuthorize("authenticated")
+    @PutMapping("/cambioContrasenia/{id}")
+    public ResponseEntity<?> cambiarContrasenia(@PathVariable ("id") Long id, @Valid @RequestBody CambioPasswordDto cambioPasswordDto, BindingResult bindingResult){
 
-    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
-    @PostMapping("/nuevoProductor")
-    public ResponseEntity<?> nuevoProductor(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("campos mal puestos o email invalido"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
 
-        if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()))
-            return new ResponseEntity(new Mensaje("Ese nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
+        if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el usuario con ID"+id), HttpStatus.BAD_REQUEST);
 
-        if (StringUtils.isBlank(nuevoUsuario.getNombreUsuario()))
-            return new ResponseEntity(new Mensaje("El nombre de Usuario no puede estar vacio"), HttpStatus.BAD_REQUEST);
+        Usuario usuario = usuarioService.getById(id).get();
 
-        if (StringUtils.isBlank(nuevoUsuario.getEmail()))
-            return new ResponseEntity(new Mensaje("El mail no puede estar vacio"), HttpStatus.BAD_REQUEST);
+       if(!passwordEncoder.matches(cambioPasswordDto.getPasswordActual(),usuario.getPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña ingresada no coincide con la actual"), HttpStatus.BAD_REQUEST);
 
-        if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
-            return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+       if(!cambioPasswordDto.getPasswordNuevo().equals(cambioPasswordDto.getConfirmarPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña nueva debe coincidir con la ingresada"), HttpStatus.BAD_REQUEST);
 
-        if(usuarioService.existsByTelefono(nuevoUsuario.getTelefono()))
-            return new ResponseEntity(new Mensaje("ese Número de Telefono ya existe"), HttpStatus.BAD_REQUEST);
+       if(passwordEncoder.matches(cambioPasswordDto.getPasswordNuevo(),usuario.getPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña nueva no puede ser igual a la actual"), HttpStatus.BAD_REQUEST);
 
-        Usuario usuario =
-                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolNombre(RolNombre.ROLE_PRODUCTOR).get());
-        usuario.setRoles(roles);
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Usuario usuarioLogeado =  usuarioService.getUsuarioLogeado(auth);
+        try{
+            usuario.setPassword(passwordEncoder.encode(cambioPasswordDto.getPasswordNuevo()));
             usuarioService.save(usuario);
-            logService.guardarLogCreacionUsuario(usuario,usuarioLogeado);
-            return new ResponseEntity(new Mensaje(" Usuario Registrado con Exito"), HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            logService.guardarCambioContrasenia(usuario);
+            return new ResponseEntity(new Mensaje("Contraseña cambiada correctamente"), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
-
-     */
-
-// falta listar usuario por rol
-   // @GetMapping("/fincaPorNombreUsuario/{id}/{nombreRol}")
-    //public ResponseEntity<List<Usuario>> listadoLaborPorUsuario(@PathVariable ("id")Long id, @PathVariable ("nombreRol") String nombreRol){
-      //  List<Usuario> listadoPorUsuario = usuarioService.listadoUsuarioPorRol(id,nombreRol);
-        //return new ResponseEntity<>(listadoPorUsuario,HttpStatus.OK);
-    //}
-
 
 }
