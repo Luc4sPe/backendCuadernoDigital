@@ -177,7 +177,7 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getDetalleUsuarioPorNombreUsuario(@PathVariable("nombreUsuario") String nombreUsuario){
         Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(nombreUsuario);
         if (!usuarioOptional.isPresent()){
-            return new ResponseEntity(new Mensaje("El usuario"+nombreUsuario+" no existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El usuario "+nombreUsuario+" no existe"), HttpStatus.BAD_REQUEST);
         }
         Usuario usuario = usuarioService.getByNombreUsuario(nombreUsuario).get();
         return new ResponseEntity(usuario, HttpStatus.OK);
