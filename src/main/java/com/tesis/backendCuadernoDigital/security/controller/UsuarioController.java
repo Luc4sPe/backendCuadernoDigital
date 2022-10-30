@@ -5,6 +5,7 @@ import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.security.dto.CambioPasswordDto;
 import com.tesis.backendCuadernoDigital.security.dto.EditarUsuarioDto;
 import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
+import com.tesis.backendCuadernoDigital.security.dto.PerfilUsuarioDto;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
@@ -250,9 +251,48 @@ public class UsuarioController {
             logService.guardarCambioContrasenia(usuario);
             return new ResponseEntity(new Mensaje("Contraseña cambiada correctamente"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, contraseña no actualizada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+
+    @PutMapping("/actualizarPerfil/{id}")
+    public ResponseEntity<Usuario> actualizarPerfil(@PathVariable ("id") Long id, @Valid @RequestBody PerfilUsuarioDto perfilUsuarioDto, BindingResult bindingResult ){
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+
+        Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+
+        if (!usuarioOptional.isPresent())
+            return new ResponseEntity(new Mensaje("no existe el usuario con ID"+id), HttpStatus.BAD_REQUEST);
+
+        Usuario actualizarPerfilUsuario = usuarioOptional.get();
+
+        if (actualizarPerfilUsuario.getNombreUsuario().contains("admin"))
+            return new ResponseEntity(new Mensaje("El administrador no puede ser editado"), HttpStatus.BAD_REQUEST);
+
+        if (usuarioService.existsByNombreUsuario(perfilUsuarioDto.getNombreUsuario()) && !actualizarPerfilUsuario.getNombreUsuario().equals(perfilUsuarioDto.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("El nombre de usuario"+perfilUsuarioDto.getNombreUsuario()+ "ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByEmail(perfilUsuarioDto.getEmail()) && !actualizarPerfilUsuario.getEmail().equals(perfilUsuarioDto.getEmail()))
+            return new ResponseEntity(new Mensaje("El Email "+perfilUsuarioDto.getEmail()+ "ya existe"), HttpStatus.BAD_REQUEST);
+
+
+        actualizarPerfilUsuario.setApellido(perfilUsuarioDto.getApellido());
+        actualizarPerfilUsuario.setNombre(perfilUsuarioDto.getNombre());
+        actualizarPerfilUsuario.setDni(perfilUsuarioDto.getDni());
+        actualizarPerfilUsuario.setNombreUsuario(perfilUsuarioDto.getNombreUsuario());
+        actualizarPerfilUsuario.setEmail(perfilUsuarioDto.getEmail());
+        actualizarPerfilUsuario.setTelefono(perfilUsuarioDto.getTelefono());
+
+        try {
+            usuarioService.save(actualizarPerfilUsuario);
+            logService.actualizarPerfil(actualizarPerfilUsuario);
+            return new ResponseEntity(actualizarPerfilUsuario, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

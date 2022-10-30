@@ -85,6 +85,11 @@ public class LogService {
         Log log = new Log(usuario,LogAccion.CAMBIO_CONTRASENIA,"El usuario "+usuario.getNombre()+" cambio la contraseña",usuario.getId());
         logRepository.save(log);
     }
+    //Actualizar perfil
+    public void actualizarPerfil(Usuario usuario){
+        Log log = new Log(usuario,LogAccion.ACTUALIZAR_PERFIL,"El usuario "+usuario.getNombre()+" actualizo su perfil",usuario.getId());
+        logRepository.save(log);
+    }
 
     // Falta implementar en el login el metodo dar de baja despues de n intentos de accesos fallidos
 

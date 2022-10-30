@@ -2,10 +2,9 @@ package com.tesis.backendCuadernoDigital.security.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 
-public class UsuarioDto {
+public class PerfilUsuarioDto {
+
     @NotBlank(message = "El nombre no debe estar vacio")
     private String nombre;
     @NotBlank(message = "El apellido no debe estar vacio")
@@ -18,9 +17,7 @@ public class UsuarioDto {
     private String email;
     @NotBlank(message = "El telefono no debe estar vacio")
     private String telefono;
-    @NotBlank(message = "la contraseña es obligatoria")
-    private String password;
-    private Set<String> roles = new HashSet<>();
+
 
     public String getNombre() {
         return nombre;
@@ -68,21 +65,5 @@ public class UsuarioDto {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
     }
 }
