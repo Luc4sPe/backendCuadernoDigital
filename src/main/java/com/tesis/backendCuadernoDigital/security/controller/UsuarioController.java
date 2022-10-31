@@ -68,7 +68,7 @@ public class UsuarioController {
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existsByTelefono(nuevoUsuario.getTelefono()))
-            return new ResponseEntity(new Mensaje("ese Número de Telefono ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El número de telefono ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
                 new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));

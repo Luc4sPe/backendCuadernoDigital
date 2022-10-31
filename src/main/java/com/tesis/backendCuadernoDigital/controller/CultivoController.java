@@ -50,7 +50,7 @@ public class CultivoController {
 
 
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @PostMapping("/crearCultivo")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody CultivoDto cultivoDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
@@ -79,14 +79,14 @@ public class CultivoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA', 'PRODUCTOR')")
     @GetMapping("/listado")
     public ResponseEntity<List<Cultivo>> listadoCultivo(){
         List<Cultivo> listado = cultivoService.listadoCultivoPorNombre();
         return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @PutMapping("/modificar/{id}")
     public ResponseEntity<?> modificarCultivo(@PathVariable ("id") Long id, @Valid @RequestBody CultivoDto cultivoDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
@@ -118,7 +118,7 @@ public class CultivoController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Cultivo> obteberDetalleDeUnCultivo(@PathVariable("id") Long id){
         if(!cultivoService.existsByIdCultivo(id))
@@ -127,7 +127,7 @@ public class CultivoController {
         return new ResponseEntity(cultivo,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevoProductor(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
@@ -165,7 +165,7 @@ public class CultivoController {
         }
     }
 
-    @PreAuthorize("hasRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @GetMapping("/usuariosPorNombreRol/{nombre}")
     public ResponseEntity<List<Usuario>> listadoUsuarioDeUnRol(@PathVariable ("nombre") String nombre){
         List<Usuario> listadoUsuarioPorRol = usuarioService.listadoUsuarioPorRoles(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));

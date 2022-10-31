@@ -22,6 +22,7 @@ public interface PlantacionRepository extends JpaRepository<Plantacion, Long> {
     boolean existsByIdPlantacion(Long id);
     boolean existsByNombreTipoCultivo(String nombreCultivo);
     boolean existsByJustificacion(String justificacion);
+
     Integer countPlantacionBy();
 
 }

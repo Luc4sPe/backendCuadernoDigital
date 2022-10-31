@@ -54,7 +54,7 @@ public class PlantacionController {
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
         if(plantacionService.existsByIdPlantacion(plantacionDto.getIdPlantacion()))
-            return new ResponseEntity(new Mensaje("Ese Cultivo ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Esa plantacion ya existe"), HttpStatus.BAD_REQUEST);
 
         if(plantacionDto.getEntreIleras()<0)
             return new ResponseEntity(new Mensaje("El espacio entre las Hileras tiene q ser positiva"), HttpStatus.NOT_ACCEPTABLE);
@@ -88,7 +88,11 @@ public class PlantacionController {
                    .collect(Collectors.toList());
            nuevaPlantacion.setNumerosDeCuadros(cuadros);
 
+            if (nuevaPlantacion.getNumerosDeCuadros().contains(nuevaPlantacion))
+                return new ResponseEntity(new Mensaje("Ya existe una plantación"), HttpStatus.BAD_REQUEST);
+
             boolean result = plantacionService.guardarPlantacion(nuevaPlantacion);
+
             if(result) {
                 logService.guardarPlantacion(nuevaPlantacion, usuario);
                 return new ResponseEntity<>(new Mensaje("La plantación se guardado correctamente"), HttpStatus.CREATED);
