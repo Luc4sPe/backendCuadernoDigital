@@ -47,7 +47,7 @@ public class PlantacionController {
     @Autowired
     FincaService fincaService;
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @PostMapping("/crearPlantacion")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody PlantacionDto plantacionDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -103,14 +103,14 @@ public class PlantacionController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/listadoPlantacion")
     public ResponseEntity<List<Plantacion>> listadoPlantacion(){
         List<Plantacion> listado = plantacionService.ListarPlantacion();
         return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @PutMapping("/modificar/{id}")
     public ResponseEntity<?> modificarPlantacion(@PathVariable ("id") Long id, @Valid @RequestBody ModificacionPlantacionDto modificacionPlantacionDto, BindingResult bindingResult){
         if (bindingResult.hasErrors())
@@ -176,7 +176,7 @@ public class PlantacionController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/detallePlantacion/{id}")
     ResponseEntity<Plantacion> obteberDetalleDeUnaPlantacion(@PathVariable("id") Long id){
         if(!plantacionService.existsByIdPlantacion(id))
@@ -186,7 +186,7 @@ public class PlantacionController {
     }
 
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/listadoPlantacionPorCultivo/{idCultivo}")
     public ResponseEntity<List<Plantacion>> listadoPlantacionPorCultivo(@PathVariable ("idCultivo") Long idCultivo){
         Cultivo cultivo = cultivoService.getCultivo(idCultivo);
@@ -195,7 +195,7 @@ public class PlantacionController {
     }
 
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/listadoPlantacionDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);
