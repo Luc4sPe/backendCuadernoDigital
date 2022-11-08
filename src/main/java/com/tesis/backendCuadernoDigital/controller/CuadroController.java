@@ -81,7 +81,7 @@ public class CuadroController {
 
     @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
     @PutMapping("/modificarCuadro/{id}")
-    public ResponseEntity<?> modificarFinca(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
+    public ResponseEntity<?> modificarCuadro(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
 
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);

@@ -30,6 +30,7 @@ public class Riego {
     // Solo se utiliza para modificar
     @NotNull
     private String justificacionProductor;
+    //diferencia entre fechas de plantacion y riego
     @NotNull
     private int semanaDesdeElTrasplante;
     @NotNull

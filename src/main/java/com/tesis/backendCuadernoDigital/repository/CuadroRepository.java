@@ -16,6 +16,7 @@ public interface CuadroRepository extends JpaRepository<Cuadro, Long> {
     List<Cuadro> findCuadroByFinca_IdFinca(Long id);
     Optional<Cuadro> findByIdCuadro(Long id);
     Optional<Cuadro> findByNumeroCuadro(String numeroCuadro);
+    Optional<Cuadro> findByCultivoAnterior(String cultivoAnterior);
     boolean existsByNumeroCuadro(String numeroCuadro);
     boolean existsByIdCuadro(Long id);
     Integer countCuadroBy();

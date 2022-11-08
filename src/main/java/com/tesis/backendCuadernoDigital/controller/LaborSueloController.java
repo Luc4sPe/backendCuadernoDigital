@@ -66,31 +66,31 @@ public class LaborSueloController {
         if (laborsueloDto.getIdFinca()<0)
             return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
-        Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
-        Cuadro cuadroEnviar = cuadroOptional.get();
+
         try {
-
-
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(laborsueloDto.getIdCuadro());
+            Cuadro cuadroEnviar = cuadroOptional.get();
             Finca finca = fincaService.getFincas(laborsueloDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-
             LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
                     cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"",finca);
-
-            if (cuadroEnviar.getCultivoAnterior().contains(laborsueloDto.getCultivoAnterior())) {
-                cuadroEnviar.setCultivoAnterior(laborsueloDto.getCultivoAnterior());
-                return new ResponseEntity(new Mensaje("El cultivo anterior solo se carga una vez por cuadro"), HttpStatus.BAD_REQUEST);
-            }
             List<LaborSuelo> laboresSuelo = new ArrayList<>();
             laboresSuelo.add(nuevaLabor);
             cuadroEnviar.setLaboresDeSuelo(laboresSuelo);
+            /*
+            Cuadro cuadro= cuadroService.findByCultivoAnterior(laborsueloDto.getCultivoAnterior()).get();
+            if (cuadro.getCultivoAnterior().contains(laborsueloDto.getCultivoAnterior()))
+                return new ResponseEntity(new Mensaje("El cultivo anterior solo se carga una vez por cuadro"), HttpStatus.BAD_REQUEST);
+            cuadroEnviar.setCultivoAnterior(laborsueloDto.getCultivoAnterior());
+
+             */
 
             this.laborSueloService.guardarLaborSuelo(nuevaLabor);
 
             if (nuevaLabor!=null){
                 logService.guardarLaborSuelo(nuevaLabor,usuario);
-                return new ResponseEntity<>(new Mensaje("La Labro de Suelo se guardado correctamente"), HttpStatus.CREATED);
+                return new ResponseEntity<>(new Mensaje("La Labor de Suelo se guardado correctamente"), HttpStatus.CREATED);
             }
             return new ResponseEntity(new Mensaje("Fallo la operacion, Labor nooo Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -165,7 +165,7 @@ public class LaborSueloController {
             modificarLabor.setLabor(modificarLaborSueloDto.getLabor());
             modificarLabor.setObservacion(modificarLaborSueloDto.getObservacion());
             modificarLabor.setJustificacion(modificarLaborSueloDto.getJustificacion());
-            modificarLabor.setFinca(fincaCapturado);
+           // modificarLabor.setFinca(fincaCapturado);
             laborSueloService.modificarLabor(modificarLabor);
             if(modificarLabor!=null){
                 logService.modificarLaborSuelo(modificarLabor,usuario);

@@ -30,6 +30,10 @@ public class CuadroService {
         return cuadroRepository.findByIdCuadro(idCuadro);
     }
 
+    public Optional<Cuadro> findByCultivoAnterior(String cultivo){
+        return cuadroRepository.findByCultivoAnterior(cultivo);
+    }
+
     public Optional<Cuadro> getByNumeroCuadro(String numeroCuadro){
         return cuadroRepository.findByNumeroCuadro(numeroCuadro);
     }
