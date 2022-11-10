@@ -109,8 +109,8 @@ public class FincaController {
         if (!fincaService.existsByIdFinca(id))
             return new ResponseEntity(new Mensaje("no existe esa Finca"), HttpStatus.NOT_FOUND);
 
-        if (fincaService.existsByNombreFinca(fincaDto.getNombre()))
-            return new ResponseEntity(new Mensaje("Esa Finca ya existe"), HttpStatus.BAD_REQUEST);
+        //if (fincaService.existsByNombreFinca(fincaDto.getNombre()))
+          //  return new ResponseEntity(new Mensaje("Esa Finca ya existe"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(fincaDto.getDireccion()))
             return new ResponseEntity(new Mensaje("La observacion es obligatoria"), HttpStatus.BAD_REQUEST);

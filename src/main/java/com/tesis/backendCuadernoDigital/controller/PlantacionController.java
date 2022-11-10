@@ -88,7 +88,7 @@ public class PlantacionController {
                    .collect(Collectors.toList());
            nuevaPlantacion.setNumerosDeCuadros(cuadros);
 
-            if (nuevaPlantacion.getNumerosDeCuadros().contains(nuevaPlantacion))
+            if (plantacionDto.getNumerosDeCuadros().contains(nuevaPlantacion))
                 return new ResponseEntity(new Mensaje("Ya existe una plantación"), HttpStatus.BAD_REQUEST);
 
             boolean result = plantacionService.guardarPlantacion(nuevaPlantacion);
@@ -113,6 +113,7 @@ public class PlantacionController {
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @PutMapping("/modificar/{id}")
     public ResponseEntity<?> modificarPlantacion(@PathVariable ("id") Long id, @Valid @RequestBody ModificacionPlantacionDto modificacionPlantacionDto, BindingResult bindingResult){
+
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
@@ -125,8 +126,8 @@ public class PlantacionController {
         if(modificacionPlantacionDto.getEntrePlantas()<0)
             return new ResponseEntity(new Mensaje("El espacio entre las plantas tiene q ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        if (StringUtils.isBlank(modificacionPlantacionDto.getTipoCultivo()))
-            return new ResponseEntity(new Mensaje("el nombre de Cultivo es obligatorio"), HttpStatus.BAD_REQUEST);
+        //if (StringUtils.isBlank(modificacionPlantacionDto.getTipoCultivo()))
+        //  return new ResponseEntity(new Mensaje("el nombre de Cultivo es obligatorio"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(modificacionPlantacionDto.getJustificacion()))
             return new ResponseEntity(new Mensaje("Tiene que declarar una justificación"), HttpStatus.BAD_REQUEST);
@@ -140,19 +141,23 @@ public class PlantacionController {
         if (!justificacion.getJustificacion().isEmpty())
             return new ResponseEntity(new Mensaje("El archivo ya ha sido modificado anteriormente "), HttpStatus.BAD_REQUEST);
 
-        Optional<Cultivo> cultivoOptional = cultivoService.getByNombre(modificacionPlantacionDto.getTipoCultivo());
-        Cultivo nombreCultivo= cultivoOptional.get();
 
         try {
+
+            Optional<Cultivo> cultivoOptional = cultivoService.getUnCultivo(modificacionPlantacionDto.getTipoCultivo());
+            Cultivo nombreCultivo= cultivoOptional.get();
+
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
             Optional<Finca> fincaOptional = fincaService.getFinca(modificacionPlantacionDto.getIdFinca());
             Finca fincaCapturado = fincaOptional.get();
+
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                     .collect(Collectors.toList());
+
             Plantacion modificarPlantacion = plantacionService.getPlantacion(id).get();
             modificarPlantacion.setEntreIleras(modificacionPlantacionDto.getEntreIleras());
             modificarPlantacion.setEntrePlantas(modificacionPlantacionDto.getEntrePlantas());
@@ -162,17 +167,18 @@ public class PlantacionController {
             modificarPlantacion.setSistemaTrasplante(modificacionPlantacionDto.getSistemaTrasplante());
             modificarPlantacion.setNombreTipoCultivo(nombreCultivo);
             modificarPlantacion.setCantidadPlantines(modificacionPlantacionDto.getCantidadPlantines());
-            modificarPlantacion.setFinca(fincaCapturado);
+            //modificarPlantacion.setFinca(fincaCapturado);
             modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
+
             plantacionService.actualizarPlantacion(modificarPlantacion);
+
             if(modificarPlantacion!=null) {
                 logService.modificarPlantacion(modificarPlantacion, usuario);
                 return new ResponseEntity<>(new Mensaje("La Plantacion se actualizo correctamente"), HttpStatus.OK);
             }
-
             return new ResponseEntity(new Mensaje("Fallo la operacion, Cultivo no Modificado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Plantación no Modificada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, plantación no modificadaaa"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -86,7 +86,7 @@ public class CuadroController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        if (cuadroService.existsByIDCuadro(id))
+        if (!cuadroService.existsByIDCuadro(id))
             return new ResponseEntity(new Mensaje("no existe ese Cuadro"), HttpStatus.NOT_FOUND);
 
         try {
@@ -95,16 +95,16 @@ public class CuadroController {
             Cuadro modificarCuadro = cuadroService.getCuadro(id);
             modificarCuadro.setNumeroCuadro(cuadroDto.getNumeroCuadro());
             modificarCuadro.setSuperficieHectarea(cuadroDto.getSuperficieHectarea());
-            modificarCuadro.setCultivoAnterior(cuadroDto.getCultivoAnterior());
+           // modificarCuadro.setCultivoAnterior(cuadroDto.getCultivoAnterior());
             cuadroService.actualizarCuadro(modificarCuadro);
             if(modificarCuadro!=null) {
                 logService.modificarCuadro(modificarCuadro, usuario);
-                return new ResponseEntity<>(new Mensaje(" Finca actualizada correctamente"), HttpStatus.OK);
+                return new ResponseEntity<>(new Mensaje(" Cuadro actualizado correctamente"), HttpStatus.OK);
             }
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Cuadro no Actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, cuadro no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Cuadro no Registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, cuadro no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

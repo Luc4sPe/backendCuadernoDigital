@@ -31,8 +31,8 @@ public class ModificacionPlantacionDto {
     private String sistemaRiego;
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String sistemaTrasplante;
-    @NotBlank(message = "El campo Tipo de Cultivo no puede estar vacio")
-    private String tipoCultivo;
+    @NotNull(message = "El campo Tipo de Cultivo no puede ser negativo")
+    private Long tipoCultivo;
     @NotNull(message = "No puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de plantines es 1")
     private int cantidadPlantines;
@@ -104,11 +104,11 @@ public class ModificacionPlantacionDto {
         this.sistemaTrasplante = sistemaTrasplante;
     }
 
-    public String getTipoCultivo() {
+    public Long getTipoCultivo() {
         return tipoCultivo;
     }
 
-    public void setTipoCultivo(String tipoCultivo) {
+    public void setTipoCultivo(Long tipoCultivo) {
         this.tipoCultivo = tipoCultivo;
     }
 
