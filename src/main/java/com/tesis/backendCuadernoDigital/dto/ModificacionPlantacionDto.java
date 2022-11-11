@@ -21,7 +21,7 @@ public class ModificacionPlantacionDto {
     private float entrePlantas;
 
     @NotEmpty(message = "La lista no puede estar ")
-    private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
+    private List<Cuadro> numerosDeCuadros = new ArrayList<>();
 
     @NotBlank(message = "El campo observacion no puede estar vacio")
     private String observacion;

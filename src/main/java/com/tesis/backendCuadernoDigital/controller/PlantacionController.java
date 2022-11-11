@@ -140,7 +140,7 @@ public class PlantacionController {
 
         if (!justificacion.getJustificacion().isEmpty())
             return new ResponseEntity(new Mensaje("El archivo ya ha sido modificado anteriormente "), HttpStatus.BAD_REQUEST);
-
+        
 
         try {
 
@@ -149,14 +149,22 @@ public class PlantacionController {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-
+            /*
             Optional<Finca> fincaOptional = fincaService.getFinca(modificacionPlantacionDto.getIdFinca());
             Finca fincaCapturado = fincaOptional.get();
+
+             */
+
+
 
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                     .collect(Collectors.toList());
+
+
+
+
 
             Plantacion modificarPlantacion = plantacionService.getPlantacion(id).get();
             modificarPlantacion.setEntreIleras(modificacionPlantacionDto.getEntreIleras());
@@ -168,8 +176,7 @@ public class PlantacionController {
             modificarPlantacion.setNombreTipoCultivo(nombreCultivo);
             modificarPlantacion.setCantidadPlantines(modificacionPlantacionDto.getCantidadPlantines());
             //modificarPlantacion.setFinca(fincaCapturado);
-            modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
-
+            //modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
             plantacionService.actualizarPlantacion(modificarPlantacion);
 
             if(modificarPlantacion!=null) {
