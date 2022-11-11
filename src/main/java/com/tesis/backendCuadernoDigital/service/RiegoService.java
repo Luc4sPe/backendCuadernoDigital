@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.service;
-/*
+
 import com.tesis.backendCuadernoDigital.entity.Riego;
 import com.tesis.backendCuadernoDigital.repository.RiegoRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -17,47 +17,37 @@ public class RiegoService {
     @Autowired
     RiegoRepository riegoRepository;
 
-    public void guardar(Riego riego){
+    public void guardarRiego(Riego riego){
         this.riegoRepository.save(riego);
     }
+    public Riego modificarRiego(Riego riego){
+        return riegoRepository.save(riego);
+    }
 
-    public Optional<Riego> getUnoById(int id){
+    public Optional<Riego> getUnRiegoById(Long id){
         return riegoRepository.findById(id);
     }
 
-    public List <Riego> listaRiego(){
+    public List <Riego> listaRiegos(){
         return riegoRepository.findAllByOrderByIdAsc();
     }
 
+   // public List<Riego> listadoRiegoPorCuadro(Long idCuadro){
+     //   return riegoRepository.findByIdCuadro_IdCuadro(idCuadro);
+    //}
 
-    public List<Riego> listadoRiegoDeUnUsuario(int idUsuario){
-        return riegoRepository.findByNombreUsuario_Id(idUsuario);
+    public List<Riego> getListadoRiegosDeUnaFincaPorId(Long idFinca){
+        return riegoRepository.findByFinca_IdFinca(idFinca);
     }
 
-
-    public List<Riego> listadoRiegoDeUnUsuarioPorNombre(String nombreUsuario){
-        return riegoRepository.findByNombreUsuario_NombreUsuario(nombreUsuario);
-    }
-
-
-    public Optional <Riego> getUno(int id){
-        return riegoRepository.findById(id);
-    }
-
-    public boolean existsById(int id){
+    public boolean existsByIdRiego(Long id){
         return riegoRepository.existsById(id);
     }
-    public boolean existsByNumeroCuadro(int numeroCuadro){
-        return riegoRepository.existsByNumeroDeCuadro(numeroCuadro);
-    }
+    //public boolean existsByNumeroCuadro(Long numeroCuadro){
+      //  return riegoRepository.existsByNumeroDeCuadro(numeroCuadro);
+    //}
 
-    public boolean existsByNombreUsuario(String nombreUsuario){
-        return riegoRepository.existsByNombreUsuario(nombreUsuario);
-    }
-
-
-    public void save(Riego riego){
-         riegoRepository.save(riego);
+    public Integer obtenerCantidadRiegos(){
+        return riegoRepository.countRiegoBy();
     }
 }
-*/

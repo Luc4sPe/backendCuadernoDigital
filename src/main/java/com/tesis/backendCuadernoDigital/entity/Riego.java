@@ -1,7 +1,9 @@
 package com.tesis.backendCuadernoDigital.entity;
-/*
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -16,40 +18,51 @@ public class Riego {
     private Long id;
     @NotNull
     private LocalTime duracionEnHoras;
-    @NotNull
-    private Date fechaAplicacion;
+
     @NotNull
     private float milimetrosAplicados;
-    @NotNull
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn (name = "Numero de Cuadro")
-    private Cuadro numeroDeCuadro;
+
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("riegos")
+    @JoinColumn(name = "cuadroId")
+    private Cuadro idCuadros;
+
     @NotNull
     private String observacionProductor;
 
     // Solo se utiliza para modificar
     @NotNull
     private String justificacionProductor;
+
     //diferencia entre fechas de plantacion y riego
-    @NotNull
-    private int semanaDesdeElTrasplante;
-    @NotNull
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn (name = "Nombre Productor")
-    private Usuario nombreUsuario;
+  //  @NotNull
+    //private int semanaDesdeElTrasplante;
+
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("cuadros")
+    @JoinColumn(name = "fincaId")
+    private Finca finca;
+
+    @CreationTimestamp
+    private Date fechaRiego;
+    @UpdateTimestamp
+    private Date fechaModificacionRiego;
 
     public Riego() {
     }
 
-    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull Date fechaAplicacion, @NotNull float milimetrosAplicados, @NotNull Cuadro numeroDeCuadro, @NotNull String observacionProductor, @NotNull String justificacionProductor, @NotNull int semanaDesdeElTrasplante, @NotNull Usuario nombreUsuario) {
+    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull Cuadro idCuadros, @NotNull String observacionProductor, @NotNull String justificacionProductor, @NotNull Finca finca) {
         this.duracionEnHoras = duracionEnHoras;
-        this.fechaAplicacion = fechaAplicacion;
         this.milimetrosAplicados = milimetrosAplicados;
-        this.numeroDeCuadro = numeroDeCuadro;
+        this.idCuadros=idCuadros;
         this.observacionProductor = observacionProductor;
         this.justificacionProductor = justificacionProductor;
-        this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
-        this.nombreUsuario = nombreUsuario;
+      //  this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
+        this.finca=finca;
+
+        this.fechaRiego = null;
+        this.fechaModificacionRiego = null;
+
     }
 
     public Long getId() {
@@ -68,13 +81,6 @@ public class Riego {
         this.duracionEnHoras = duracionEnHoras;
     }
 
-    public Date getFechaAplicacion() {
-        return fechaAplicacion;
-    }
-
-    public void setFechaAplicacion(Date fechaAplicacion) {
-        this.fechaAplicacion = fechaAplicacion;
-    }
 
     public float getMilimetrosAplicados() {
         return milimetrosAplicados;
@@ -84,12 +90,12 @@ public class Riego {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public Cuadro getNumeroDeCuadro() {
-        return numeroDeCuadro;
+    public Cuadro getIdCuadro() {
+        return idCuadros;
     }
 
-    public void setNumeroDeCuadro(Cuadro numeroDeCuadro) {
-        this.numeroDeCuadro = numeroDeCuadro;
+    public void setIdCuadro(Cuadro idCuadro) {
+        this.idCuadros = idCuadro;
     }
 
     public String getObservacionProductor() {
@@ -108,6 +114,7 @@ public class Riego {
         this.justificacionProductor = justificacionProductor;
     }
 
+    /*
     public int getSemanaDesdeElTrasplante() {
         return semanaDesdeElTrasplante;
     }
@@ -116,12 +123,30 @@ public class Riego {
         this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
     }
 
-    public Usuario getNombreUsuario() {
-        return nombreUsuario;
+     */
+
+    public Finca getFinca() {
+        return finca;
     }
 
-    public void setNombreUsuario(Usuario nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setFinca(Finca finca) {
+        this.finca = finca;
+    }
+
+    public Date getFechaRiego() {
+        return fechaRiego;
+    }
+
+    public void setFechaRiego(Date fechaRiego) {
+        this.fechaRiego = fechaRiego;
+    }
+
+    public Date getFechaModificacionRiego() {
+        return fechaModificacionRiego;
+    }
+
+    public void setFechaModificacionRiego(Date fechaModificacionRiego) {
+        this.fechaModificacionRiego = fechaModificacionRiego;
     }
 }
-*/
+

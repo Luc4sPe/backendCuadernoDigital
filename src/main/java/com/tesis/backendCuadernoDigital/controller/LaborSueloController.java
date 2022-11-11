@@ -75,6 +75,7 @@ public class LaborSueloController {
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             LaborSuelo nuevaLabor = new LaborSuelo(laborsueloDto.getHerramientasUtilizadas(),
                     cuadroEnviar,laborsueloDto.getLabor(),laborsueloDto.getObservacion(),"",finca);
+
             List<LaborSuelo> laboresSuelo = new ArrayList<>();
             laboresSuelo.add(nuevaLabor);
             cuadroEnviar.setLaboresDeSuelo(laboresSuelo);
@@ -92,7 +93,7 @@ public class LaborSueloController {
                 logService.guardarLaborSuelo(nuevaLabor,usuario);
                 return new ResponseEntity<>(new Mensaje("La Labor de Suelo se guardado correctamente"), HttpStatus.CREATED);
             }
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Labor nooo Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, Labor no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }catch (Exception e){
             return new ResponseEntity(new Mensaje("Fallo la operacion, Labor no Registrada"), HttpStatus.INTERNAL_SERVER_ERROR);

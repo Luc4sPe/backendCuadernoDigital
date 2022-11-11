@@ -202,7 +202,17 @@ public class LogService {
     }
 
 
+    //Metodos Logs Riego
 
+    public void guardarRiego(Riego riego, Usuario productor){
+        Log log = new Log(productor,LogAccion.CREACION_RIEGO," El productor: "+productor.getNombreUsuario()+"Realizo un riego de : "+riego.getDuracionEnHoras(),riego.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarRiego(Riego riego, Usuario productor){
+        Log log = new Log(productor,LogAccion.MODIFICACION_RIEGO," El productor: "+productor.getNombreUsuario()+"Modifico el riego de: "+riego.getMilimetrosAplicados(),riego.getId());
+        logRepository.save(log);
+    }
 
 
 }

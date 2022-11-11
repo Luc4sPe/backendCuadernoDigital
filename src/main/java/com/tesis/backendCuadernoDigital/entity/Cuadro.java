@@ -28,6 +28,9 @@ public class Cuadro {
     //private List<AplicacionDeAgroquimico> aplicacionDeAgroquimicos = new ArrayList<>();
     //falta lista de riego
 
+   // @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    //private List<Riego> riegos = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "IdFinca")
     @JsonIgnoreProperties("cuadros")
@@ -85,6 +88,8 @@ public class Cuadro {
     public void setLaboresDeSuelo(List<LaborSuelo> laboresDeSuelo) {
         this.laboresDeSuelo = laboresDeSuelo;
     }
+
+
 
     public Date getFechaCreacionCuadro() {
         return fechaCreacionCuadro;
