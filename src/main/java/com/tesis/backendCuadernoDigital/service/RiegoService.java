@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.service;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.Riego;
 import com.tesis.backendCuadernoDigital.repository.RiegoRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -60,3 +60,4 @@ public class RiegoService {
          riegoRepository.save(riego);
     }
 }
+*/

@@ -2,8 +2,10 @@ package com.tesis.backendCuadernoDigital.security.controller;
 
 
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
+import com.tesis.backendCuadernoDigital.security.dto.CambioPasswordDto;
 import com.tesis.backendCuadernoDigital.security.dto.EditarUsuarioDto;
 import com.tesis.backendCuadernoDigital.security.dto.NuevoUsuario;
+import com.tesis.backendCuadernoDigital.security.dto.PerfilUsuarioDto;
 import com.tesis.backendCuadernoDigital.security.entity.Rol;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.enums.RolNombre;
@@ -22,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -65,7 +68,7 @@ public class UsuarioController {
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existsByTelefono(nuevoUsuario.getTelefono()))
-            return new ResponseEntity(new Mensaje("ese Número de Telefono ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El número de telefono ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
                 new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getDni(),nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         nuevoUsuario.getTelefono(),passwordEncoder.encode(nuevoUsuario.getPassword()));
@@ -94,9 +97,9 @@ public class UsuarioController {
 
 
 
-   @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable("id")int id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
+    public ResponseEntity<Usuario> update(@PathVariable("id")Long id, @Valid  @RequestBody EditarUsuarioDto nuevoUsuario, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
@@ -161,8 +164,9 @@ public class UsuarioController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Usuario> getByNombre(@PathVariable("id") int id){
+    public ResponseEntity<Usuario> getByNombre(@PathVariable("id") Long id){
         if(!usuarioService.existsById(id))
             return new ResponseEntity(new Mensaje("no existe el usuario"),HttpStatus.NOT_FOUND);
         Usuario usuario = usuarioService.getById(id).get();
@@ -170,10 +174,21 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/detalleNombreUsuario/{nombreUsuario}")
+    public ResponseEntity<Usuario> getDetalleUsuarioPorNombreUsuario(@PathVariable("nombreUsuario") String nombreUsuario){
+        Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(nombreUsuario);
+        if (!usuarioOptional.isPresent()){
+            return new ResponseEntity(new Mensaje("El usuario "+nombreUsuario+" no existe"), HttpStatus.BAD_REQUEST);
+        }
+        Usuario usuario = usuarioService.getByNombreUsuario(nombreUsuario).get();
+        return new ResponseEntity(usuario, HttpStatus.OK);
 
-    @PreAuthorize("hasRole('ADMIN')")
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/alta/{id}")
-    public ResponseEntity<?> altaUsuario(@PathVariable("id") int id){
+    public ResponseEntity<?> altaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){
             return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
         }
@@ -190,9 +205,9 @@ public class UsuarioController {
 
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/baja/{id}")
-    public ResponseEntity<?> bajaUsuario(@PathVariable("id") int id){
+    public ResponseEntity<?> bajaUsuario(@PathVariable("id") Long id){
         if (!usuarioService.existsById(id)){
             return new ResponseEntity(new Mensaje("El usuario no existe"), HttpStatus.NOT_FOUND);
         }
@@ -209,6 +224,75 @@ public class UsuarioController {
         return  new ResponseEntity(new Mensaje("Usuario dado de Baja exitosamente"),HttpStatus.OK);
     }
 
+    @PreAuthorize("authenticated")
+    @PutMapping("/cambioContrasenia/{id}")
+    public ResponseEntity<?> cambiarContrasenia(@PathVariable ("id") Long id, @Valid @RequestBody CambioPasswordDto cambioPasswordDto, BindingResult bindingResult){
 
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+
+        if(!usuarioService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe el usuario con ID"+id), HttpStatus.BAD_REQUEST);
+
+        Usuario usuario = usuarioService.getById(id).get();
+
+       if(!passwordEncoder.matches(cambioPasswordDto.getPasswordActual(),usuario.getPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña ingresada no coincide con la actual"), HttpStatus.BAD_REQUEST);
+
+       if(!cambioPasswordDto.getPasswordNuevo().equals(cambioPasswordDto.getConfirmarPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña nueva debe coincidir con la ingresada"), HttpStatus.BAD_REQUEST);
+
+       if(passwordEncoder.matches(cambioPasswordDto.getPasswordNuevo(),usuario.getPassword()))
+           return new ResponseEntity(new Mensaje("La contraseña nueva no puede ser igual a la actual"), HttpStatus.BAD_REQUEST);
+
+        try{
+            usuario.setPassword(passwordEncoder.encode(cambioPasswordDto.getPasswordNuevo()));
+            usuarioService.save(usuario);
+            logService.guardarCambioContrasenia(usuario);
+            return new ResponseEntity(new Mensaje("Contraseña cambiada correctamente"), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, contraseña no actualizada"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+    @PutMapping("/actualizarPerfil/{id}")
+    public ResponseEntity<Usuario> actualizarPerfil(@PathVariable ("id") Long id, @Valid @RequestBody PerfilUsuarioDto perfilUsuarioDto, BindingResult bindingResult ){
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+
+        Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+
+        if (!usuarioOptional.isPresent())
+            return new ResponseEntity(new Mensaje("no existe el usuario con ID"+id), HttpStatus.BAD_REQUEST);
+
+        Usuario actualizarPerfilUsuario = usuarioOptional.get();
+
+        if (actualizarPerfilUsuario.getNombreUsuario().contains("admin"))
+            return new ResponseEntity(new Mensaje("El administrador no puede ser editado"), HttpStatus.BAD_REQUEST);
+
+        if (usuarioService.existsByNombreUsuario(perfilUsuarioDto.getNombreUsuario()) && !actualizarPerfilUsuario.getNombreUsuario().equals(perfilUsuarioDto.getNombreUsuario()))
+            return new ResponseEntity(new Mensaje("El nombre de usuario"+perfilUsuarioDto.getNombreUsuario()+ "ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(usuarioService.existsByEmail(perfilUsuarioDto.getEmail()) && !actualizarPerfilUsuario.getEmail().equals(perfilUsuarioDto.getEmail()))
+            return new ResponseEntity(new Mensaje("El Email "+perfilUsuarioDto.getEmail()+ "ya existe"), HttpStatus.BAD_REQUEST);
+
+
+        actualizarPerfilUsuario.setApellido(perfilUsuarioDto.getApellido());
+        actualizarPerfilUsuario.setNombre(perfilUsuarioDto.getNombre());
+        actualizarPerfilUsuario.setDni(perfilUsuarioDto.getDni());
+        actualizarPerfilUsuario.setNombreUsuario(perfilUsuarioDto.getNombreUsuario());
+        actualizarPerfilUsuario.setEmail(perfilUsuarioDto.getEmail());
+        actualizarPerfilUsuario.setTelefono(perfilUsuarioDto.getTelefono());
+
+        try {
+            usuarioService.save(actualizarPerfilUsuario);
+            logService.actualizarPerfil(actualizarPerfilUsuario);
+            return new ResponseEntity(actualizarPerfilUsuario, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, usuario no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.tesis.backendCuadernoDigital.service;
 
-import com.tesis.backendCuadernoDigital.entity.Log;
+import com.tesis.backendCuadernoDigital.entity.*;
 import com.tesis.backendCuadernoDigital.enums.LogAccion;
 import com.tesis.backendCuadernoDigital.repository.LogRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
@@ -35,7 +35,7 @@ public class LogService {
         return listado;
     }
 
-    public List<Log> logsPorUsuario(int id){
+    public List<Log> logsPorUsuario(Long id){
         List<Log> listadoLogs = logRepository.findByUsuario_IdOrderByFechaAsc(id);
         return listadoLogs;
     }
@@ -46,14 +46,14 @@ public class LogService {
         return listadoLogs;
     }
 
-    public Log ultimoLogDeUsuario(int id){
+    public Log ultimoLogDeUsuario(Long id){
         List<Log> listaLogs= logsPorUsuario(id);
         int size = listaLogs.size();
         Log ultimoLog = listaLogs.get(size -1);
         return ultimoLog;
     }
 
-    public void elmininarActividadUsuario(int id){
+    public void elmininarActividadUsuario(Long id){
         List<Log> actividad = logsPorUsuario(id);
         logRepository.deleteAll(actividad);
     }
@@ -80,6 +80,17 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodo cambio contraseña
+    public void guardarCambioContrasenia(Usuario usuario){
+        Log log = new Log(usuario,LogAccion.CAMBIO_CONTRASENIA,"El usuario "+usuario.getNombre()+" cambio la contraseña",usuario.getId());
+        logRepository.save(log);
+    }
+    //Actualizar perfil
+    public void actualizarPerfil(Usuario usuario){
+        Log log = new Log(usuario,LogAccion.ACTUALIZAR_PERFIL,"El usuario "+usuario.getNombre()+" actualizo su perfil",usuario.getId());
+        logRepository.save(log);
+    }
+
     // Falta implementar en el login el metodo dar de baja despues de n intentos de accesos fallidos
 
     public void guardarLogBajaUsuarioLuegoNIntentoDeAccesoFAllido(Usuario usuario){
@@ -88,7 +99,7 @@ public class LogService {
     }
 
     // En Prueba
-    public List<Log> getUltimosNLogPorUsuario(int idUsuario, Integer cantidadMaxima){
+    public List<Log> getUltimosNLogPorUsuario(Long idUsuario, Integer cantidadMaxima){
         List<Log> ultimosN = logRepository.findByUsuario_IdOrderByFechaDesc(idUsuario).stream().limit(cantidadMaxima).collect(Collectors.toList());
         return ultimosN;
     }
@@ -126,6 +137,71 @@ public class LogService {
         Log log = new Log(usuarioEncargado,LogAccion.USUARIO_MODIFICACION," El UsuarioEncargado "+usuarioEncargado.getNombreUsuario()+" Modifico al Usuario "+usuarioModificado.getNombreUsuario(),usuarioModificado.getId());
         logRepository.save(log);
     }
+
+    //Metodos logs de Cultivo
+
+    public void guardarAltaCultivo(Cultivo cultivo, Usuario usuarioCreador){
+        Log log = new Log(usuarioCreador, LogAccion.CREACION_CULTIVO,"El Encargado Agricola: "+usuarioCreador.getNombreUsuario()+"Creo el Cultivo: "+cultivo.getNombre(),cultivo.getIdCultivo());
+        logRepository.save(log);
+    }
+
+    public void modificarCultivo(Cultivo cultivo, Usuario usuarioModificador){
+        Log log = new Log(usuarioModificador, LogAccion.MODIFICACION_CULTIVO,"El Encargado Agricola:  "+usuarioModificador.getNombreUsuario()+" Modifico el Cultivo: "+cultivo.getNombre(), cultivo.getIdCultivo());
+        logRepository.save(log);
+    }
+
+    //Metodos Logs de Plantacion
+
+    public void guardarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
+        Log log = new Log(usuarioProductor,LogAccion.CREACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+" Creao la Plantacion: "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        logRepository.save(log);
+    }
+
+    public void modificarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
+        Log log = new Log(usuarioProductor,LogAccion.MODIFICACION_PLANTACION,"El productor: "+usuarioProductor.getNombreUsuario()+" Modifico la plantacion "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        logRepository.save(log);
+    }
+
+    //Metodos Logs Cuadro
+
+    public void guardarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.CREACION_CULTIVO, "El Encargado Agricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Creao el Cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
+        logRepository.save(log);
+    }
+    public void modificarCuadro(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.MODIFICACION_CULTIVO,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Modifico el cuadro: "+cuadro.getNumeroCuadro(),cuadro.getIdCuadro());
+        logRepository.save(log);
+    }
+
+    public void agregarCultivoAnterior(Cuadro cuadro, Usuario usuarioEncargadoAgricola){
+        Log log = new Log(usuarioEncargadoAgricola,LogAccion.CREACION_CULTIVOANTERIOR,"El EngargadoAgricola: "+usuarioEncargadoAgricola.getNombreUsuario()+" Agrego el Cultivo Anterior: "+cuadro.getCultivoAnterior(),cuadro.getIdCuadro());
+        logRepository.save(log);
+    }
+
+     //Metodos Logs Finca
+    public void guardarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Creao la Finca: "+finca.getNombre(),finca.getIdFinca());
+        logRepository.save(log);
+    }
+
+    public void modificarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.MODIFICACION_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Modifico la Finca: "+finca.getNombre(),finca.getIdFinca());
+        logRepository.save(log);
+    }
+
+    //Metodos Logs Labor de Suelo
+
+    public void guardarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
+        Log log = new Log(productor,LogAccion.CREACION_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Creao la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
+        Log log = new Log(productor,LogAccion.MODIFICACION_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Modifico la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        logRepository.save(log);
+    }
+
+
 
 
 

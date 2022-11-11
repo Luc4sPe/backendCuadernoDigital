@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.dto;
-
+/*
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 
 import javax.validation.constraints.NotBlank;
@@ -98,3 +98,4 @@ public class RiegoDto {
         this.nombreUsuario = nombreUsuario;
     }
 }
+*/

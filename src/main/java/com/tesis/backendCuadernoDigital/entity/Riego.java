@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,49 +13,50 @@ public class Riego {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotNull
     private LocalTime duracionEnHoras;
-    @CreationTimestamp
+    @NotNull
     private Date fechaAplicacion;
     @NotNull
     private float milimetrosAplicados;
     @NotNull
-    private int numeroDeCuadro;
-    @NotNull
-    private String observacionAsesor;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn (name = "Numero de Cuadro")
+    private Cuadro numeroDeCuadro;
     @NotNull
     private String observacionProductor;
+
+    // Solo se utiliza para modificar
     @NotNull
-    private int semanaAplicada;
+    private String justificacionProductor;
+    //diferencia entre fechas de plantacion y riego
     @NotNull
-    private int semanaTransplante;
+    private int semanaDesdeElTrasplante;
     @NotNull
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn (name = "nombreUsuarioProductor")
+    @JoinColumn (name = "Nombre Productor")
     private Usuario nombreUsuario;
 
     public Riego() {
     }
 
-    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull int numeroDeCuadro, @NotNull String observacionAsesor ,@NotNull String observacionProductor, @NotNull int semanaAplicada, @NotNull int semanaTransplante
-    ,@NotNull Usuario nombreUsuario) {
+    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull Date fechaAplicacion, @NotNull float milimetrosAplicados, @NotNull Cuadro numeroDeCuadro, @NotNull String observacionProductor, @NotNull String justificacionProductor, @NotNull int semanaDesdeElTrasplante, @NotNull Usuario nombreUsuario) {
         this.duracionEnHoras = duracionEnHoras;
-        this.fechaAplicacion = null;
+        this.fechaAplicacion = fechaAplicacion;
         this.milimetrosAplicados = milimetrosAplicados;
         this.numeroDeCuadro = numeroDeCuadro;
-        this.observacionAsesor=observacionAsesor;
         this.observacionProductor = observacionProductor;
-        this.semanaAplicada = semanaAplicada;
-        this.semanaTransplante = semanaTransplante;
-        this.nombreUsuario=nombreUsuario;
+        this.justificacionProductor = justificacionProductor;
+        this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -83,20 +84,12 @@ public class Riego {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public int getNumeroDeCuadro() {
+    public Cuadro getNumeroDeCuadro() {
         return numeroDeCuadro;
     }
 
-    public void setNumeroDeCuadro(int numeroDeCuadro) {
+    public void setNumeroDeCuadro(Cuadro numeroDeCuadro) {
         this.numeroDeCuadro = numeroDeCuadro;
-    }
-
-    public String getObservacionAsesor() {
-        return observacionAsesor;
-    }
-
-    public void setObservacionAsesor(String observacionAsesor) {
-        this.observacionAsesor = observacionAsesor;
     }
 
     public String getObservacionProductor() {
@@ -107,20 +100,20 @@ public class Riego {
         this.observacionProductor = observacionProductor;
     }
 
-    public int getSemanaAplicada() {
-        return semanaAplicada;
+    public String getJustificacionProductor() {
+        return justificacionProductor;
     }
 
-    public void setSemanaAplicada(int semanaAplicada) {
-        this.semanaAplicada = semanaAplicada;
+    public void setJustificacionProductor(String justificacionProductor) {
+        this.justificacionProductor = justificacionProductor;
     }
 
-    public int getSemanaTransplante() {
-        return semanaTransplante;
+    public int getSemanaDesdeElTrasplante() {
+        return semanaDesdeElTrasplante;
     }
 
-    public void setSemanaTransplante(int semanaTransplante) {
-        this.semanaTransplante = semanaTransplante;
+    public void setSemanaDesdeElTrasplante(int semanaDesdeElTrasplante) {
+        this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
     }
 
     public Usuario getNombreUsuario() {
@@ -131,3 +124,4 @@ public class Riego {
         this.nombreUsuario = nombreUsuario;
     }
 }
+*/

@@ -4,7 +4,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
@@ -15,7 +14,7 @@ public class Usuario {
 
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private int id;
+     private Long id;
 
      @NotNull
      private String nombre;
@@ -74,11 +73,11 @@ public class Usuario {
 
      }
 
-     public int getId() {
+     public Long getId() {
           return id;
      }
 
-     public void setId(int id) {
+     public void setId(Long id) {
           this.id = id;
      }
 

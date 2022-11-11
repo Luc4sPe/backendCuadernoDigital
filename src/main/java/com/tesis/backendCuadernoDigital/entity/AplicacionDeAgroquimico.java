@@ -26,6 +26,7 @@ public class AplicacionDeAgroquimico {
     private int numeroCuadro;
     @NotNull
     private String observaciones;
+
     @NotNull
     @ManyToOne(optional = false)
     @JsonIgnoreProperties("aplicacionAgroquimico")

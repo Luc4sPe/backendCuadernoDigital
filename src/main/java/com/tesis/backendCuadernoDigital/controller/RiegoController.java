@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.controller;
-
+/*
 
 import com.tesis.backendCuadernoDigital.dto.EditarRiegoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
@@ -32,6 +32,7 @@ public class RiegoController {
 
     @Autowired
     UsuarioService usuarioService;
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
     @PostMapping("/nuevoRiego")
@@ -139,4 +140,7 @@ public class RiegoController {
         }
 
     }
+
+
 }
+*/
