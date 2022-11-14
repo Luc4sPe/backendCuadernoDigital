@@ -122,7 +122,7 @@ public class RiegoController {
         if(editarRiego.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
-        if (editarRiego.getIdCuadro()<0)
+        if (editarRiego.getCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(editarRiego.getObservacionProductor()))
@@ -131,20 +131,21 @@ public class RiegoController {
         if (StringUtils.isBlank(editarRiego.getJustificacionProductor()))
             return new ResponseEntity(new Mensaje("Tiene que declarar una justificación"), HttpStatus.BAD_REQUEST);
 
-        if (editarRiego.getIdFinca()<0)
-            return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
 
         Optional<Riego> riegoOptional = riegoService.getUnRiegoById(id);
         Riego justificacion = riegoOptional.get();
 
+
         if (!justificacion.getJustificacionProductor().isEmpty())
             return new ResponseEntity(new Mensaje("El archivo ya ha sido modificado anteriormente "), HttpStatus.BAD_REQUEST);
+        
         try {
 
-            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(editarRiego.getIdCuadro());
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(editarRiego.getCuadro());
             Cuadro getIdCuadro = cuadroOptional.get();
 
-          //  Finca finca = fincaService.getFincas(editarRiego.getIdFinca());
+           //Finca finca = fincaService.getFincas(editarRiego.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
@@ -155,6 +156,7 @@ public class RiegoController {
             riegoActualizar.setIdCuadro(getIdCuadro);
             riegoActualizar.setObservacionProductor(editarRiego.getObservacionProductor());
             riegoActualizar.setJustificacionProductor(editarRiego.getJustificacionProductor());
+
 
             riegoService.modificarRiego(riegoActualizar);
 
@@ -181,7 +183,7 @@ public class RiegoController {
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
-    @GetMapping("/listadoLaboresDeUnaFinca/{idFinca}")
+    @GetMapping("/listadoRiegoDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoRiegoDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);
         List<Riego> riego = riegoService.getListadoRiegosDeUnaFincaPorId(finca.getIdFinca());

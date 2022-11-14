@@ -16,7 +16,7 @@ public class EditarRiegoDto {
     private float milimetrosAplicados;
     @NotNull(message = "El id no puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de entre ileras es 1")
-    private Long idCuadro;
+    private Long cuadro;
     @NotBlank
     private String observacionProductor;
 
@@ -53,12 +53,12 @@ public class EditarRiegoDto {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public Long getIdCuadro() {
-        return idCuadro;
+    public Long getCuadro() {
+        return cuadro;
     }
 
-    public void setIdCuadro(Long idCuadro) {
-        this.idCuadro = idCuadro;
+    public void setCuadro(Long cuadro) {
+        this.cuadro = cuadro;
     }
 
     public String getObservacionProductor() {
