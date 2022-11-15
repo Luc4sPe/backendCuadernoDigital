@@ -79,7 +79,7 @@ public class AgroquimicoController {
             }
             return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

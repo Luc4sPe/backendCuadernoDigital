@@ -18,12 +18,10 @@ public class Agroquimico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(unique = true)
     private String nombreComercial;
     @NotNull
     private String formulaYconcentracion;
     @NotNull
-    @Column(unique = true)
     private String principioActivo;
     @NotNull
     private String tipo;
@@ -36,6 +34,7 @@ public class Agroquimico {
     @NotNull
     private float volumenPorHectaria;
     @NotNull
+    @Column(unique = true)
     private String numLote;
 
     @CreationTimestamp
