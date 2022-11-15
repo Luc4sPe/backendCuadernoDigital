@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 
@@ -90,3 +90,5 @@ public class Plaga {
         this.aplicacionAgroquimico = aplicacionAgroquimico;
     }
 }
+
+ */

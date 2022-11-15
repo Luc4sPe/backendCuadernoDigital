@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
@@ -131,3 +131,5 @@ public class AplicacionDeAgroquimico {
         this.fechaModificacion = fechaModificacion;
     }
 }
+
+ */

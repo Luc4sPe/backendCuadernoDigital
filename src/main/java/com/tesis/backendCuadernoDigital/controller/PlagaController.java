@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.controller;
-
+/*
 import com.tesis.backendCuadernoDigital.dto.EditarPlaga;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.dto.PlagaDto;
@@ -134,3 +134,5 @@ public class PlagaController {
 
 
 }
+
+ */

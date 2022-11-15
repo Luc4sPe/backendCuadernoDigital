@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.controller;
-
+/*
 import com.tesis.backendCuadernoDigital.dto.EditarTipoAgroQuimicoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.dto.TipoAgroquimicoDto;
@@ -127,3 +127,5 @@ public class TipoAgroquimicoController {
 
     }
 }
+
+ */

@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.repository;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.TipoAgroquimico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,3 +17,5 @@ public interface TipoAgroquimicoRepository extends JpaRepository<TipoAgroquimico
     boolean existsByNombre(String nombre);
     boolean existsById(long id);
 }
+
+ */

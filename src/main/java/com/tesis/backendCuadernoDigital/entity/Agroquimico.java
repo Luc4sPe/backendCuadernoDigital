@@ -2,10 +2,13 @@ package com.tesis.backendCuadernoDigital.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,63 +16,64 @@ public class Agroquimico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    @NotNull
+    @Column(unique = true)
+    private String nombreComercial;
     @NotNull
     private String formulaYconcentracion;
     @NotNull
-    private String lote;
-    @NotNull
     @Column(unique = true)
-    private String nombreComun;
-    @NotNull
-    private String observaciones;
-    @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @JsonIgnoreProperties("agroquimico")
-    @JoinColumn(name = "Plagas")
-    private Plaga plaga;
-    @NotNull
     private String principioActivo;
     @NotNull
-    private int tiempoDeCarencia;
-
+    private String tipo;
     @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @JsonIgnoreProperties("agroquimico")
-    @JoinColumn(name = "TiepoDeAgroquimicos")
-    private TipoAgroquimico tipoAgroquimico;
+    private Long tiempoDeCarencia;
+    @NotNull
+    private float dosisPorHectaria;
+    @NotNull
+    private float dosisPorHl;
+    @NotNull
+    private float volumenPorHectaria;
+    @NotNull
+    private String numLote;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn (name = "EncarcadoAgricola")
-    private Usuario nombreEncargadoAgricola;
-
-    @OneToMany(mappedBy = "agroquimico", fetch =  FetchType.EAGER)
-    private List<AplicacionDeAgroquimico> aplicacionAgroquimico = new ArrayList<AplicacionDeAgroquimico>();
-
-
-
+    @CreationTimestamp
+    private Date fechaCreacionAgro;
+    @UpdateTimestamp
+    private Date fechaModificacionAgro;
 
     public Agroquimico() {
     }
 
-    public Agroquimico(@NotNull String formulaYconcentracion, @NotNull String lote, @NotNull String nombreComun, @NotNull String observaciones, @NotNull Plaga plaga, @NotNull String principioActivo, @NotNull int tiempoDeCarencia, @NotNull TipoAgroquimico tipoAgroquimico, Usuario nombreEncargadoAgricola) {
+    public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull Long tiempoDeCarencia, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String numLote) {
+        this.nombreComercial = nombreComercial;
         this.formulaYconcentracion = formulaYconcentracion;
-        this.lote = lote;
-        this.nombreComun = nombreComun;
-        this.observaciones = observaciones;
-        this.plaga = plaga;
         this.principioActivo = principioActivo;
+        this.tipo = tipo;
         this.tiempoDeCarencia = tiempoDeCarencia;
-        this.tipoAgroquimico = tipoAgroquimico;
-        this.nombreEncargadoAgricola = nombreEncargadoAgricola;
+        this.dosisPorHectaria = dosisPorHectaria;
+        this.dosisPorHl = dosisPorHl;
+        this.volumenPorHectaria = volumenPorHectaria;
+        this.numLote = numLote;
+        this.fechaCreacionAgro=null;
+        this.fechaModificacionAgro=null;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNombreComercial() {
+        return nombreComercial;
+    }
+
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
     }
 
     public String getFormulaYconcentracion() {
@@ -80,38 +84,6 @@ public class Agroquimico {
         this.formulaYconcentracion = formulaYconcentracion;
     }
 
-    public String getLote() {
-        return lote;
-    }
-
-    public void setLote(String lote) {
-        this.lote = lote;
-    }
-
-    public String getNombreComun() {
-        return nombreComun;
-    }
-
-    public void setNombreComun(String nombreComun) {
-        this.nombreComun = nombreComun;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
-    public Plaga getPlaga() {
-        return plaga;
-    }
-
-    public void setPlaga(Plaga plaga) {
-        this.plaga = plaga;
-    }
-
     public String getPrincipioActivo() {
         return principioActivo;
     }
@@ -120,35 +92,70 @@ public class Agroquimico {
         this.principioActivo = principioActivo;
     }
 
-    public int getTiempoDeCarencia() {
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Long getTiempoDeCarencia() {
         return tiempoDeCarencia;
     }
 
-    public void setTiempoDeCarencia(int tiempoDeCarencia) {
+    public void setTiempoDeCarencia(Long tiempoDeCarencia) {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 
-    public TipoAgroquimico getTipoAgroquimico() {
-        return tipoAgroquimico;
+    public float getDosisPorHectaria() {
+        return dosisPorHectaria;
     }
 
-    public void setTipoAgroquimico(TipoAgroquimico tipoAgroquimico) {
-        this.tipoAgroquimico = tipoAgroquimico;
+    public void setDosisPorHectaria(float dosisPorHectaria) {
+        this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public Usuario getNombreEncargadoAgricola() {
-        return nombreEncargadoAgricola;
+    public float getDosisPorHl() {
+        return dosisPorHl;
     }
 
-    public void setNombreEncargadoAgricola(Usuario nombreEncargadoAgricola) {
-        this.nombreEncargadoAgricola = nombreEncargadoAgricola;
+    public void setDosisPorHl(float dosisPorHl) {
+        this.dosisPorHl = dosisPorHl;
     }
 
-    public List<AplicacionDeAgroquimico> getAplicacionAgroquimico() {
-        return aplicacionAgroquimico;
+    public float getVolumenPorHectaria() {
+        return volumenPorHectaria;
     }
 
-    public void setAplicacionAgroquimico(List<AplicacionDeAgroquimico> aplicacionAgroquimico) {
-        this.aplicacionAgroquimico = aplicacionAgroquimico;
+    public void setVolumenPorHectaria(float volumenPorHectaria) {
+        this.volumenPorHectaria = volumenPorHectaria;
     }
+
+    public String getNumLote() {
+        return numLote;
+    }
+
+    public void setNumLote(String numLote) {
+        this.numLote = numLote;
+    }
+
+    public Date getFechaCreacionAgro() {
+        return fechaCreacionAgro;
+    }
+
+    public void setFechaCreacionAgro(Date fechaCreacionAgro) {
+        this.fechaCreacionAgro = fechaCreacionAgro;
+    }
+
+    public Date getFechaModificacionAgro() {
+        return fechaModificacionAgro;
+    }
+
+    public void setFechaModificacionAgro(Date fechaModificacionAgro) {
+        this.fechaModificacionAgro = fechaModificacionAgro;
+    }
+
+
+
 }

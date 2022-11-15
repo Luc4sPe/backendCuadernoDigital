@@ -2,7 +2,7 @@ package com.tesis.backendCuadernoDigital.service;
 
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
 import com.tesis.backendCuadernoDigital.entity.Plantacion;
-import com.tesis.backendCuadernoDigital.repository.PlagaRpository;
+
 import com.tesis.backendCuadernoDigital.repository.PlantacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

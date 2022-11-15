@@ -1,39 +1,41 @@
 package com.tesis.backendCuadernoDigital.dto;
 
-import com.tesis.backendCuadernoDigital.entity.Plaga;
-import com.tesis.backendCuadernoDigital.entity.TipoAgroquimico;
-import com.tesis.backendCuadernoDigital.security.entity.Usuario;
-
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class AgroquimicoDto {
-    @NotBlank
-    private long id;
-    @NotBlank
-    private String formulaYconcentracion;
-    @NotBlank
-    private String lote;
-    @NotBlank
-    private String nombreComun;
-    @NotBlank
-    private String observaciones;
-    @NotBlank
-    private String nombrePlaga;
-    @NotBlank
-    private String principioActivo;
-    @NotBlank
-    private int tiempoDeCarencia;
-    @NotBlank
-    private String nombreTipoAgroquimico;
-    @NotBlank
-    private String nombreEncargadoAgricola;
 
-    public long getId() {
-        return id;
+    @NotBlank(message = "El nombre comercial no debe estar vacio")
+    private String nombreComercial;
+    @NotBlank(message = "La formulación no debe estar vacio")
+    private String formulaYconcentracion;
+    @NotBlank(message = "El principio no debe estar vacio")
+    private String principioActivo;
+    @NotBlank(message = "El tipo no debe estar vacio")
+    private String tipo;
+    @NotNull(message = "El tiempo de carencia no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del tiempo de carencia es 1")
+    private Long tiempoDeCarencia;
+    @NotNull(message = "La dosis por hectaria no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor de dosis por hectaria es 1")
+    private float dosisPorHectaria;
+    @NotNull(message = "La dosis por Hl no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor de dosis por Hl es 1")
+    private float dosisPorHl;
+    @NotNull(message = "El volumen por hectaria no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor de dosis por hectaria es 1")
+    private float volumenPorHectaria;
+    @NotBlank(message = "El numero de lote no debe estar vacio")
+    private String numLote;
+
+
+    public String getNombreComercial() {
+        return nombreComercial;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
     }
 
     public String getFormulaYconcentracion() {
@@ -44,38 +46,6 @@ public class AgroquimicoDto {
         this.formulaYconcentracion = formulaYconcentracion;
     }
 
-    public String getLote() {
-        return lote;
-    }
-
-    public void setLote(String lote) {
-        this.lote = lote;
-    }
-
-    public String getNombreComun() {
-        return nombreComun;
-    }
-
-    public void setNombreComun(String nombreComun) {
-        this.nombreComun = nombreComun;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
-    public String getNombrePlaga() {
-        return nombrePlaga;
-    }
-
-    public void setNombrePlaga(String nombrePlaga) {
-        this.nombrePlaga = nombrePlaga;
-    }
-
     public String getPrincipioActivo() {
         return principioActivo;
     }
@@ -84,27 +54,53 @@ public class AgroquimicoDto {
         this.principioActivo = principioActivo;
     }
 
-    public int getTiempoDeCarencia() {
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Long getTiempoDeCarencia() {
         return tiempoDeCarencia;
     }
 
-    public void setTiempoDeCarencia(int tiempoDeCarencia) {
+    public void setTiempoDeCarencia(Long tiempoDeCarencia) {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 
-    public String getNombreTipoAgroquimico() {
-        return nombreTipoAgroquimico;
+    public float getDosisPorHectaria() {
+        return dosisPorHectaria;
     }
 
-    public void setNombreTipoAgroquimico(String nombreTipoAgroquimico) {
-        this.nombreTipoAgroquimico = nombreTipoAgroquimico;
+    public void setDosisPorHectaria(float dosisPorHectaria) {
+        this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public String getNombreEncargadoAgricola() {
-        return nombreEncargadoAgricola;
+    public float getDosisPorHl() {
+        return dosisPorHl;
     }
 
-    public void setNombreEncargadoAgricola(String nombreEncargadoAgricola) {
-        this.nombreEncargadoAgricola = nombreEncargadoAgricola;
+    public void setDosisPorHl(float dosisPorHl) {
+        this.dosisPorHl = dosisPorHl;
+    }
+
+    public float getVolumenPorHectaria() {
+        return volumenPorHectaria;
+    }
+
+    public void setVolumenPorHectaria(float volumenPorHectaria) {
+        this.volumenPorHectaria = volumenPorHectaria;
+    }
+
+    public String getNumLote() {
+        return numLote;
+    }
+
+    public void setNumLote(String numLote) {
+        this.numLote = numLote;
     }
 }
+
+

@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.dto;
-
+/*
 import javax.validation.constraints.NotBlank;
 
 public class EditarTipoAgroQuimicoDto {
@@ -25,3 +25,5 @@ public class EditarTipoAgroQuimicoDto {
         this.descripcion = descripcion;
     }
 }
+
+ */

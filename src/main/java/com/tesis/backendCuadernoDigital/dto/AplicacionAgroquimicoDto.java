@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.dto;
-
+/*
 import javax.validation.constraints.NotBlank;
 
 public class AplicacionAgroquimicoDto {
@@ -74,3 +74,5 @@ public class AplicacionAgroquimicoDto {
         this.nombreEncargadoAgricola = nombreEncargadoAgricola;
     }
 }
+
+ */

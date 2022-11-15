@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.service;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.AplicacionDeAgroquimico;
 import com.tesis.backendCuadernoDigital.repository.AplicacionAgroquimicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,3 +45,5 @@ public class AplicacionAgroquimicoService {
 
 
 }
+
+ */

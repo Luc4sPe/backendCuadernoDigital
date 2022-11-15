@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.entity;
-
+/*
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 
 import javax.persistence.*;
@@ -75,3 +75,5 @@ public class TipoAgroquimico {
         this.agroquimico = agroquimico;
     }
 }
+
+ */

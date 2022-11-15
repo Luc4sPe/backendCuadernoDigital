@@ -4,18 +4,17 @@ import com.tesis.backendCuadernoDigital.dto.AgroquimicoDto;
 import com.tesis.backendCuadernoDigital.dto.EditarAgroquimico;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.entity.Agroquimico;
-import com.tesis.backendCuadernoDigital.entity.Plaga;
-import com.tesis.backendCuadernoDigital.entity.TipoAgroquimico;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
 import com.tesis.backendCuadernoDigital.service.AgroquimicoService;
-import com.tesis.backendCuadernoDigital.service.PlagaService;
-import com.tesis.backendCuadernoDigital.service.TipoAgroquimicoService;
+import com.tesis.backendCuadernoDigital.service.LogService;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +34,9 @@ public class AgroquimicoController {
     UsuarioService usuarioService;
 
     @Autowired
-    PlagaService plagaService;
+    LogService logService;
 
-    @Autowired
-    TipoAgroquimicoService tipoAgroquimicoService;
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PostMapping("/nuevoAgroquimico")
@@ -47,108 +45,124 @@ public class AgroquimicoController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        if(agroquimicoService.existeByNombreComun(agroquimicoDto.getNombreComun()))
-            return new ResponseEntity(new Mensaje("Esa Agroquímico ya existe"), HttpStatus.BAD_REQUEST);
+        if(agroquimicoService.existetsByNumLote(agroquimicoDto.getNumLote()))
+            return new ResponseEntity(new Mensaje("Ese numero de lote ya existe"), HttpStatus.BAD_REQUEST);
 
-        Optional<Plaga> plagaOptional = plagaService.getByNombre(agroquimicoDto.getNombrePlaga());
-        if(!plagaService.existeByNombre(agroquimicoDto.getNombrePlaga()))
-            return new ResponseEntity(new Mensaje("Ese nombre de Plaga no existe"), HttpStatus.NOT_FOUND);
 
-        Plaga plaga= plagaOptional.get();
+        if(agroquimicoDto.getTiempoDeCarencia()<0)
+            return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Optional<TipoAgroquimico> tipoAgroquimicoOptional = tipoAgroquimicoService.getByNombre(agroquimicoDto.getNombreTipoAgroquimico());
-        if(!tipoAgroquimicoService.existeByNombre(agroquimicoDto.getNombreTipoAgroquimico()))
-            return new ResponseEntity(new Mensaje("Ese nombre de tipo de Agroquímico no existe"), HttpStatus.NOT_FOUND);
+        if(agroquimicoDto.getDosisPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        TipoAgroquimico tipoAgroquimico = tipoAgroquimicoOptional.get();
+        if(agroquimicoDto.getDosisPorHl()<0)
+            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(agroquimicoDto.getNombreEncargadoAgricola());
+        if(agroquimicoDto.getVolumenPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        if (!usuarioService.existsByNombreUsuario(agroquimicoDto.getNombreEncargadoAgricola()))
-            return new ResponseEntity(new Mensaje("Ese nombre de usuario no existe"), HttpStatus.NOT_FOUND);
 
-        Usuario usuarioEncargadoAgricola = usuarioOptional.get();
 
-        Agroquimico agroquimico = new Agroquimico(agroquimicoDto.getFormulaYconcentracion(),agroquimicoDto.getLote(),agroquimicoDto.getNombreComun(),
-                agroquimicoDto.getObservaciones(),plaga,agroquimicoDto.getPrincipioActivo(),agroquimicoDto.getTiempoDeCarencia(),
-                tipoAgroquimico,usuarioEncargadoAgricola);
         try {
-            this.agroquimicoService.guardar(agroquimico);
-            return new ResponseEntity(new Mensaje(" Agroquímico Registrado con Exito"), HttpStatus.CREATED);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+
+            Agroquimico agroquimico = new Agroquimico(agroquimicoDto.getNombreComercial(),agroquimicoDto.getFormulaYconcentracion(),agroquimicoDto.getPrincipioActivo(),
+                    agroquimicoDto.getTipo(),agroquimicoDto.getTiempoDeCarencia(),agroquimicoDto.getDosisPorHectaria(),agroquimicoDto.getDosisPorHl(),agroquimicoDto.getVolumenPorHectaria(),
+                    agroquimicoDto.getNumLote());
+
+            boolean result = agroquimicoService.guardarAgroquimico(agroquimico);
+
+            if(result){
+                logService.guardarAgroquimico(agroquimico,usuario);
+                return new ResponseEntity<>(new Mensaje("El agroquimico se guardado correctamente"),HttpStatus.CREATED);
+            }
+            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
-    @GetMapping("/listarTipoAgroquimico")
-    public ResponseEntity<List<Agroquimico>> listaAgroQuimico(){
-        List<Agroquimico> lista = agroquimicoService.listarAgroquimico();
-        return new ResponseEntity<>(lista,HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA', 'PRODUCTOR')")
+    @GetMapping("/listarAgroquimico")
+    public ResponseEntity<List<Agroquimico>> listadoAgroquimico(){
+        List<Agroquimico> listado = agroquimicoService.listarAgroquimico();
+        return new ResponseEntity<>(listado, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
-    @GetMapping("/detalle/{id}")
-    public ResponseEntity<TipoAgroquimico> getByNombreComun(@PathVariable("id") long id) {
-        if (!agroquimicoService.existeById(id))
-            return new ResponseEntity(new Mensaje("no existe ese Agroquímicos"), HttpStatus.NOT_FOUND);
-        try {
-            Agroquimico agroquimico = agroquimicoService.getUnoId(id).get();
-            return new ResponseEntity(agroquimico, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no optenido"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
-    @GetMapping("/agroquiPorEncarAgriNombreUsuario/{nombreUsuario}")
-    public ResponseEntity<List<Agroquimico>> listadoTipoAgroQuiDeUnUsuarioAgri(@PathVariable ("nombreUsuario") String nombreUsuario){
-        List<Agroquimico> listado = agroquimicoService.listarAgroquimicoPorNombreUsuario(nombreUsuario);
-        return new ResponseEntity<>(listado,HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalleAgro/{id}")
+    ResponseEntity<Agroquimico> obteberDetalleDeUnAgroquimico(@PathVariable("id") Long id){
+        if(!agroquimicoService.existsByIdAgro(id))
+            return new ResponseEntity(new Mensaje("no existe ese agroquímico"),HttpStatus.NOT_FOUND);
+        Agroquimico agroquimico = agroquimicoService.getUnAgroquimico(id).get();
+        return new ResponseEntity(agroquimico,HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")
-
-    public ResponseEntity<?> editarAgroquimico(@PathVariable("id")long id, @RequestBody EditarAgroquimico editarAgroquimico, BindingResult bindingResult) {
+    public ResponseEntity<?> editarAgroquimico(@PathVariable("id")Long id, @RequestBody EditarAgroquimico editarAgroquimico, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
 
-        if (!agroquimicoService.existeById(id))
+        if (!agroquimicoService.existsByIdAgro(id))
             return new ResponseEntity(new Mensaje("no existe ese de agroquímico"), HttpStatus.NOT_FOUND);
 
-        if (agroquimicoService.existeByNombreComun(editarAgroquimico.getNombreComun()) && agroquimicoService.getByNombreComun(editarAgroquimico.getNombreComun()).get().getId() == id)
-            return new ResponseEntity(new Mensaje("ese nombre de AgroQuímico ya existe"), HttpStatus.BAD_REQUEST);
+        if(editarAgroquimico.getTiempoDeCarencia()<0)
+            return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        if (StringUtils.isBlank(editarAgroquimico.getNombreComun()))
-            return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+        if(editarAgroquimico.getDosisPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Optional<TipoAgroquimico> tipoAgroquimicoOptional = tipoAgroquimicoService.getByNombre(editarAgroquimico.getNombreTipoAgroquimico());
-        TipoAgroquimico nombreTipoAgro= tipoAgroquimicoOptional.get();
+        if(editarAgroquimico.getDosisPorHl()<0)
+            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Optional<Plaga> plagaOptional = plagaService.getByNombre(editarAgroquimico.getNombrePlaga());
-        Plaga nombrePlaga = plagaOptional.get();
+        if(editarAgroquimico.getVolumenPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        Agroquimico modificarAgroquimico = agroquimicoService.getUnoId(id).get();
-        modificarAgroquimico.setFormulaYconcentracion(editarAgroquimico.getFormulaYconcentracion());
-        modificarAgroquimico.setLote(editarAgroquimico.getLote());
-        modificarAgroquimico.setNombreComun(editarAgroquimico.getNombreComun());
-        modificarAgroquimico.setObservaciones(editarAgroquimico.getObservaciones());
-        modificarAgroquimico.setPlaga(nombrePlaga);
-        modificarAgroquimico.setPrincipioActivo(editarAgroquimico.getPrincipioActivo());
-        modificarAgroquimico.setTiempoDeCarencia(editarAgroquimico.getTiempoDeCarencia());
-        modificarAgroquimico.setTipoAgroquimico(nombreTipoAgro);
+
+
+
+
 
         try {
-            this.agroquimicoService.guardar(modificarAgroquimico);
-            return new ResponseEntity(new Mensaje("TipoAgroquímico actualizado"), HttpStatus.OK);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+            Agroquimico modificarAgroquimico = agroquimicoService.getUnAgroquimico(id).get();
+            modificarAgroquimico.setNombreComercial(editarAgroquimico.getNombreComercial());
+            modificarAgroquimico.setFormulaYconcentracion(editarAgroquimico.getFormulaYconcentracion());
+            modificarAgroquimico.setPrincipioActivo(editarAgroquimico.getPrincipioActivo());
+            modificarAgroquimico.setTipo(editarAgroquimico.getTipo());
+            modificarAgroquimico.setTiempoDeCarencia(editarAgroquimico.getTiempoDeCarencia());
+            modificarAgroquimico.setDosisPorHectaria(editarAgroquimico.getDosisPorHectaria());
+            modificarAgroquimico.setDosisPorHl(editarAgroquimico.getDosisPorHl());
+            modificarAgroquimico.setVolumenPorHectaria(editarAgroquimico.getVolumenPorHectaria());
+            modificarAgroquimico.setNumLote(editarAgroquimico.getNumLote());
+
+            if (modificarAgroquimico !=null){
+                logService.modificarAgroquimico(modificarAgroquimico,usuario);
+                return new ResponseEntity<>(new Mensaje("Agroquímico actualizado correctamente"), HttpStatus.OK);
+            }
+            return new ResponseEntity(new Mensaje("Agroquímico actualizado"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity(new Mensaje("Fallo la operacion, Agroquímico  no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico  no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 
     }
+
+    /*
+
+
+
+
+
+
+
+
+
 
     @DeleteMapping("borrar/{id}")
     public ResponseEntity<?> borrar(@PathVariable("id") long id){
@@ -162,4 +176,8 @@ public class AgroquimicoController {
         }
 
     }
+
+     */
 }
+
+

@@ -214,5 +214,17 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodos Logs Agroquimico
+
+    public void guardarAgroquimico(Agroquimico agroquimico, Usuario encargadoAgricola){
+        Log log = new Log(encargadoAgricola,LogAccion.CREACION_AGROQUIMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+"Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarAgroquimico(Agroquimico agroquimico, Usuario encargadoAgricola){
+        Log log = new Log(encargadoAgricola,LogAccion.MODIFICACION_AGROQUIMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+"Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
+        logRepository.save(log);
+    }
+
 
 }

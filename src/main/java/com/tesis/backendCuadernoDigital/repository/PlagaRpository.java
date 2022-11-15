@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.repository;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.Plaga;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,3 +21,5 @@ public interface PlagaRpository extends JpaRepository<Plaga,Long> {
 
 
 }
+
+ */

@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.dto;
-
+/*
 import javax.validation.constraints.NotBlank;
 
 public class PlagaDto {
@@ -45,3 +45,5 @@ public class PlagaDto {
         this.nombreEncargadoAgricola = nombreEncargadoAgricola;
     }
 }
+
+ */

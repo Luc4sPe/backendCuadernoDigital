@@ -60,7 +60,7 @@ public class FincaService {
     }
 
     public  Finca getFincas(Long id){
-        Finca finca = getById(id).orElseThrow(()-> new ResourceNotFoundException("EL Club con ID: " + id + " no existe"));
+        Finca finca = getById(id).orElseThrow(()-> new ResourceNotFoundException("La finca con ID: " + id + " no existe"));
         return finca;
     }
 

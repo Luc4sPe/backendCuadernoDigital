@@ -10,16 +10,13 @@ public class CultivoDto {
     private String nombre;
     @NotBlank(message = "El remito no debe estar vacio")
     private String remito;
-    @NotBlank(message = "El tipo de carencia no debe estar vacio")
-    @Min(value = 1, message = "El minimo de tiempo de carencia es 1")
+    @NotNull(message = "El tiempo de carencia no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del tiempo de carencia es 1")
     private int timpoCarencia;
     @NotBlank(message = "La variedad no debe estar vacio")
     private String variedadCultivo;
     @NotBlank(message = "El vivero proveedor no debe estar vacio")
     private String viveroProvedor;
-
-
-
 
     public String getNombre() {
         return nombre;

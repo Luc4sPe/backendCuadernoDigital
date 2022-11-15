@@ -10,10 +10,15 @@ import java.util.Optional;
 @Repository
 public interface AgroquimicoRepository extends JpaRepository<Agroquimico,Long> {
 
-    Optional<Agroquimico> findByNombreComun(String nombreComun);
     List<Agroquimico> findAllByOrderByIdAsc();
-    // obtiene los Agroquimico de un encargadoAgricola por nombre de usuario
-    List<Agroquimico> findByNombreEncargadoAgricola_NombreUsuario(String nombreUsuario);
-    boolean existsByNombreComun(String nombreComun);
-    boolean existsById(long id);
+    Optional<Agroquimico> findByNombreComercial(String nombreComercial);
+
+    Optional<Agroquimico> findById(Long id);
+    boolean existsByNombreComercial(String nombreComercial);
+    boolean existsByNumLote(String numLote);
+    boolean existsById(Long id);
+    Integer countAgroquimicoBy();
+
 }
+
+

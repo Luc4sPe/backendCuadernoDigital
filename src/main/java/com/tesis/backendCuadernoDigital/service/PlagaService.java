@@ -1,5 +1,5 @@
 package com.tesis.backendCuadernoDigital.service;
-
+/*
 import com.tesis.backendCuadernoDigital.entity.Plaga;
 import com.tesis.backendCuadernoDigital.repository.PlagaRpository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,3 +47,5 @@ public class PlagaService {
         return plagaRpository.existsByNombre(nombre);
     }
 }
+
+ */
