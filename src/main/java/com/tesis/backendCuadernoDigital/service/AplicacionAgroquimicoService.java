@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.service;
-/*
+
 import com.tesis.backendCuadernoDigital.entity.AplicacionDeAgroquimico;
+import com.tesis.backendCuadernoDigital.excepcion.ResourceNotFoundException;
 import com.tesis.backendCuadernoDigital.repository.AplicacionAgroquimicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,34 +17,51 @@ public class AplicacionAgroquimicoService {
     @Autowired
     AplicacionAgroquimicoRepository aplicacionAgroquimicoRepository;
 
-    public  void guardar (AplicacionDeAgroquimico aplicacionDeAgroquimico){
-        aplicacionAgroquimicoRepository.save(aplicacionDeAgroquimico);
+    public  boolean guardarAplicaAgroquimico(AplicacionDeAgroquimico agroquimico){
+        return  aplicacionAgroquimicoRepository.save(agroquimico).getId()!= null;
     }
 
-    public Optional<AplicacionDeAgroquimico>getUnoById(long id){
+    public  AplicacionDeAgroquimico actualizarAplicaAgroquimico(AplicacionDeAgroquimico agroquimico){
+        return aplicacionAgroquimicoRepository.save(agroquimico);
+    }
+
+
+   // public Optional<AplicacionDeAgroquimico>getUnAplicacionAgroquimco(Long id){
+     //   return aplicacionAgroquimicoRepository.findById(id);
+    //}
+
+    public Optional<AplicacionDeAgroquimico> getUnAplicacionAgroquimico(Long id){
         return aplicacionAgroquimicoRepository.findById(id);
     }
+
+
+
+
+
+
 
     public List<AplicacionDeAgroquimico> listarAplicacionAgroquimico(){
         return aplicacionAgroquimicoRepository.findAllByOrderByIdAsc();
     }
 
-    public  List<AplicacionDeAgroquimico> listarAplicacionAgroQuiPorNombreUsuario(String nombreUsuario){
-        return  aplicacionAgroquimicoRepository.findByNombreUsuario_NombreUsuario(nombreUsuario);
+
+    public List<AplicacionDeAgroquimico> getListadoAplicacionAgroDeUnaFincaPorId(Long idFinca){
+        return aplicacionAgroquimicoRepository.findByFinca_IdFinca(idFinca);
     }
 
-
-
-    public void borrar(long id){
+    public void borrar(Long id){
         aplicacionAgroquimicoRepository.deleteById(id);
     }
 
-    public boolean existeById(long id){
+    public boolean existeById(Long id){
         return aplicacionAgroquimicoRepository.existsById(id);
     }
 
 
-
+    public  AplicacionDeAgroquimico getAplicaAgroquimico(Long id){
+        AplicacionDeAgroquimico agroquimico= getUnAplicacionAgroquimico(id).orElseThrow(()-> new ResourceNotFoundException("EL agroquimico con ID: " + id + " no existe"));
+        return agroquimico;
+    }
 }
 
- */
+

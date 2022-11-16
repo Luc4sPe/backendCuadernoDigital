@@ -17,7 +17,7 @@ public class RiegoDto {
     @NotBlank
     private float milimetrosAplicados;
     @NotNull(message = "El id no puede ser un valor nulo")
-    @Min(value = 1, message = "El minimo de entre ileras es 1")
+    @Min(value = 1, message = "El minimo es 1")
     private Long idCuadro;
     @NotBlank
     private String observacionProductor;

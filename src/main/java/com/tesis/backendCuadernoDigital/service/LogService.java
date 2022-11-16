@@ -226,5 +226,18 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodos Logs AplicacionAgroquimico
+
+    public void guardarAplicacionAgroquimico(AplicacionDeAgroquimico agroquimico, Usuario productor){
+        Log log = new Log(productor,LogAccion.APLICACION_AGROQUIMICO," El productor: "+productor.getNombreUsuario()+"Realiso la aplicacion de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarAplicacionAgroquimico(AplicacionDeAgroquimico agroquimico, Usuario productor){
+        Log log = new Log(productor,LogAccion.MODIFICACION_APLICACION_AGROQUIMICO," El productor: "+productor.getNombreUsuario()+"Modifico la aplicación de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
+        logRepository.save(log);
+    }
+
+
 
 }

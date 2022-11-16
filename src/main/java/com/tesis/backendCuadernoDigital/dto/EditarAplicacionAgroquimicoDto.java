@@ -1,41 +1,101 @@
 package com.tesis.backendCuadernoDigital.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class EditarAplicacionAgroquimicoDto {
-    @NotBlank
-    private String nombreComunAgroquimico;
-    @NotBlank
-    private String aplicacion;
-    @NotBlank
-    private int numeroCuadro;
-    @NotBlank
+
+    @NotNull(message = "El id no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private Long id;
+
+    @NotNull(message = "El idAgroquimico no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private Long idAgroquimico;
+
+    @NotNull(message = "El idCuadro no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private Long idCuadro;
+
+    @NotNull(message = "La dosis no debe estar vacia")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private float dosisPorHectaria;
+
+    @NotNull(message = "La dosis no debe estar vacia")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private float dosisPorHl;
+
+    @NotNull(message = "El volumen no debe estar vacia")
+    @Min(value = 1, message = "El minimo valor del id es 1")
+    private float volumenPorHectaria;
+
+    @NotBlank(message = "El objetivo no debe estar vacio")
+    private String objetivo;
+
+    @NotBlank(message = "La observación no debe estar vacio")
     private String observaciones;
-    @NotBlank
-    private String nombrePlaga;
 
-    public String getNombreComunAgroquimico() {
-        return nombreComunAgroquimico;
+    @NotBlank(message = "La justificación no debe estar vacio")
+    private String justificacion;
+
+    @NotBlank(message = "La plaga no debe estar vacio")
+    private String plaga;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setNombreComunAgroquimico(String nombreComunAgroquimico) {
-        this.nombreComunAgroquimico = nombreComunAgroquimico;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getAplicacion() {
-        return aplicacion;
+    public Long getIdAgroquimico() {
+        return idAgroquimico;
     }
 
-    public void setAplicacion(String aplicacion) {
-        this.aplicacion = aplicacion;
+    public void setIdAgroquimico(Long idAgroquimico) {
+        this.idAgroquimico = idAgroquimico;
     }
 
-    public int getNumeroCuadro() {
-        return numeroCuadro;
+    public Long getIdCuadro() {
+        return idCuadro;
     }
 
-    public void setNumeroCuadro(int numeroCuadro) {
-        this.numeroCuadro = numeroCuadro;
+    public void setIdCuadro(Long idCuadro) {
+        this.idCuadro = idCuadro;
+    }
+
+    public float getDosisPorHectaria() {
+        return dosisPorHectaria;
+    }
+
+    public void setDosisPorHectaria(float dosisPorHectaria) {
+        this.dosisPorHectaria = dosisPorHectaria;
+    }
+
+    public float getDosisPorHl() {
+        return dosisPorHl;
+    }
+
+    public void setDosisPorHl(float dosisPorHl) {
+        this.dosisPorHl = dosisPorHl;
+    }
+
+    public float getVolumenPorHectaria() {
+        return volumenPorHectaria;
+    }
+
+    public void setVolumenPorHectaria(float volumenPorHectaria) {
+        this.volumenPorHectaria = volumenPorHectaria;
+    }
+
+    public String getObjetivo() {
+        return objetivo;
+    }
+
+    public void setObjetivo(String objetivo) {
+        this.objetivo = objetivo;
     }
 
     public String getObservaciones() {
@@ -46,11 +106,19 @@ public class EditarAplicacionAgroquimicoDto {
         this.observaciones = observaciones;
     }
 
-    public String getNombrePlaga() {
-        return nombrePlaga;
+    public String getJustificacion() {
+        return justificacion;
     }
 
-    public void setNombrePlaga(String nombrePlaga) {
-        this.nombrePlaga = nombrePlaga;
+    public void setJustificacion(String justificacion) {
+        this.justificacion = justificacion;
+    }
+
+    public String getPlaga() {
+        return plaga;
+    }
+
+    public void setPlaga(String plaga) {
+        this.plaga = plaga;
     }
 }

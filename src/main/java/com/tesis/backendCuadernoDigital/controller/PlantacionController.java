@@ -156,15 +156,10 @@ public class PlantacionController {
              */
 
 
-
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                     .collect(Collectors.toList());
-
-
-
-
 
             Plantacion modificarPlantacion = plantacionService.getPlantacion(id).get();
             modificarPlantacion.setEntreIleras(modificacionPlantacionDto.getEntreIleras());

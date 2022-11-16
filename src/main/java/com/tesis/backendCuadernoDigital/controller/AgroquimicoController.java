@@ -121,11 +121,6 @@ public class AgroquimicoController {
         if(editarAgroquimico.getVolumenPorHectaria()<0)
             return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-
-
-
-
-
         try {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

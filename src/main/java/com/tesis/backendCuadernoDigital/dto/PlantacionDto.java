@@ -38,6 +38,7 @@ public class PlantacionDto {
     @NotNull(message = "No puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de plantines es 1")
     private float cantidadPlantines;
+
     @NotNull(message = "La finca es obligatoria ")
     private Long idFinca;
 
