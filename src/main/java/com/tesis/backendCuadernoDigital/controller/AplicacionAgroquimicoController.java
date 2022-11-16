@@ -124,7 +124,7 @@ public class AplicacionAgroquimicoController {
         return new ResponseEntity(aplicacion,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> editarApliAgroquimico(@PathVariable("id") Long id, @Valid @RequestBody EditarAplicacionAgroquimicoDto editarAplicacionAgroquimicoDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())

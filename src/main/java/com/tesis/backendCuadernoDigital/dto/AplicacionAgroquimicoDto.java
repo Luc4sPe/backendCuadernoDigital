@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 
 public class AplicacionAgroquimicoDto {
 
-   // @NotNull(message = "El id no debe estar vacio")
-    //@Min(value = 1, message = "El minimo valor del id es 1")
+    @NotNull(message = "El id no debe estar vacio")
+    @Min(value = 1, message = "El minimo valor del id es 1")
     private Long id;
 
     @NotNull(message = "El idAgroquimico no debe estar vacio")
