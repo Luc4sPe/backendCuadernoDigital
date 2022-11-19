@@ -75,7 +75,7 @@ public class AgroquimicoController {
 
             if(result){
                 logService.guardarAgroquimico(agroquimico,usuario);
-                return new ResponseEntity<>(new Mensaje("El agroquimico se guardado correctamente"),HttpStatus.CREATED);
+                return new ResponseEntity<>(new Mensaje("El agroquímico se guardado correctamente"),HttpStatus.CREATED);
             }
             return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){

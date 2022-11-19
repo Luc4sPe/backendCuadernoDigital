@@ -25,6 +25,8 @@ public class ModificarLaborSueloDto {
     private Long idFinca;
 
 
+
+
     public String getCultivoAnterior() {
         return cultivoAnterior;
     }

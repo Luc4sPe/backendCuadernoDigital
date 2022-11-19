@@ -79,13 +79,15 @@ public class LaborSueloController {
             List<LaborSuelo> laboresSuelo = new ArrayList<>();
             laboresSuelo.add(nuevaLabor);
             cuadroEnviar.setLaboresDeSuelo(laboresSuelo);
-            /*
-            Cuadro cuadro= cuadroService.findByCultivoAnterior(laborsueloDto.getCultivoAnterior()).get();
-            if (cuadro.getCultivoAnterior().contains(laborsueloDto.getCultivoAnterior()))
+           // cuadroEnviar.setCultivoAnterior(laborsueloDto.getCultivoAnterior());
+
+
+            //Cuadro cuadro= cuadroService.findByCultivoAnterior(laborsueloDto.getCultivoAnterior()).get();
+            if (cuadroEnviar.getCultivoAnterior().contains(laborsueloDto.getCultivoAnterior()))
                 return new ResponseEntity(new Mensaje("El cultivo anterior solo se carga una vez por cuadro"), HttpStatus.BAD_REQUEST);
             cuadroEnviar.setCultivoAnterior(laborsueloDto.getCultivoAnterior());
 
-             */
+
 
             this.laborSueloService.guardarLaborSuelo(nuevaLabor);
 
@@ -166,6 +168,7 @@ public class LaborSueloController {
             modificarLabor.setLabor(modificarLaborSueloDto.getLabor());
             modificarLabor.setObservacion(modificarLaborSueloDto.getObservacion());
             modificarLabor.setJustificacion(modificarLaborSueloDto.getJustificacion());
+            getIdCuadro.setCultivoAnterior(modificarLaborSueloDto.getCultivoAnterior());
            // modificarLabor.setFinca(fincaCapturado);
             laborSueloService.modificarLabor(modificarLabor);
             if(modificarLabor!=null){
