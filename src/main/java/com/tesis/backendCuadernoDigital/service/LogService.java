@@ -238,6 +238,15 @@ public class LogService {
         logRepository.save(log);
     }
 
+    //Metodos Logs Asesoramiento de los Riegos
 
+    public void guardarAsesoriaRiego(AsesoriaRiego asesoriaRiego, Usuario productor){
+        Log log = new Log(productor,LogAccion.CREACION_ASESORAMIENTO_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+"Realizo la asesoria del riego de  : "+asesoriaRiego.getIdCuadros().getNumeroCuadro(),asesoriaRiego.getId());
+        logRepository.save(log);
+    }
 
+    public void modificarAsesoriaRiego(AsesoriaRiego asesoriaRiego, Usuario productor){
+        Log log = new Log(productor,LogAccion.MODIFICAR_ASESORIA_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+"Modifico la asesoria del riego  : "+asesoriaRiego.getIdCuadros().getNumeroCuadro(),asesoriaRiego.getId());
+        logRepository.save(log);
+    }
 }

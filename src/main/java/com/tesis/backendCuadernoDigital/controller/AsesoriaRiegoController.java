@@ -1,0 +1,167 @@
+package com.tesis.backendCuadernoDigital.controller;
+
+import com.tesis.backendCuadernoDigital.dto.AsesoriaRiegoDto;
+import com.tesis.backendCuadernoDigital.dto.EditarAplicacionAgroquimicoDto;
+import com.tesis.backendCuadernoDigital.dto.Mensaje;
+import com.tesis.backendCuadernoDigital.dto.ModificarAsesoriaRiegoDto;
+import com.tesis.backendCuadernoDigital.entity.AsesoriaRiego;
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
+import com.tesis.backendCuadernoDigital.entity.Finca;
+import com.tesis.backendCuadernoDigital.security.entity.Usuario;
+import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
+import com.tesis.backendCuadernoDigital.service.AsesoriaRiegoService;
+import com.tesis.backendCuadernoDigital.service.CuadroService;
+import com.tesis.backendCuadernoDigital.service.FincaService;
+import com.tesis.backendCuadernoDigital.service.LogService;
+import org.junit.platform.commons.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/asesoramientoRiego")
+@CrossOrigin("*")
+public class AsesoriaRiegoController {
+
+    @Autowired
+    AsesoriaRiegoService asesoriaRiegoService;
+
+    @Autowired
+    UsuarioService usuarioService;
+
+    @Autowired
+    CuadroService cuadroService;
+
+    @Autowired
+    FincaService fincaService;
+
+    @Autowired
+    LogService logService;
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PostMapping("/nuevaAsesoria")
+    public ResponseEntity<?> crearAsesoriaRiego(@Valid @RequestBody AsesoriaRiegoDto aseRieDTO, BindingResult bindingResult ){
+
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
+
+        //if(riegoService.existsByIdRiego(riegoDto.getId()))
+        //   return new ResponseEntity(new Mensaje("Ese Riego ya existe"), HttpStatus.BAD_REQUEST);
+
+        if(aseRieDTO.getMilimetrosAplicados()<0)
+            return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+        if (aseRieDTO.getIdCuadro()<0)
+            return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+
+
+        if (aseRieDTO.getIdFinca()<0)
+            return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+
+        try {
+
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aseRieDTO.getIdCuadro());
+
+            Cuadro cuadroEnviar = cuadroOptional.get();
+            Finca finca = fincaService.getFincas(aseRieDTO.getIdFinca());
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),cuadroEnviar,finca, usuario);
+            this.asesoriaRiegoService.guardarAsesoramientoRiego(nuevaAsesoriaRiego);
+
+
+            if (nuevaAsesoriaRiego!=null){
+                //logService.guardarRiego(nuevoRiego,usuario);
+                logService.guardarAsesoriaRiego(nuevaAsesoriaRiego,usuario);
+                return new ResponseEntity<>(new Mensaje("La asesoria de riego se guardo correctamente"), HttpStatus.CREATED);
+            }
+            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoria de riego no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoria de riego no registrado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/editarAsesoriaRiego/{id}")
+    public ResponseEntity<?> editarAsesoriaRiego(@PathVariable("id")Long id, @RequestBody ModificarAsesoriaRiegoDto modiAseRiegoDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
+
+        //if(!riegoService.existsByIdRiego(editarRiego.getId()))
+        //  return new ResponseEntity(new Mensaje("no existe ese Riego"), HttpStatus.NOT_FOUND);
+
+        if(modiAseRiegoDto.getMilimetrosAplicados()<0)
+            return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+        if (modiAseRiegoDto.getIdCuadro()<0)
+            return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+       // Optional<Riego> riegoOptional = riegoService.getUnRiegoById(id);
+       // Riego justificacion = riegoOptional.get();
+
+      //  Optional<AsesoriaRiego> asesoriaRiegoOptional =asesoriaRiegoService.getUnaAsesoriaRiego(id);
+
+
+
+
+        try {
+
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modiAseRiegoDto.getIdCuadro());
+            Cuadro getIdCuadro = cuadroOptional.get();
+
+
+            Optional<Usuario> usuarioOptional = usuarioService.getById(modiAseRiegoDto.getIdProductor());
+            Usuario usuarioCapturado = usuarioOptional.get();
+            Finca finca = fincaService.getFincas(modiAseRiegoDto.getIdFinca());
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+
+            AsesoriaRiego modificar = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
+
+            modificar.setDuracionEnHoras(modiAseRiegoDto.getDuracionEnHoras());
+            modificar.setMilimetrosAplicados(modiAseRiegoDto.getMilimetrosAplicados());
+            modificar.setIdCuadros(getIdCuadro);
+            modificar.setFinca(finca);
+            modificar.setProductor(usuarioCapturado);
+
+            asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
+
+
+            if(modiAseRiegoDto!=null){
+                logService.modificarAsesoriaRiego(modificar,usuario);
+                return new ResponseEntity<>(new Mensaje(" Asesoria de riego actualizada correctamente"), HttpStatus.OK);
+            }
+            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoria de riego no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (Exception e){
+            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoria de riego no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/listaAsesoria")
+    public ResponseEntity<List<AsesoriaRiego>> listaAsesoriaRiego(){
+        List<AsesoriaRiego> listar = asesoriaRiegoService.listarAsesoriaRiego();
+        return new ResponseEntity<>(listar,HttpStatus.OK);
+    }
+
+
+
+
+}
+
+

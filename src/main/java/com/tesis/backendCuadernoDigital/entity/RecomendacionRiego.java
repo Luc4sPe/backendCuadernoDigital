@@ -16,6 +16,7 @@ public class RecomendacionRiego {
     private LocalTime duracionDelRiego;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "Nombre Productor")
+    //Finca
     private Usuario encargado;
     private String nombreProductor;
     private float milimetrosAAplicar;
