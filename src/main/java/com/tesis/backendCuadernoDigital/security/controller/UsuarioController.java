@@ -295,4 +295,12 @@ public class UsuarioController {
         }
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/usuariosPorNombreRol/{nombre}")
+    public ResponseEntity<List<Usuario>> listadoUsuarioDeUnRol(@PathVariable ("nombre") String nombre){
+        List<Usuario> listadoUsuarioPorRol = usuarioService.listadoUsuarioPorRoles(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));
+        return new ResponseEntity<>(listadoUsuarioPorRol,HttpStatus.OK);
+    }
+
 }
