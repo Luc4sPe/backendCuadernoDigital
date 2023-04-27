@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/asesoramientoRiego")
@@ -54,35 +55,39 @@ public class AsesoriaRiegoController {
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        //if(riegoService.existsByIdRiego(riegoDto.getId()))
-        //   return new ResponseEntity(new Mensaje("Ese Riego ya existe"), HttpStatus.BAD_REQUEST);
 
         if(aseRieDTO.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
-
-        if (aseRieDTO.getIdCuadro()<0)
-            return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
-
 
 
         if (aseRieDTO.getIdFinca()<0)
             return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
 
+
         try {
 
-            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aseRieDTO.getIdCuadro());
+            //Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aseRieDTO.getIdCuadro());
 
-            Cuadro cuadroEnviar = cuadroOptional.get();
+            //Cuadro cuadroEnviar = cuadroOptional.get();
+
             Finca finca = fincaService.getFincas(aseRieDTO.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),cuadroEnviar,finca, usuario);
+            Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(aseRieDTO.getNombreProductor());
+            Usuario usuarioCapturado = usuarioOptional.get();
+            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),finca, usuarioCapturado);
+            // recorre la lista para ir guardando cada asesoria en un cuadro de la lista
+            List<Cuadro> cuadros = aseRieDTO.getNumerosDeCuadros()
+                    .stream()
+                    .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
+                    .distinct()
+                    .collect(Collectors.toList());
+            nuevaAsesoriaRiego.setNumerosDeCuadros(cuadros);
+
             this.asesoriaRiegoService.guardarAsesoramientoRiego(nuevaAsesoriaRiego);
 
-
             if (nuevaAsesoriaRiego!=null){
-                //logService.guardarRiego(nuevoRiego,usuario);
                 logService.guardarAsesoriaRiego(nuevaAsesoriaRiego,usuario);
                 return new ResponseEntity<>(new Mensaje("La asesoria de riego se guardo correctamente"), HttpStatus.CREATED);
             }
@@ -92,7 +97,7 @@ public class AsesoriaRiegoController {
         }
     }
 
-
+/*
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/editarAsesoriaRiego/{id}")
     public ResponseEntity<?> editarAsesoriaRiego(@PathVariable("id")Long id, @RequestBody ModificarAsesoriaRiegoDto modiAseRiegoDto, BindingResult bindingResult) {
@@ -150,6 +155,8 @@ public class AsesoriaRiegoController {
         }
 
     }
+
+ */
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")

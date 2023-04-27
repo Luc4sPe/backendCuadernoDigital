@@ -1,9 +1,14 @@
 package com.tesis.backendCuadernoDigital.dto;
 
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsesoriaRiegoDto {
 
@@ -14,13 +19,12 @@ public class AsesoriaRiegoDto {
     private LocalTime duracionEnHoras;
     @NotBlank
     private float milimetrosAplicados;
-    @NotNull(message = "El id no puede ser un valor nulo")
-    @Min(value = 1, message = "El minimo es 1")
-    private Long idCuadro;
+    @NotEmpty(message = "La lista no puede estar vacia")
+    private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
     @NotNull(message = "La finca es obligatoria ")
     private Long idFinca;
-    @Min(value = 1, message = "El minimo es 1")
-    private Long idProductor;
+    @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
+    private String nombreProductor;
 
 
     public Long getId() {
@@ -47,12 +51,12 @@ public class AsesoriaRiegoDto {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public Long getIdCuadro() {
-        return idCuadro;
+    public List<Cuadro> getNumerosDeCuadros() {
+        return numerosDeCuadros;
     }
 
-    public void setIdCuadro(Long idCuadro) {
-        this.idCuadro = idCuadro;
+    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
+        this.numerosDeCuadros = numerosDeCuadros;
     }
 
     public Long getIdFinca() {
@@ -63,11 +67,11 @@ public class AsesoriaRiegoDto {
         this.idFinca = idFinca;
     }
 
-    public Long getIdProductor() {
-        return idProductor;
+    public String getNombreProductor() {
+        return nombreProductor;
     }
 
-    public void setIdProductor(Long idProductor) {
-        this.idProductor = idProductor;
+    public void setNombreProductor(String nombreProductor) {
+        this.nombreProductor = nombreProductor;
     }
 }

@@ -8,7 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class AsesoriaRiego {
@@ -22,10 +24,18 @@ public class AsesoriaRiego {
     @NotNull
     private float milimetrosAplicados;
 
+    /*
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("riegos")
     @JoinColumn(name = "cuadroId")
     private Cuadro idCuadros;
+
+     */
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("finca")
+    private List<Cuadro> numerosDeCuadros = new ArrayList<>();
+
 
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -45,10 +55,9 @@ public class AsesoriaRiego {
     public AsesoriaRiego() {
     }
 
-    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, Cuadro idCuadros, Finca finca, Usuario productor) {
+    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca, Usuario productor) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
-        this.idCuadros = idCuadros;
         this.finca = finca;
         this.productor = productor;
         this.fechaRiego = null;
@@ -81,12 +90,12 @@ public class AsesoriaRiego {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public Cuadro getIdCuadros() {
-        return idCuadros;
+    public List<Cuadro> getNumerosDeCuadros() {
+        return numerosDeCuadros;
     }
 
-    public void setIdCuadros(Cuadro idCuadros) {
-        this.idCuadros = idCuadros;
+    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
+        this.numerosDeCuadros = numerosDeCuadros;
     }
 
     public Finca getFinca() {
