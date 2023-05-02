@@ -154,8 +154,6 @@ public class PlantacionController {
             Finca fincaCapturado = fincaOptional.get();
 
              */
-
-
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))

@@ -55,21 +55,13 @@ public class AsesoriaRiegoController {
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-
         if(aseRieDTO.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
-
 
         if (aseRieDTO.getIdFinca()<0)
             return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
-
-
         try {
-
-            //Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aseRieDTO.getIdCuadro());
-
-            //Cuadro cuadroEnviar = cuadroOptional.get();
 
             Finca finca = fincaService.getFincas(aseRieDTO.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -97,7 +89,7 @@ public class AsesoriaRiegoController {
         }
     }
 
-/*
+
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/editarAsesoriaRiego/{id}")
     public ResponseEntity<?> editarAsesoriaRiego(@PathVariable("id")Long id, @RequestBody ModificarAsesoriaRiegoDto modiAseRiegoDto, BindingResult bindingResult) {
@@ -105,46 +97,35 @@ public class AsesoriaRiegoController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
 
-        //if(!riegoService.existsByIdRiego(editarRiego.getId()))
-        //  return new ResponseEntity(new Mensaje("no existe ese Riego"), HttpStatus.NOT_FOUND);
+        //if (!asesoriaRiegoService.existeByIdAsesoriaRiego(modiAseRiegoDto.getId()))
+          //  return new ResponseEntity(new Mensaje("No existe esa asesoria de riego"), HttpStatus.NOT_FOUND);
 
         if(modiAseRiegoDto.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
-        if (modiAseRiegoDto.getIdCuadro()<0)
-            return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
-
-       // Optional<Riego> riegoOptional = riegoService.getUnRiegoById(id);
-       // Riego justificacion = riegoOptional.get();
-
-      //  Optional<AsesoriaRiego> asesoriaRiegoOptional =asesoriaRiegoService.getUnaAsesoriaRiego(id);
-
-
-
-
         try {
 
-            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modiAseRiegoDto.getIdCuadro());
-            Cuadro getIdCuadro = cuadroOptional.get();
-
-
-            Optional<Usuario> usuarioOptional = usuarioService.getById(modiAseRiegoDto.getIdProductor());
+            Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(modiAseRiegoDto.getNombreProductor());
             Usuario usuarioCapturado = usuarioOptional.get();
             Finca finca = fincaService.getFincas(modiAseRiegoDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
-            AsesoriaRiego modificar = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
+            // recorre la lista para ir modificando cada asesoria en un cuadro de la lista
+            List<Cuadro> cuadros = modiAseRiegoDto.getNumerosDeCuadros()
+                    .stream()
+                    .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
+                    .distinct()
+                    .collect(Collectors.toList());
 
+            AsesoriaRiego modificar = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
             modificar.setDuracionEnHoras(modiAseRiegoDto.getDuracionEnHoras());
             modificar.setMilimetrosAplicados(modiAseRiegoDto.getMilimetrosAplicados());
-            modificar.setIdCuadros(getIdCuadro);
             modificar.setFinca(finca);
+            modificar.setNumerosDeCuadros(cuadros);
             modificar.setProductor(usuarioCapturado);
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
-
-
             if(modiAseRiegoDto!=null){
                 logService.modificarAsesoriaRiego(modificar,usuario);
                 return new ResponseEntity<>(new Mensaje(" Asesoria de riego actualizada correctamente"), HttpStatus.OK);
@@ -156,7 +137,7 @@ public class AsesoriaRiegoController {
 
     }
 
- */
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
