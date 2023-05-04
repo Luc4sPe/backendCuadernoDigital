@@ -148,6 +148,17 @@ public class AsesoriaRiegoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalle/{id}")
+    ResponseEntity<AsesoriaRiego> obteberDetalleDeUnaAsesoria(@PathVariable("id") Long id){
+
+        if(!asesoriaRiegoService.existeByIdAsesoriaRiego(id))
+            return new ResponseEntity(new Mensaje("no existe esa asesoria"),HttpStatus.NOT_FOUND);
+        AsesoriaRiego asesoria = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
+
 
 
 }
