@@ -63,12 +63,16 @@ public class AsesoriaRiegoController {
 
         try {
 
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aseRieDTO.getIdCuadro());
+            Cuadro cuadroEnviar = cuadroOptional.get();
             Finca finca = fincaService.getFincas(aseRieDTO.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(aseRieDTO.getNombreProductor());
             Usuario usuarioCapturado = usuarioOptional.get();
-            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),finca, usuarioCapturado);
+            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),finca,cuadroEnviar ,usuarioCapturado);
+
+            /*
             // recorre la lista para ir guardando cada asesoria en un cuadro de la lista
             List<Cuadro> cuadros = aseRieDTO.getNumerosDeCuadros()
                     .stream()
@@ -76,6 +80,8 @@ public class AsesoriaRiegoController {
                     .distinct()
                     .collect(Collectors.toList());
             nuevaAsesoriaRiego.setNumerosDeCuadros(cuadros);
+
+             */
 
             this.asesoriaRiegoService.guardarAsesoramientoRiego(nuevaAsesoriaRiego);
 
@@ -108,9 +114,12 @@ public class AsesoriaRiegoController {
             Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(modiAseRiegoDto.getNombreProductor());
             Usuario usuarioCapturado = usuarioOptional.get();
             Finca finca = fincaService.getFincas(modiAseRiegoDto.getIdFinca());
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(modiAseRiegoDto.getIdCuadro());
+            Cuadro getIdCuadro = cuadroOptional.get();
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
+            /*
             // recorre la lista para ir modificando cada asesoria en un cuadro de la lista
             List<Cuadro> cuadros = modiAseRiegoDto.getNumerosDeCuadros()
                     .stream()
@@ -118,11 +127,13 @@ public class AsesoriaRiegoController {
                     .distinct()
                     .collect(Collectors.toList());
 
+             */
+
             AsesoriaRiego modificar = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
             modificar.setDuracionEnHoras(modiAseRiegoDto.getDuracionEnHoras());
             modificar.setMilimetrosAplicados(modiAseRiegoDto.getMilimetrosAplicados());
             modificar.setFinca(finca);
-            modificar.setNumerosDeCuadros(cuadros);
+            modificar.setCuadro(getIdCuadro);
             modificar.setProductor(usuarioCapturado);
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);

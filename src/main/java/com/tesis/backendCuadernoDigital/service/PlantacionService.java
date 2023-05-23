@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.service;
 
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Cultivo;
 import com.tesis.backendCuadernoDigital.entity.Plantacion;
 
@@ -32,6 +33,10 @@ public class PlantacionService {
 
     public Optional<Plantacion> getByJustificacion(String justificacion){
         return  plantacionRepository.findByJustificacion(justificacion);
+    }
+
+    public Optional<Plantacion> getPlantacionPorCuadro(Long idCuadro){
+        return  plantacionRepository.findByNumerosDeCuadros_IdCuadro(idCuadro);
     }
 
     public List<Plantacion> ListarPlantacion(){

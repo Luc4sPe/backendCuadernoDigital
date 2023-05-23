@@ -24,17 +24,13 @@ public class AsesoriaRiego {
     @NotNull
     private float milimetrosAplicados;
 
+
     /*
-    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("riegos")
-    @JoinColumn(name = "cuadroId")
-    private Cuadro idCuadros;
-
-     */
-
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnoreProperties("finca")
     private List<Cuadro> numerosDeCuadros = new ArrayList<>();
+
+     */
 
 
 
@@ -42,6 +38,11 @@ public class AsesoriaRiego {
     @JsonIgnoreProperties("cuadros")
     @JoinColumn(name = "fincaId")
     private Finca finca;
+
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("riegos")
+    @JoinColumn(name = "cuadroId")
+    private Cuadro cuadro;
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Usuario productor;
@@ -55,10 +56,11 @@ public class AsesoriaRiego {
     public AsesoriaRiego() {
     }
 
-    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca, Usuario productor) {
+    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
         this.finca = finca;
+        this.cuadro=cuadro;
         this.productor = productor;
         this.fechaRiego = null;
         this.fechaModificacionRiego = null;
@@ -90,20 +92,20 @@ public class AsesoriaRiego {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public List<Cuadro> getNumerosDeCuadros() {
-        return numerosDeCuadros;
-    }
-
-    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
-        this.numerosDeCuadros = numerosDeCuadros;
-    }
-
     public Finca getFinca() {
         return finca;
     }
 
     public void setFinca(Finca finca) {
         this.finca = finca;
+    }
+
+    public Cuadro getCuadro() {
+        return cuadro;
+    }
+
+    public void setCuadro(Cuadro cuadro) {
+        this.cuadro = cuadro;
     }
 
     public Usuario getProductor() {

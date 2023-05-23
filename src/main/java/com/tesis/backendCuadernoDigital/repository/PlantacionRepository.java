@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.repository;
 
+import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Plantacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ public interface PlantacionRepository extends JpaRepository<Plantacion, Long> {
     Optional<Plantacion> findByIdPlantacion(Long id);
     Optional<Plantacion> findByNombreTipoCultivo(String nombre);
     Optional<Plantacion> findByJustificacion(String justificacion);
+    Optional<Plantacion> findByNumerosDeCuadros_IdCuadro(Long idCuadro);
     boolean existsByIdPlantacion(Long id);
     boolean existsByNombreTipoCultivo(String nombreCultivo);
     boolean existsByJustificacion(String justificacion);

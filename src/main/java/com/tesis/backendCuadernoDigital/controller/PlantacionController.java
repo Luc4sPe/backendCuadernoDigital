@@ -209,6 +209,16 @@ public class PlantacionController {
         return new ResponseEntity(plantacion,HttpStatus.OK);
     }
 
+    /*
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @GetMapping("/obtener/{idCuadro}")
+    public ResponseEntity<Cuadro> obtenerPlantacionPorCuadro(@PathVariable ("idCuadro") Long idCuadro){
+        Cuadro cuadro =cuadroService.getCuadro(idCuadro);
+        Plantacion plantacion = plantacionService.getPlantacionPorCuadro(cuadro.getIdCuadro());
+        return new ResponseEntity(plantacion,HttpStatus.OK);
+    }
+
+     */
 
 
 

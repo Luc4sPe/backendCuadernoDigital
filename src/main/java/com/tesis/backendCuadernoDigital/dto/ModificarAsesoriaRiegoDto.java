@@ -22,10 +22,16 @@ public class ModificarAsesoriaRiegoDto {
     private LocalTime duracionEnHoras;
     @NotBlank
     private float milimetrosAplicados;
+    /*
     @NotEmpty(message = "La lista no puede estar vacia")
     private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
+
+     */
     @NotNull(message = "La finca es obligatoria ")
     private Long idFinca;
+    @NotNull(message = "El id no puede ser un valor nulo")
+    @Min(value = 1, message = "El minimo de entre ileras es 1")
+    private Long idCuadro;
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String nombreProductor;
 
@@ -54,20 +60,20 @@ public class ModificarAsesoriaRiegoDto {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public List<Cuadro> getNumerosDeCuadros() {
-        return numerosDeCuadros;
-    }
-
-    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
-        this.numerosDeCuadros = numerosDeCuadros;
-    }
-
     public Long getIdFinca() {
         return idFinca;
     }
 
     public void setIdFinca(Long idFinca) {
         this.idFinca = idFinca;
+    }
+
+    public Long getIdCuadro() {
+        return idCuadro;
+    }
+
+    public void setIdCuadro(Long idCuadro) {
+        this.idCuadro = idCuadro;
     }
 
     public String getNombreProductor() {
