@@ -4,15 +4,14 @@ package com.tesis.backendCuadernoDigital.controller;
 import com.tesis.backendCuadernoDigital.dto.EditarRiegoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
 import com.tesis.backendCuadernoDigital.dto.RiegoDto;
+import com.tesis.backendCuadernoDigital.entity.AsesoriaRiego;
 import com.tesis.backendCuadernoDigital.entity.Cuadro;
 import com.tesis.backendCuadernoDigital.entity.Finca;
 import com.tesis.backendCuadernoDigital.entity.Riego;
+import com.tesis.backendCuadernoDigital.repository.AsesoriaRiegoRepository;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
-import com.tesis.backendCuadernoDigital.service.CuadroService;
-import com.tesis.backendCuadernoDigital.service.FincaService;
-import com.tesis.backendCuadernoDigital.service.LogService;
-import com.tesis.backendCuadernoDigital.service.RiegoService;
+import com.tesis.backendCuadernoDigital.service.*;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +48,9 @@ public class RiegoController {
 
     @Autowired
     LogService logService;
+
+
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
@@ -189,6 +191,7 @@ public class RiegoController {
         List<Riego> riego = riegoService.getListadoRiegosDeUnaFincaPorId(finca.getIdFinca());
         return new ResponseEntity(riego,HttpStatus.OK);
     }
+
 
 
 

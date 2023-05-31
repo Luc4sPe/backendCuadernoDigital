@@ -158,6 +158,20 @@ public class AsesoriaRiegoController {
         return new ResponseEntity<>(listar,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/listadoAsesoriaRiegoDeUnaFinca/{idFinca}")
+    public ResponseEntity<List<Cuadro>> listadoAsesoriaRiegoDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+        Finca finca = fincaService.getFincas(idFinca);
+        List<AsesoriaRiego> asesoria = asesoriaRiegoService.getListadoAsesoriaRiegoDeUnaFincaPorId(finca.getIdFinca());
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
+
+
+
+
+
+
 
     @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
     @GetMapping("/detalle/{id}")
