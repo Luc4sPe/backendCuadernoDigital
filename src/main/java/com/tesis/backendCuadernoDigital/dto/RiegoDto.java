@@ -70,7 +70,6 @@ public class RiegoDto {
         this.observacionProductor = observacionProductor;
     }
 
-
     public Long getIdFinca() {
         return idFinca;
     }
@@ -78,4 +77,6 @@ public class RiegoDto {
     public void setIdFinca(Long idFinca) {
         this.idFinca = idFinca;
     }
+
+
 }

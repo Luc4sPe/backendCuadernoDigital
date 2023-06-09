@@ -249,4 +249,10 @@ public class LogService {
         Log log = new Log(productor,LogAccion.MODIFICAR_ASESORIA_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+"Modifico la asesoria del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
         logRepository.save(log);
     }
+
+
+    public void modificarEstadoAsesoriaRiego(AsesoriaRiego asesoriaRiego, Usuario productor){
+        Log log = new Log(productor,LogAccion.SE_APLICO_ASESORIA_RIEGO," El productor: "+productor.getNombreUsuario()+"Aplico la asesoria del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
+        logRepository.save(log);
+    }
 }

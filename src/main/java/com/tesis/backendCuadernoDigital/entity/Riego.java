@@ -43,6 +43,9 @@ public class Riego {
     @JoinColumn(name = "fincaId")
     private Finca finca;
 
+
+
+
     @CreationTimestamp
     private Date fechaRiego;
     @UpdateTimestamp
@@ -132,6 +135,8 @@ public class Riego {
     public void setFinca(Finca finca) {
         this.finca = finca;
     }
+
+
 
     public Date getFechaRiego() {
         return fechaRiego;

@@ -47,11 +47,16 @@ public class AsesoriaRiego {
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Usuario productor;
 
+    @NotNull
+    private boolean asesoriaAplicada;
+
     @CreationTimestamp
     private Date fechaRiego;
 
     @UpdateTimestamp
     private Date fechaModificacionRiego;
+
+
 
     public AsesoriaRiego() {
     }
@@ -62,6 +67,7 @@ public class AsesoriaRiego {
         this.finca = finca;
         this.cuadro=cuadro;
         this.productor = productor;
+        this.asesoriaAplicada=false;
         this.fechaRiego = null;
         this.fechaModificacionRiego = null;
 
@@ -116,6 +122,19 @@ public class AsesoriaRiego {
         this.productor = productor;
     }
 
+    public boolean isAsesoriaAplicada() {
+        return asesoriaAplicada;
+    }
+
+    public void setAsesoriaAplicada(boolean asesoriaAplicada) {
+        this.asesoriaAplicada = asesoriaAplicada;
+    }
+
+    public void modificarEstado(){
+        this.asesoriaAplicada=!isAsesoriaAplicada();
+
+    }
+
     public Date getFechaRiego() {
         return fechaRiego;
     }
@@ -131,6 +150,8 @@ public class AsesoriaRiego {
     public void setFechaModificacionRiego(Date fechaModificacionRiego) {
         this.fechaModificacionRiego = fechaModificacionRiego;
     }
+
+
 }
 
 

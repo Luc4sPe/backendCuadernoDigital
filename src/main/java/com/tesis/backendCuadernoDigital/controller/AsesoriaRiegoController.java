@@ -168,6 +168,26 @@ public class AsesoriaRiegoController {
 
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/aplico/{id}")
+    public ResponseEntity<?> aplicar(@PathVariable("id") Long id){
+
+        if(!asesoriaRiegoService.existeByIdAsesoriaRiego(id)){
+            return new ResponseEntity(new Mensaje("La asesoria de riego no existe"), HttpStatus.NOT_FOUND);
+        }
+
+        AsesoriaRiego asesoriaRiego = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.getUsuarioLogeado(auth);
+        if (asesoriaRiego.isAsesoriaAplicada()) {
+            return new ResponseEntity(new Mensaje("La asesoria de riego ya se aplico"), HttpStatus.BAD_REQUEST);
+        }
+        asesoriaRiegoService.modificarEstado(id);
+
+        logService.modificarEstadoAsesoriaRiego(asesoriaRiego,usuarioLogueado);
+        return  new ResponseEntity(new Mensaje("Se aplicó exitosamente la asesoria de riego "),HttpStatus.OK);
+    }
 
 
 

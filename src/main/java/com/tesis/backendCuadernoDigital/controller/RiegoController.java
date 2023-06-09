@@ -87,7 +87,6 @@ public class RiegoController {
                     riegoDto.getObservacionProductor(),"",finca);
 
 
-
             this.riegoService.guardarRiego(nuevoRiego);
 
             if (nuevoRiego!=null){

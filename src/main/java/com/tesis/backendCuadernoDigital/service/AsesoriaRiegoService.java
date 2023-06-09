@@ -56,4 +56,12 @@ public class AsesoriaRiegoService {
         return asesoriaRiego;
     }
 
+
+    public void modificarEstado(Long id){
+        AsesoriaRiego seAplico = asesoriaRiegoRepository.getById(id);
+        seAplico.modificarEstado();
+        asesoriaRiegoRepository.save(seAplico);
+
+    }
+
 }
