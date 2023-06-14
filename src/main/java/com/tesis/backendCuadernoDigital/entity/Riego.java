@@ -25,7 +25,7 @@ public class Riego {
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("riegos")
     @JoinColumn(name = "cuadroId")
-    private Cuadro idCuadros;
+    private Cuadro cuadro;
 
     @NotNull
     private String observacionProductor;
@@ -54,10 +54,10 @@ public class Riego {
     public Riego() {
     }
 
-    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull Cuadro idCuadros, @NotNull String observacionProductor, @NotNull String justificacionProductor, @NotNull Finca finca) {
+    public Riego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados, @NotNull Cuadro cuadro, @NotNull String observacionProductor, @NotNull String justificacionProductor, @NotNull Finca finca) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
-        this.idCuadros=idCuadros;
+        this.cuadro=cuadro;
         this.observacionProductor = observacionProductor;
         this.justificacionProductor = justificacionProductor;
       //  this.semanaDesdeElTrasplante = semanaDesdeElTrasplante;
@@ -93,12 +93,12 @@ public class Riego {
         this.milimetrosAplicados = milimetrosAplicados;
     }
 
-    public Cuadro getIdCuadro() {
-        return idCuadros;
+    public Cuadro getCuadro() {
+        return cuadro;
     }
 
-    public void setIdCuadro(Cuadro idCuadro) {
-        this.idCuadros = idCuadro;
+    public void setCuadro(Cuadro cuadro) {
+        this.cuadro = cuadro;
     }
 
     public String getObservacionProductor() {

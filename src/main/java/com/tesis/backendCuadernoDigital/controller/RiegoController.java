@@ -123,7 +123,7 @@ public class RiegoController {
         if(editarRiego.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
-        if (editarRiego.getCuadro()<0)
+        if (editarRiego.getIdCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
         if (StringUtils.isBlank(editarRiego.getObservacionProductor()))
@@ -143,7 +143,7 @@ public class RiegoController {
         
         try {
 
-            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(editarRiego.getCuadro());
+            Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(editarRiego.getIdCuadro());
             Cuadro getIdCuadro = cuadroOptional.get();
 
            //Finca finca = fincaService.getFincas(editarRiego.getIdFinca());
@@ -154,7 +154,7 @@ public class RiegoController {
 
             riegoActualizar.setDuracionEnHoras(editarRiego.getDuracionEnHoras());
             riegoActualizar.setMilimetrosAplicados(editarRiego.getMilimetrosAplicados());
-            riegoActualizar.setIdCuadro(getIdCuadro);
+            riegoActualizar.setCuadro(getIdCuadro);
             riegoActualizar.setObservacionProductor(editarRiego.getObservacionProductor());
             riegoActualizar.setJustificacionProductor(editarRiego.getJustificacionProductor());
 
