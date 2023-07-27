@@ -13,7 +13,9 @@ public interface AsesoriaRiegoRepository extends JpaRepository<AsesoriaRiego, Lo
     List<AsesoriaRiego> findAllByOrderByIdAsc();
     Optional<AsesoriaRiego> findById(Long id );
      List<AsesoriaRiego> findByFinca_IdFinca(Long idFinca);
-     Integer countAsesoriaRiegoRepositoryBy();
+     Integer countAsesoriaRiegoBy();
+     Integer countAsesoriaRiegoByAsesoriaAplicadaTrue();
+     Integer countAsesoriaRiegoByAsesoriaAplicadaFalse();
      boolean existsById(Long id);
 
 

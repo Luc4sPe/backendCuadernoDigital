@@ -46,7 +46,16 @@ public class AsesoriaRiegoService {
 
 
     public Integer obtenerCantidadAsesoriasRiego(){
-        return asesoriaRiegoRepository.countAsesoriaRiegoRepositoryBy();
+        return asesoriaRiegoRepository.countAsesoriaRiegoBy();
+    }
+
+
+    public int cantidadDeAplicacionAsesoria(){
+        return asesoriaRiegoRepository.countAsesoriaRiegoByAsesoriaAplicadaTrue();
+    }
+
+    public int cantidadDeAsesoriaNoAplicada(){
+        return asesoriaRiegoRepository.countAsesoriaRiegoByAsesoriaAplicadaFalse();
     }
 
 

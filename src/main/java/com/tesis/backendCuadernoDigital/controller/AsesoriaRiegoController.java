@@ -226,6 +226,29 @@ public class AsesoriaRiegoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total")
+    public ResponseEntity<?> cantidadTotalAsesoria(){
+        int cantidad = asesoriaRiegoService.obtenerCantidadAsesoriasRiego();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-Aplicados")
+    public ResponseEntity<?> cantidadTotalDeAsesoriaAplicada(){
+        int cantidad = asesoriaRiegoService.cantidadDeAplicacionAsesoria();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-Aplicados")
+    public ResponseEntity<?> cantidadTotalDeAsesoriaNoAplicada(){
+        int cantidad = asesoriaRiegoService.cantidadDeAsesoriaNoAplicada();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+
+
 
 
 }
