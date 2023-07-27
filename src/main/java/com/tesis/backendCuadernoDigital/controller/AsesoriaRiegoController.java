@@ -151,7 +151,7 @@ public class AsesoriaRiegoController {
 
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA', 'PRODUCTOR')")
     @GetMapping("/listaAsesoria")
     public ResponseEntity<List<AsesoriaRiego>> listaAsesoriaRiego(){
         List<AsesoriaRiego> listar = asesoriaRiegoService.listarAsesoriaRiego();
@@ -185,15 +185,37 @@ public class AsesoriaRiegoController {
         }
         asesoriaRiegoService.modificarEstado(id);
 
-        logService.modificarEstadoAsesoriaRiego(asesoriaRiego,usuarioLogueado);
+
+        logService.modificarEstadoAsesoriaRiegoTrue(asesoriaRiego,usuarioLogueado);
         return  new ResponseEntity(new Mensaje("Se aplicó exitosamente la asesoria de riego "),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/canceloAplica/{id}")
+    public ResponseEntity<?> cancelarAplica(@PathVariable("id") Long id){
+
+        if(!asesoriaRiegoService.existeByIdAsesoriaRiego(id)){
+            return new ResponseEntity(new Mensaje("La asesoria de riego no existe"), HttpStatus.NOT_FOUND);
+        }
+
+        AsesoriaRiego asesoriaRiego = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.getUsuarioLogeado(auth);
+
+        if (!asesoriaRiego.isAsesoriaAplicada()) {
+            return new ResponseEntity(new Mensaje("La asesoria de riego no se aplico"), HttpStatus.BAD_REQUEST);
+        }
+
+        asesoriaRiegoService.modificarEstado(id);
+        logService.modificarEstadoAsesoriaRiegoFalse(asesoriaRiego,usuarioLogueado);
+        return  new ResponseEntity(new Mensaje("Se canceló exitosamente la asesoria de riego "),HttpStatus.OK);
     }
 
 
 
 
 
-    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<AsesoriaRiego> obteberDetalleDeUnaAsesoria(@PathVariable("id") Long id){
 

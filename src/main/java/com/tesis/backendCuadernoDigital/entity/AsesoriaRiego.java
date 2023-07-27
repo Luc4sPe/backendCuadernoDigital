@@ -58,6 +58,9 @@ public class AsesoriaRiego {
 
 
 
+
+
+
     public AsesoriaRiego() {
     }
 
@@ -67,7 +70,6 @@ public class AsesoriaRiego {
         this.finca = finca;
         this.cuadro=cuadro;
         this.productor = productor;
-        this.asesoriaAplicada=false;
         this.fechaRiego = null;
         this.fechaModificacionRiego = null;
 

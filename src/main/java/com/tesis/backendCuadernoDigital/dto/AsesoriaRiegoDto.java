@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AsesoriaRiegoDto {
@@ -83,4 +84,6 @@ public class AsesoriaRiegoDto {
     public void setNombreProductor(String nombreProductor) {
         this.nombreProductor = nombreProductor;
     }
+
+
 }
