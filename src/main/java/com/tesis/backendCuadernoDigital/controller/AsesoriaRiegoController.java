@@ -241,11 +241,13 @@ public class AsesoriaRiegoController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
-    @GetMapping("/total-Aplicados")
+    @GetMapping("/total-NoAplicados")
     public ResponseEntity<?> cantidadTotalDeAsesoriaNoAplicada(){
         int cantidad = asesoriaRiegoService.cantidadDeAsesoriaNoAplicada();
         return new ResponseEntity(cantidad, HttpStatus.OK);
     }
+
+
 
 
 
