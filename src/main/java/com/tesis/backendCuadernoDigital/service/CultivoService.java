@@ -57,6 +57,7 @@ public class CultivoService {
     }
 
 
+
     public  Cultivo getCultivo(Long id){
         Cultivo cultivo= getUnCultivo(id).orElseThrow(()-> new ResourceNotFoundException("EL Cultivo con ID: " + id + " no existe"));
         return cultivo;

@@ -17,4 +17,5 @@ public interface CultivoRepository extends JpaRepository<Cultivo, Long> {
     boolean existsByNombre(String nombre);
     boolean existsByRemito(String remito);
     Integer countCultivoBy();
+
 }

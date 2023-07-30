@@ -173,6 +173,14 @@ public class CultivoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total")
+    public ResponseEntity<?> cantidadTotalCultivos(){
+        Integer cantidad = cultivoService.getCantidadDeCultivos();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+
 
 
 
