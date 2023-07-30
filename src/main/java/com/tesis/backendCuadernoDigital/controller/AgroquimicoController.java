@@ -146,6 +146,15 @@ public class AgroquimicoController {
         }
 
 
+
+
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total")
+    public ResponseEntity<?> cantidadTotalAgroquimicos(){
+        Integer cantidad = agroquimicoService.getCantidadDeAgroquimicos();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
     }
 
     /*
