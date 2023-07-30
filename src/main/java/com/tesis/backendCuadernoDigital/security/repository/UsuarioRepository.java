@@ -21,10 +21,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     boolean existsByNombreUsuario(String nombreUsuario);
     boolean existsByEmail(String email);
     boolean existsByTelefono(String telefono);
-    int countUsuariosByEstadoActivoIsTrue();
-    int countUsuariosByEstadoActivoIsFalse();
-
-
+    Integer countUsuariosBy();
+    Integer countUsuariosByEstadoActivoTrue();
+    Integer countUsuariosByEstadoActivoFalse();
 
 
 }

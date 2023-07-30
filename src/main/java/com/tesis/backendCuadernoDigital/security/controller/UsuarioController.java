@@ -303,4 +303,26 @@ public class UsuarioController {
         return new ResponseEntity<>(listadoUsuarioPorRol,HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/total")
+    public ResponseEntity<?> cantidadTotalUsuarios(){
+        Integer cantidad = usuarioService.obtenerTotalUsuarios();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/total-usuarioActivos")
+    public ResponseEntity<?> cantidadTotalUsuariosActivos(){
+        Integer cantidad = usuarioService.totalUsuariosActivos();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/total-usuarioInactivos")
+    public ResponseEntity<?> cantidadTotalUsuariosInactivos(){
+        Integer cantidad = usuarioService.totalUsuariosInactivos();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
 }

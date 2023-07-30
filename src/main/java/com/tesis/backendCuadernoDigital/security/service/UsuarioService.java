@@ -97,5 +97,19 @@ public class UsuarioService {
         return productores;
     }
 
+    public Integer obtenerTotalUsuarios(){
+        return usuarioRepository.countUsuariosBy();
+    }
+
+
+
+    public int totalUsuariosActivos(){
+        return usuarioRepository.countUsuariosByEstadoActivoTrue();
+    }
+
+    public int totalUsuariosInactivos(){
+        return usuarioRepository.countUsuariosByEstadoActivoFalse();
+    }
+
 
 }

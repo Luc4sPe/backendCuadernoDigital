@@ -146,6 +146,11 @@ public class Usuario {
           this.estadoActivo = estadoActivo;
      }
 
+     public void modificarEstado(){
+        this.estadoActivo=!isEstadoActivo();
+
+    }
+
      public Date getFechaDeAlta() {
           return fechaDeAlta;
      }
@@ -170,10 +175,7 @@ public class Usuario {
           this.roles = roles;
      }
 
-     public void modificarEstado(){
-          this.estadoActivo=!isEstadoActivo();
 
-     }
 
      public String getTokenPassword() {
           return tokenPassword;
