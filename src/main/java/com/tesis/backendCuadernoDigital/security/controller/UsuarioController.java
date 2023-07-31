@@ -325,4 +325,31 @@ public class UsuarioController {
         return new ResponseEntity(cantidad, HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-productor/{nombre}")
+    public ResponseEntity<?> cantidadTotalProductor(@PathVariable ("nombre") String nombre){
+        Integer cantidad = usuarioService.obtenerTotalProductor(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/totalProductorActivo/{nombre}")
+    public ResponseEntity<?> cantidadTotalProductorActivos(@PathVariable ("nombre") String nombre){
+        Integer cantidad = usuarioService.obtenerTotalProductorActivos(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/totalProductorInactivos/{nombre}")
+    public ResponseEntity<?> cantidadTotalProductorInactivos(@PathVariable ("nombre") String nombre){
+        Integer cantidad = usuarioService.obtenerTotalProductorInactivos(rolService.getByRolNombre(RolNombre.valueOf(nombre.toUpperCase())));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+    
+
+
+
+
+
 }

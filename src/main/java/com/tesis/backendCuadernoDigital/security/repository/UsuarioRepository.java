@@ -24,6 +24,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     Integer countUsuariosBy();
     Integer countUsuariosByEstadoActivoTrue();
     Integer countUsuariosByEstadoActivoFalse();
-
+    Integer countUsuariosByRolesContains(Optional <Rol> rol);
+    Integer countUsuariosByEstadoActivoTrueAndRolesContains(Optional <Rol> rol);
+    Integer countUsuariosByEstadoActivoFalseAndRolesContains(Optional <Rol> rol);
 
 }

@@ -55,7 +55,7 @@ public class FincaService {
         return fincaRepository.existsByIdFinca(id);
     }
 
-    public Integer getCantidadDeCuadrosFincas(){
+    public Integer getCantidadDeFincas(){
         return fincaRepository.countFincaBy();
     }
 

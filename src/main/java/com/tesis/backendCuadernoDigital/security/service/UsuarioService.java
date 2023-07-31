@@ -111,5 +111,18 @@ public class UsuarioService {
         return usuarioRepository.countUsuariosByEstadoActivoFalse();
     }
 
+    public Integer obtenerTotalProductor(Optional <Rol> productor){
+        return  usuarioRepository.countUsuariosByRolesContains(productor);
+    }
+
+    public Integer obtenerTotalProductorActivos(Optional <Rol> productor){
+        return  usuarioRepository.countUsuariosByEstadoActivoTrueAndRolesContains(productor);
+    }
+
+    public Integer obtenerTotalProductorInactivos(Optional <Rol> productor){
+        return  usuarioRepository.countUsuariosByEstadoActivoFalseAndRolesContains(productor);
+    }
+
+
 
 }

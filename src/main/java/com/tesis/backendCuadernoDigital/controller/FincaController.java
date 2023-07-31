@@ -153,7 +153,7 @@ public class FincaController {
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/CantidadDeFinca")
     public ResponseEntity<Integer> cantidadTotalFincas() {
-        Integer cantidad = fincaService.getCantidadDeCuadrosFincas();
+        Integer cantidad = fincaService.getCantidadDeFincas();
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
