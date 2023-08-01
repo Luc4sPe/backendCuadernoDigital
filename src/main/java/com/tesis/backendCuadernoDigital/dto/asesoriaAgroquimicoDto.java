@@ -4,10 +4,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class AplicacionAgroquimicoDto {
+public class asesoriaAgroquimicoDto {
 
-    @NotNull(message = "El id no debe estar vacio")
-    @Min(value = 1, message = "El minimo valor del id es 1")
+    @NotNull(message = "El id no puede ser un valor nulo")
+    @Min(value = 1, message = "El minimo de entre ileras es 1")
     private Long id;
 
     @NotNull(message = "El idAgroquimico no debe estar vacio")
@@ -26,22 +26,23 @@ public class AplicacionAgroquimicoDto {
     @Min(value = 1, message = "El minimo valor del id es 1")
     private float dosisPorHl;
 
-    @NotNull(message = "El volumen no debe estar vacia")
+    @NotNull(message = "La dosis no debe estar vacia")
     @Min(value = 1, message = "El minimo valor del id es 1")
     private float volumenPorHectaria;
 
     @NotBlank(message = "El objetivo no debe estar vacio")
     private String objetivo;
 
-    @NotBlank(message = "La observación no debe estar vacio")
-    private String observaciones;
-
-    @NotBlank(message = "La plaga no debe estar vacio")
+    @NotBlank(message = "El objetivo no debe estar vacio")
     private String plaga;
 
     @NotNull(message = "La finca es obligatoria ")
     @Min(value = 1, message = "El minimo valor del id es 1")
     private Long idFinca;
+
+
+    @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
+    private String nombreProductor;
 
 
     public Long getId() {
@@ -100,14 +101,6 @@ public class AplicacionAgroquimicoDto {
         this.objetivo = objetivo;
     }
 
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
     public String getPlaga() {
         return plaga;
     }
@@ -123,6 +116,12 @@ public class AplicacionAgroquimicoDto {
     public void setIdFinca(Long idFinca) {
         this.idFinca = idFinca;
     }
+
+    public String getNombreProductor() {
+        return nombreProductor;
+    }
+
+    public void setNombreProductor(String nombreProductor) {
+        this.nombreProductor = nombreProductor;
+    }
 }
-
-

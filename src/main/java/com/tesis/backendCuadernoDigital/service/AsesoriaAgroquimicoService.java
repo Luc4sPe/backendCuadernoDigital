@@ -68,7 +68,7 @@ public class AsesoriaAgroquimicoService {
         AsesoriaAgroquimico seAplico = asesoriaAgroquimicoRepository.getById(id);
         seAplico.modificarEstado();
         asesoriaAgroquimicoRepository.save(seAplico);
-        
+
     }
 
 }
