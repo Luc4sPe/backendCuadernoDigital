@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-
+@Entity
 public class AsesoriaAgroquimico {
 
     @Id
