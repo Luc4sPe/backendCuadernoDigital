@@ -17,6 +17,6 @@ public interface AsesoriaAgroquimicoRepository extends JpaRepository<AsesoriaAgr
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaTrue();
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaFalse();
     boolean existsById(Long id);
-    
+
 
 }
