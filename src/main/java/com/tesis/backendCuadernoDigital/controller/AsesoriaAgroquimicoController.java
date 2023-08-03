@@ -162,6 +162,16 @@ public class AsesoriaAgroquimicoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/detalle/{id}")
+    ResponseEntity<AsesoriaAgroquimico> obteberDetalleDeUnaAsesoriaAgroqui(@PathVariable("id") Long id){
+        if(!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id))
+            return new ResponseEntity(new Mensaje("no existe esa asesoría"),HttpStatus.NOT_FOUND);
+        AsesoriaAgroquimico asesoria = asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
+
 
 
 
