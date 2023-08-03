@@ -4,7 +4,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class asesoriaAgroquimicoDto {
+public class AsesoriaAgroquimicoDto {
 
     @NotNull(message = "El id no puede ser un valor nulo")
     @Min(value = 1, message = "El minimo de entre ileras es 1")
@@ -43,7 +43,6 @@ public class asesoriaAgroquimicoDto {
 
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String nombreProductor;
-
 
     public Long getId() {
         return id;

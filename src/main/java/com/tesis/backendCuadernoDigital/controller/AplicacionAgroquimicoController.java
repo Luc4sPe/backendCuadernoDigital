@@ -99,7 +99,7 @@ public class AplicacionAgroquimicoController {
                 logService.guardarAplicacionAgroquimico(aplicacionDeAgroquimico,usuario);
                 return new ResponseEntity<>(new Mensaje("La  aplicación de agroquímico se guardado correctamente"),HttpStatus.CREATED);
             }
-            return new ResponseEntity(new Mensaje(" Fallo la operacion, la  aplicación de agroquímico no registrada"), HttpStatus.CREATED);
+            return new ResponseEntity(new Mensaje(" Fallo la operacion, la  aplicación de agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             return new ResponseEntity(new Mensaje("Fallo la operacion, de aplicacion de Agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
 
