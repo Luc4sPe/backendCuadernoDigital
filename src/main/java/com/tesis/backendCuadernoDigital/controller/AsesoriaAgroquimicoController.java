@@ -101,6 +101,14 @@ public class AsesoriaAgroquimicoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA', 'PRODUCTOR')")
+    @GetMapping("/listaAsesoriaAgroquimico")
+    public ResponseEntity<List<AsesoriaAgroquimico>> listaAsesoriaAgroquimico(){
+        List<AsesoriaAgroquimico> listar = asesoriaAgroquimicoService.listarAsesoriaAgroquimico();
+        return new ResponseEntity<>(listar,HttpStatus.OK);
+    }
+
+
 
 
 }
