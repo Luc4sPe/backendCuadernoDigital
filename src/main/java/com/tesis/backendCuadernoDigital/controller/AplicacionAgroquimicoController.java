@@ -145,6 +145,7 @@ public class AplicacionAgroquimicoController {
         if (StringUtils.isBlank(editarAplicacionAgroquimicoDto.getObservaciones()))
             return new ResponseEntity(new Mensaje("La observacion es obligatoria"), HttpStatus.BAD_REQUEST);
 
+        //se obtiene una aplicaclion a traves del id para manupular uno de los atributo de la clase en este caso justificación
         AplicacionDeAgroquimico apliAgroquimico=aplicacionAgroquimicoService.getAplicaAgroquimico(id);
 
         if(!apliAgroquimico.getJustificacion().isEmpty())

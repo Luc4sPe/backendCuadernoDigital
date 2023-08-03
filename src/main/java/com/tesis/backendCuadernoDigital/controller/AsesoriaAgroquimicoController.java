@@ -3,6 +3,7 @@ package com.tesis.backendCuadernoDigital.controller;
 
 import com.tesis.backendCuadernoDigital.dto.AsesoriaAgroquimicoDto;
 import com.tesis.backendCuadernoDigital.dto.Mensaje;
+import com.tesis.backendCuadernoDigital.dto.ModificarAsesoriaAgroquimicoDto;
 import com.tesis.backendCuadernoDigital.entity.*;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import com.tesis.backendCuadernoDigital.security.service.UsuarioService;
@@ -101,12 +102,67 @@ public class AsesoriaAgroquimicoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/listaAsesoriaAgroquimico")
     public ResponseEntity<List<AsesoriaAgroquimico>> listaAsesoriaAgroquimico(){
         List<AsesoriaAgroquimico> listar = asesoriaAgroquimicoService.listarAsesoriaAgroquimico();
         return new ResponseEntity<>(listar,HttpStatus.OK);
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> modificarAsesoriaAgroquimico(@PathVariable("id") Long id, @Valid @RequestBody ModificarAsesoriaAgroquimicoDto modificarAsesoriaAgroquimicoDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
+
+        if (!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id))
+            return new ResponseEntity(new Mensaje("no existe esa asesoria de agroquímico"), HttpStatus.NOT_FOUND);
+
+        if(modificarAsesoriaAgroquimicoDto.getDosisPorHl()<0)
+            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+
+        if(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+
+        if (modificarAsesoriaAgroquimicoDto.getIdCuadro()<0)
+            return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
+
+
+        try {
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Usuario usuario = usuarioService.getUsuarioLogeado(auth);
+
+            Cuadro getCuadro= cuadroService.getCuadro(modificarAsesoriaAgroquimicoDto.getIdCuadro());
+            Agroquimico getAgroquimico=agroquimicoService.getAgroquimico(modificarAsesoriaAgroquimicoDto.getIdAgroquimico());
+
+
+            AsesoriaAgroquimico modificarAsesoriaAgroquimico = asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
+            modificarAsesoriaAgroquimico.setAgroquimico(getAgroquimico);
+            modificarAsesoriaAgroquimico.setCuadro(getCuadro);
+            modificarAsesoriaAgroquimico.setDosisPorHectaria(modificarAsesoriaAgroquimicoDto.getDosisPorHectaria());
+            modificarAsesoriaAgroquimico.setDosisPorHl(modificarAsesoriaAgroquimicoDto.getDosisPorHl());
+            modificarAsesoriaAgroquimico.setVolumenPorHectaria(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria());
+            modificarAsesoriaAgroquimico.setObjetivo(modificarAsesoriaAgroquimicoDto.getObjetivo());
+            modificarAsesoriaAgroquimico.setPlaga(modificarAsesoriaAgroquimicoDto.getPlaga());
+
+            asesoriaAgroquimicoService.actualizarAsesoriaAgroquimico(modificarAsesoriaAgroquimico);
+
+            if(modificarAsesoriaAgroquimico!=null){
+
+                logService.modificarAsesoriaAgroquimico(modificarAsesoriaAgroquimico,usuario);
+                return new ResponseEntity<>(new Mensaje(" Asesoría de aplicación de agroquímico actualizada correctamente"), HttpStatus.OK);
+            }
+            return new ResponseEntity(new Mensaje("Asesoría de aplicación de agroquímico no se actualizó correctamente"),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoría de aplicación de agroquímico"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+
 
 
 
