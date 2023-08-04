@@ -71,7 +71,8 @@ public class AsesoriaRiegoController {
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(aseRieDTO.getNombreProductor());
             Usuario usuarioCapturado = usuarioOptional.get();
-            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),finca,cuadroEnviar ,usuarioCapturado);
+            AsesoriaRiego nuevaAsesoriaRiego = new AsesoriaRiego(aseRieDTO.getDuracionEnHoras(),aseRieDTO.getMilimetrosAplicados(),finca,cuadroEnviar ,usuarioCapturado,
+                    aseRieDTO.getFechaEstimadaAplicacion());
 
             /*
             // recorre la lista para ir guardando cada asesoria en un cuadro de la lista
@@ -142,6 +143,7 @@ public class AsesoriaRiegoController {
             modificar.setCuadro(getIdCuadro);
             modificar.setProductor(usuarioCapturado);
             modificar.fechaModificacionRiego();
+            modificar.setFechaEstimadaAplicacion(modiAseRiegoDto.getFechaEstimadaAplicacion());
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
             if(modiAseRiegoDto!=null){

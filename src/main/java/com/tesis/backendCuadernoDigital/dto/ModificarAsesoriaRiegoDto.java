@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,10 @@ public class ModificarAsesoriaRiegoDto {
     private Long idCuadro;
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String nombreProductor;
+
+    @NotNull(message = "la fecha estimada de aplicación es obligatoria")
+    private LocalDate fechaEstimadaAplicacion;
+
 
 
     public Long getId() {
@@ -82,5 +87,13 @@ public class ModificarAsesoriaRiegoDto {
 
     public void setNombreProductor(String nombreProductor) {
         this.nombreProductor = nombreProductor;
+    }
+
+    public LocalDate getFechaEstimadaAplicacion() {
+        return fechaEstimadaAplicacion;
+    }
+
+    public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
+        this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
     }
 }

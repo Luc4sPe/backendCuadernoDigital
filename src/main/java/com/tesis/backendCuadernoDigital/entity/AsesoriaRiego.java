@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,6 +58,8 @@ public class AsesoriaRiego {
     private Date fechaModificacionRiego;
 
     private Date fechaModificacionEstado;
+    @NotNull
+    private LocalDate fechaEstimadaAplicacion;
 
 
 
@@ -66,13 +69,15 @@ public class AsesoriaRiego {
     public AsesoriaRiego() {
     }
 
-    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor) {
+    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor,@NotNull LocalDate fechaEstimadaAplicacion) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
         this.finca = finca;
         this.cuadro=cuadro;
         this.productor = productor;
         this.fechaRiego = null;
+        this.fechaEstimadaAplicacion=fechaEstimadaAplicacion;
+
        // this.fechaModificacionRiego = null;
 
     }
@@ -169,6 +174,13 @@ public class AsesoriaRiego {
     }
 
 
+    public LocalDate getFechaEstimadaAplicacion() {
+        return fechaEstimadaAplicacion;
+    }
+
+    public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
+        this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
+    }
 }
 
 
