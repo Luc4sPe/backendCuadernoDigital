@@ -53,8 +53,10 @@ public class AsesoriaRiego {
     @CreationTimestamp
     private Date fechaRiego;
 
-    @UpdateTimestamp
+
     private Date fechaModificacionRiego;
+
+    private Date fechaModificacionEstado;
 
 
 
@@ -71,7 +73,7 @@ public class AsesoriaRiego {
         this.cuadro=cuadro;
         this.productor = productor;
         this.fechaRiego = null;
-        this.fechaModificacionRiego = null;
+       // this.fechaModificacionRiego = null;
 
     }
 
@@ -134,6 +136,7 @@ public class AsesoriaRiego {
 
     public void modificarEstado(){
         this.asesoriaAplicada=!isAsesoriaAplicada();
+        this.fechaModificacionEstado = new Date();
 
     }
 
@@ -151,6 +154,18 @@ public class AsesoriaRiego {
 
     public void setFechaModificacionRiego(Date fechaModificacionRiego) {
         this.fechaModificacionRiego = fechaModificacionRiego;
+    }
+
+    public Date getFechaModificacionEstado() {
+        return fechaModificacionEstado;
+    }
+
+    public void setFechaModificacionEstado(Date fechaModificacionEstadoo) {
+        this.fechaModificacionEstado = fechaModificacionEstadoo;
+    }
+
+    public void fechaModificacionRiego() {
+        this.fechaModificacionRiego = new Date();
     }
 
 

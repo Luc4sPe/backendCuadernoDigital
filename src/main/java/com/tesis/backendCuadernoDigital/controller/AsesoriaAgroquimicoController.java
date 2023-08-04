@@ -129,6 +129,7 @@ public class AsesoriaAgroquimicoController {
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
 
+
         try {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();

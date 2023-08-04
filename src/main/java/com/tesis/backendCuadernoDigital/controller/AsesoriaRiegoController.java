@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,6 +110,11 @@ public class AsesoriaRiegoController {
         if(modiAseRiegoDto.getMilimetrosAplicados()<0)
             return new ResponseEntity(new Mensaje("Los milimetros no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
+        //se obtiene una asesoría a traves del id para manupular uno de los atributo de la clase en este caso el estado
+        AsesoriaRiego asesoriaRiego = asesoriaRiegoService.getAsesoriaRiego(id);
+        if(asesoriaRiego.isAsesoriaAplicada()==true)
+            return new ResponseEntity(new Mensaje("La asesoria fue aplicada no se puede modificar "), HttpStatus.BAD_REQUEST);
+
         try {
 
             Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(modiAseRiegoDto.getNombreProductor());
@@ -135,6 +141,7 @@ public class AsesoriaRiegoController {
             modificar.setFinca(finca);
             modificar.setCuadro(getIdCuadro);
             modificar.setProductor(usuarioCapturado);
+            modificar.fechaModificacionRiego();
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
             if(modiAseRiegoDto!=null){

@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,8 +41,12 @@ public class AsesoriaAgroquimico {
 
     @CreationTimestamp
     private Date fechaAsesoria;
-    @UpdateTimestamp
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Date fechaModificacion;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date fechaAplicacion;
+
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("cuadros")
@@ -69,9 +74,9 @@ public class AsesoriaAgroquimico {
         this.finca = finca;
         this.productor = productor;
         this.fechaAsesoria=null;
-        this.fechaAplicacion=null;
         this.asesoriaAplicada=false;
     }
+
 
     public Long getId() {
         return id;
@@ -145,6 +150,14 @@ public class AsesoriaAgroquimico {
         this.fechaAsesoria = fechaAsesoria;
     }
 
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Date getFechaAplicacion() {
         return fechaAplicacion;
     }
@@ -177,8 +190,21 @@ public class AsesoriaAgroquimico {
         this.asesoriaAplicada = asesoriaAplicada;
     }
 
+
+
     public void modificarEstado(){
         this.asesoriaAplicada=!isAsesoriaAplicada();
+        this.fechaAplicacion = new Date();
 
     }
+
+    @PreUpdate
+    public void fechaModificacion() {
+        this.fechaModificacion = new Date();
+    }
+
+
+
+
+
 }
