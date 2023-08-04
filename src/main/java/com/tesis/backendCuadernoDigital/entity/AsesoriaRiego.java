@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -174,6 +176,12 @@ public class AsesoriaRiego {
     }
 
 
+    public String getFechaEstimadaAplicacionParsed() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return fechaEstimadaAplicacion.atTime(1,1).toString();
+
+    }
+    @JsonIgnore
     public LocalDate getFechaEstimadaAplicacion() {
         return fechaEstimadaAplicacion;
     }
@@ -181,6 +189,8 @@ public class AsesoriaRiego {
     public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
         this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
     }
+
+
 }
 
 
