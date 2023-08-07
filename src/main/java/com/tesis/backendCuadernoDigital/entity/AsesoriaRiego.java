@@ -54,12 +54,12 @@ public class AsesoriaRiego {
     private boolean asesoriaAplicada;
 
     @CreationTimestamp
-    private Date fechaRiego;
+    private Date fechaAsesoriaRiego;
 
 
-    private Date fechaModificacionRiego;
+    private Date fechaModificacionAsesoriaRiego;
 
-    private Date fechaModificacionEstado;
+    private Date fechaAplicacionAsesoria;
 
     private LocalDate fechaEstimadaAplicacion;
 
@@ -77,7 +77,7 @@ public class AsesoriaRiego {
         this.finca = finca;
         this.cuadro=cuadro;
         this.productor = productor;
-        this.fechaRiego = null;
+        this.fechaAsesoriaRiego = null;
         this.fechaEstimadaAplicacion=fechaEstimadaAplicacion;
 
        // this.fechaModificacionRiego = null;
@@ -143,38 +143,33 @@ public class AsesoriaRiego {
 
     public void modificarEstado(){
         this.asesoriaAplicada=!isAsesoriaAplicada();
-        this.fechaModificacionEstado = new Date();
+        this.fechaAplicacionAsesoria = new Date();
 
     }
 
-    public Date getFechaRiego() {
-        return fechaRiego;
+    public Date getFechaAsesoriaRiego() {
+        return fechaAsesoriaRiego;
     }
 
-    public void setFechaRiego(Date fechaRiego) {
-        this.fechaRiego = fechaRiego;
+    public void setFechaAsesoriaRiego(Date fechaAsesoriaRiego) {
+        this.fechaAsesoriaRiego = fechaAsesoriaRiego;
     }
 
-    public Date getFechaModificacionRiego() {
-        return fechaModificacionRiego;
+    public Date getFechaModificacionAsesoriaRiego() {
+        return fechaModificacionAsesoriaRiego;
     }
 
-    public void setFechaModificacionRiego(Date fechaModificacionRiego) {
-        this.fechaModificacionRiego = fechaModificacionRiego;
+    public void setFechaModificacionAsesoriaRiego(Date fechaModificacionAsesoriaRiego) {
+        this.fechaModificacionAsesoriaRiego = fechaModificacionAsesoriaRiego;
     }
 
-    public Date getFechaModificacionEstado() {
-        return fechaModificacionEstado;
+    public Date getFechaAplicacionAsesoria() {
+        return fechaAplicacionAsesoria;
     }
 
-    public void setFechaModificacionEstado(Date fechaModificacionEstadoo) {
-        this.fechaModificacionEstado = fechaModificacionEstadoo;
+    public void setFechaAplicacionAsesoria(Date fechaAplicacionAsesoria) {
+        this.fechaAplicacionAsesoria = fechaAplicacionAsesoria;
     }
-
-    public void fechaModificacionRiego() {
-        this.fechaModificacionRiego = new Date();
-    }
-
 
     public String getFechaEstimadaAplicacionParsed() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -189,6 +184,14 @@ public class AsesoriaRiego {
     public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
         this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
     }
+
+
+    public void fechaModificacionAsesoriaRiego() {
+        this.fechaModificacionAsesoriaRiego = new Date();
+    }
+
+
+
 
 
 }

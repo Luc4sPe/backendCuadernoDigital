@@ -142,7 +142,7 @@ public class AsesoriaRiegoController {
             modificar.setFinca(finca);
             modificar.setCuadro(getIdCuadro);
             modificar.setProductor(usuarioCapturado);
-            modificar.fechaModificacionRiego();
+            modificar.fechaModificacionAsesoriaRiego();
             modificar.setFechaEstimadaAplicacion(modiAseRiegoDto.getFechaEstimadaAplicacion());
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
