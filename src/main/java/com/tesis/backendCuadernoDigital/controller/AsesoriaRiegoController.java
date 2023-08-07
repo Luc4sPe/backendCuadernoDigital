@@ -116,6 +116,8 @@ public class AsesoriaRiegoController {
         if(asesoriaRiego.isAsesoriaAplicada()==true)
             return new ResponseEntity(new Mensaje("La asesoria fue aplicada no se puede modificar "), HttpStatus.BAD_REQUEST);
 
+        if( asesoriaRiego.getFechaModificacionAsesoriaRiego()!=null )
+            return new ResponseEntity(new Mensaje("La asesoría ya fue modificada "), HttpStatus.BAD_REQUEST);
         try {
 
             Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(modiAseRiegoDto.getNombreProductor());
@@ -125,7 +127,6 @@ public class AsesoriaRiegoController {
             Cuadro getIdCuadro = cuadroOptional.get();
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-
             /*
             // recorre la lista para ir modificando cada asesoria en un cuadro de la lista
             List<Cuadro> cuadros = modiAseRiegoDto.getNumerosDeCuadros()
@@ -135,7 +136,6 @@ public class AsesoriaRiegoController {
                     .collect(Collectors.toList());
 
              */
-
             AsesoriaRiego modificar = asesoriaRiegoService.getUnaAsesoriaRiego(id).get();
             modificar.setDuracionEnHoras(modiAseRiegoDto.getDuracionEnHoras());
             modificar.setMilimetrosAplicados(modiAseRiegoDto.getMilimetrosAplicados());
