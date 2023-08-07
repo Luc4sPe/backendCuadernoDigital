@@ -3,6 +3,7 @@ package com.tesis.backendCuadernoDigital.service;
 import com.tesis.backendCuadernoDigital.entity.AsesoriaRiego;
 import com.tesis.backendCuadernoDigital.excepcion.ResourceNotFoundException;
 import com.tesis.backendCuadernoDigital.repository.AsesoriaRiegoRepository;
+import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,18 @@ public class AsesoriaRiegoService {
 
     public int cantidadDeAsesoriaNoAplicada(){
         return asesoriaRiegoRepository.countAsesoriaRiegoByAsesoriaAplicadaFalse();
+    }
+
+    public Integer obtenerTotalAsesoriaByProductor(Optional<Usuario>  nombre){
+        return asesoriaRiegoRepository.countAsesoriaRiegoByProductor(nombre);
+    }
+
+    public Integer obtenerTotalAsesoriaAplicadaByProductor(Optional<Usuario>  nombre){
+        return asesoriaRiegoRepository.countAsesoriaRiegoByAsesoriaAplicadaTrueAndProductor(nombre);
+    }
+
+    public Integer obtenerTotalAsesoriaNoAplicadaByProductor(Optional<Usuario>  nombre){
+        return asesoriaRiegoRepository.countAsesoriaRiegoByAsesoriaAplicadaFalseAndProductor(nombre);
     }
 
 
