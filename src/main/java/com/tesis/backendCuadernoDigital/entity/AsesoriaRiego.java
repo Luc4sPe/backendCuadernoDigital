@@ -60,7 +60,7 @@ public class AsesoriaRiego {
     private Date fechaModificacionRiego;
 
     private Date fechaModificacionEstado;
-    @NotNull
+
     private LocalDate fechaEstimadaAplicacion;
 
 
@@ -71,7 +71,7 @@ public class AsesoriaRiego {
     public AsesoriaRiego() {
     }
 
-    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor,@NotNull LocalDate fechaEstimadaAplicacion) {
+    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor, LocalDate fechaEstimadaAplicacion) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
         this.finca = finca;

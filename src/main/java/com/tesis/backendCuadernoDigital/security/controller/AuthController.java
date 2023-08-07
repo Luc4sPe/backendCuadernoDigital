@@ -61,6 +61,9 @@ public class AuthController {
 
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+        Usuario usuarioo = usuarioService.getByNombreUsuarioOrEmail(loginUsuario.getNombreUsuario()).get();
+        if(!usuarioo.isEstadoActivo())
+            return new ResponseEntity(new Mensaje("No se puede loguear usuario inactivo"), HttpStatus.UNAUTHORIZED);
 
         try {
             Authentication authentication =
@@ -80,7 +83,7 @@ public class AuthController {
             Usuario usuario = usuarioService.getByNombreUsuarioOrEmail(loginUsuario.getNombreUsuario()).get();
             Integer cantidadIntentos = 3;
             logService.guardarLogErrorLogin(usuario);
-            if(! usuario.getNombreUsuario().equals("admin") && logService.cantidadLogUsuarioMayorOIgualAN(usuario, cantidadIntentos) && logService.ultimosNLogSonErrorLogin(usuario, cantidadIntentos)){
+            if(!usuario.getNombreUsuario().equals("admin") && logService.cantidadLogUsuarioMayorOIgualAN(usuario, cantidadIntentos) && logService.ultimosNLogSonErrorLogin(usuario, cantidadIntentos)){
                 usuarioService.modificarEstado(usuario.getId());
                 logService.guardarLogBajaUsuarioLuegoNIntentoDeAccesoFAllido(usuario);
                 throw new ExcepcionSolicitudIncorrecta("El usuario fue dado de baja por exceder los intentos de acceso fallidos: "+cantidadIntentos);

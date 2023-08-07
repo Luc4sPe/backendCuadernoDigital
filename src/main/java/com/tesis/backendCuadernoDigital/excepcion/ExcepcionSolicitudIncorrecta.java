@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 @ResponseBody
 public class ExcepcionSolicitudIncorrecta extends RuntimeException {
-    public ExcepcionSolicitudIncorrecta(String msj){
-        super(msj);
+    public ExcepcionSolicitudIncorrecta(String mensaje){
+        super((mensaje));
+
     }
 }

@@ -37,7 +37,7 @@ public class AsesoriaRiegoDto {
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String nombreProductor;
 
-    @NotNull(message = "la fecha estimada de aplicación es obligatoria")
+
     private LocalDate fechaEstimadaAplicacion;
 
 

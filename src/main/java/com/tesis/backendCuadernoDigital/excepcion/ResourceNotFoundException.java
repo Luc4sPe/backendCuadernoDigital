@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ResourceNotFoundException extends RuntimeException {
 
     public ResourceNotFoundException(String mensaje){
-        super(mensaje);
+        super((mensaje));
     }
 
 }
