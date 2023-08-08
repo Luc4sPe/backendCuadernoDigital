@@ -3,6 +3,7 @@ package com.tesis.backendCuadernoDigital.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public class ModificarAsesoriaAgroquimicoDto {
 
@@ -35,6 +36,10 @@ public class ModificarAsesoriaAgroquimicoDto {
 
     @NotBlank(message = "El objetivo no debe estar vacio")
     private String plaga;
+
+    @NotNull(message = "la fecha estimada de aplicación es obligatoria")
+    private LocalDate fechaEstimadaAplicacion;
+
 
     @NotNull(message = "La finca es obligatoria ")
     @Min(value = 1, message = "El minimo valor del id es 1")
@@ -106,6 +111,14 @@ public class ModificarAsesoriaAgroquimicoDto {
 
     public void setPlaga(String plaga) {
         this.plaga = plaga;
+    }
+
+    public LocalDate getFechaEstimadaAplicacion() {
+        return fechaEstimadaAplicacion;
+    }
+
+    public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
+        this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
     }
 
     public Long getIdFinca() {

@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 @Entity
 public class AsesoriaAgroquimico {
@@ -40,12 +43,15 @@ public class AsesoriaAgroquimico {
     private String plaga;
 
     @CreationTimestamp
-    private Date fechaAsesoria;
+    private Date fechaAsesoriaAgroquimico;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date fechaModificacion;
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date fechaAplicacion;
+    private Date fechaModificacionAsesoriaAgroquimico;
+
+    private Date fechaAplicacionAsesoria;
+
+    private LocalDate fechaEstimadaAplicacion;
+
+
 
 
     @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -63,7 +69,7 @@ public class AsesoriaAgroquimico {
     public AsesoriaAgroquimico() {
     }
 
-    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga, Finca finca, Usuario productor) {
+    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga,LocalDate fechaEstimadaAplicacion,Finca finca, Usuario productor) {
         this.agroquimico = agroquimico;
         this.cuadro = cuadro;
         this.dosisPorHectaria = dosisPorHectaria;
@@ -73,8 +79,8 @@ public class AsesoriaAgroquimico {
         this.plaga = plaga;
         this.finca = finca;
         this.productor = productor;
-        this.fechaAsesoria=null;
-        this.asesoriaAplicada=false;
+        this.fechaAsesoriaAgroquimico=null;
+        this.fechaEstimadaAplicacion=fechaEstimadaAplicacion;
     }
 
 
@@ -142,28 +148,45 @@ public class AsesoriaAgroquimico {
         this.plaga = plaga;
     }
 
-    public Date getFechaAsesoria() {
-        return fechaAsesoria;
+    public Date getFechaAsesoriaAgroquimico() {
+        return fechaAsesoriaAgroquimico;
     }
 
-    public void setFechaAsesoria(Date fechaAsesoria) {
-        this.fechaAsesoria = fechaAsesoria;
+    public void setFechaAsesoriaAgroquimico(Date fechaAsesoriaAgroquimico) {
+        this.fechaAsesoriaAgroquimico = fechaAsesoriaAgroquimico;
     }
 
-    public Date getFechaModificacion() {
-        return fechaModificacion;
+    public Date getFechaModificacionAsesoriaAgroquimico() {
+        return fechaModificacionAsesoriaAgroquimico;
     }
 
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
+    public void setFechaModificacionAsesoriaAgroquimico(Date fechaModificacionAsesoriaAgroquimico) {
+        this.fechaModificacionAsesoriaAgroquimico = fechaModificacionAsesoriaAgroquimico;
     }
 
-    public Date getFechaAplicacion() {
-        return fechaAplicacion;
+    public Date getFechaAplicacionAsesoria() {
+        return fechaAplicacionAsesoria;
     }
 
-    public void setFechaAplicacion(Date fechaAplicacion) {
-        this.fechaAplicacion = fechaAplicacion;
+
+
+    public void setFechaAplicacionAsesoria(Date fechaAplicacionAsesoria) {
+        this.fechaAplicacionAsesoria = fechaAplicacionAsesoria;
+    }
+
+    public String getFechaEstimadaAplicacionParsed() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        return fechaEstimadaAplicacion.atTime(1,1).toString();
+
+    }
+
+    @JsonIgnore
+    public LocalDate getFechaEstimadaAplicacion() {
+        return fechaEstimadaAplicacion;
+    }
+
+    public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
+        this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
     }
 
     public Finca getFinca() {
@@ -190,17 +213,15 @@ public class AsesoriaAgroquimico {
         this.asesoriaAplicada = asesoriaAplicada;
     }
 
-
-
     public void modificarEstado(){
         this.asesoriaAplicada=!isAsesoriaAplicada();
-        this.fechaAplicacion = new Date();
+        this.fechaAplicacionAsesoria = new Date();
 
     }
 
     @PreUpdate
-    public void fechaModificacion() {
-        this.fechaModificacion = new Date();
+    public void fechaModificacionAsesoriaAgroquimico() {
+        this.fechaModificacionAsesoriaAgroquimico = new Date();
     }
 
 

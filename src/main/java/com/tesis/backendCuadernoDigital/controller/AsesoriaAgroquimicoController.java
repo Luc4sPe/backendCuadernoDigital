@@ -85,7 +85,7 @@ public class AsesoriaAgroquimicoController {
             Usuario usuarioCapturado = usuarioOptional.get();
 
             AsesoriaAgroquimico asesoriaAgroquimico = new AsesoriaAgroquimico(getIdAgroquimico,getIdCuadro,asesoriaAgroquimicoDto.getDosisPorHectaria(),
-                    asesoriaAgroquimicoDto.getDosisPorHl(),asesoriaAgroquimicoDto.getVolumenPorHectaria(),asesoriaAgroquimicoDto.getObjetivo(),asesoriaAgroquimicoDto.getPlaga(),finca,usuarioCapturado);
+                    asesoriaAgroquimicoDto.getDosisPorHl(),asesoriaAgroquimicoDto.getVolumenPorHectaria(),asesoriaAgroquimicoDto.getObjetivo(),asesoriaAgroquimicoDto.getPlaga(),asesoriaAgroquimicoDto.getFechaEstimadaAplicacion(),finca,usuarioCapturado);
 
             boolean resultado = asesoriaAgroquimicoService.guardarAsesoramientoAgroquimico(asesoriaAgroquimico);
 
@@ -100,6 +100,8 @@ public class AsesoriaAgroquimicoController {
         }
 
     }
+
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
@@ -128,7 +130,14 @@ public class AsesoriaAgroquimicoController {
         if (modificarAsesoriaAgroquimicoDto.getIdCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
+        //se obtiene una asesoría a traves del id para manupular uno de los atributo de la clase en este caso el estado
+        AsesoriaAgroquimico asesoriaAgroquimico = asesoriaAgroquimicoService.getAsesoriaAgroquimico(id);
 
+        if(asesoriaAgroquimico.isAsesoriaAplicada()==true)
+            return new ResponseEntity(new Mensaje("La asesoria fue aplicada no se puede modificar "), HttpStatus.BAD_REQUEST);
+
+        if(asesoriaAgroquimico.getFechaModificacionAsesoriaAgroquimico()!=null)
+            return new ResponseEntity(new Mensaje("La asesoría ya fue modificada "), HttpStatus.BAD_REQUEST);
 
         try {
 
@@ -147,6 +156,8 @@ public class AsesoriaAgroquimicoController {
             modificarAsesoriaAgroquimico.setVolumenPorHectaria(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria());
             modificarAsesoriaAgroquimico.setObjetivo(modificarAsesoriaAgroquimicoDto.getObjetivo());
             modificarAsesoriaAgroquimico.setPlaga(modificarAsesoriaAgroquimicoDto.getPlaga());
+            modificarAsesoriaAgroquimico.fechaModificacionAsesoriaAgroquimico();
+            modificarAsesoriaAgroquimico.setFechaEstimadaAplicacion(modificarAsesoriaAgroquimicoDto.getFechaEstimadaAplicacion());
 
             asesoriaAgroquimicoService.actualizarAsesoriaAgroquimico(modificarAsesoriaAgroquimico);
 
@@ -161,6 +172,8 @@ public class AsesoriaAgroquimicoController {
         }
 
     }
+
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
