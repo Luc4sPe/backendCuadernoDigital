@@ -115,19 +115,23 @@ public class AsesoriaAgroquimicoController {
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> modificarAsesoriaAgroquimico(@PathVariable("id") Long id, @Valid @RequestBody ModificarAsesoriaAgroquimicoDto modificarAsesoriaAgroquimicoDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
+
+       if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal ingresado"), HttpStatus.BAD_REQUEST);
 
-        if (!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id))
+       if (!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id))
             return new ResponseEntity(new Mensaje("no existe esa asesoria de agroquímico"), HttpStatus.NOT_FOUND);
 
-        if(modificarAsesoriaAgroquimicoDto.getDosisPorHl()<0)
-            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+       if(modificarAsesoriaAgroquimicoDto.getDosisPorHectaria()<0)
+            return new ResponseEntity(new Mensaje("La dosis por Hectarea debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        if(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria()<0)
+       if(modificarAsesoriaAgroquimicoDto.getDosisPorHl()<0 )
+           return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+
+       if(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria()<0)
             return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
-        if (modificarAsesoriaAgroquimicoDto.getIdCuadro()<0)
+       if (modificarAsesoriaAgroquimicoDto.getIdCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
         //se obtiene una asesoría a traves del id para manupular uno de los atributo de la clase en este caso el estado
@@ -141,12 +145,15 @@ public class AsesoriaAgroquimicoController {
 
         try {
 
+            Optional<Usuario> usuarioOptional = usuarioService.getByNombreUsuario(modificarAsesoriaAgroquimicoDto.getNombreProductor());
+            Usuario usuarioCapturado = usuarioOptional.get();
+            Finca finca = fincaService.getFincas(modificarAsesoriaAgroquimicoDto.getIdFinca());
+
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
             Cuadro getCuadro= cuadroService.getCuadro(modificarAsesoriaAgroquimicoDto.getIdCuadro());
             Agroquimico getAgroquimico=agroquimicoService.getAgroquimico(modificarAsesoriaAgroquimicoDto.getIdAgroquimico());
-
 
             AsesoriaAgroquimico modificarAsesoriaAgroquimico = asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
             modificarAsesoriaAgroquimico.setAgroquimico(getAgroquimico);
@@ -156,19 +163,21 @@ public class AsesoriaAgroquimicoController {
             modificarAsesoriaAgroquimico.setVolumenPorHectaria(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria());
             modificarAsesoriaAgroquimico.setObjetivo(modificarAsesoriaAgroquimicoDto.getObjetivo());
             modificarAsesoriaAgroquimico.setPlaga(modificarAsesoriaAgroquimicoDto.getPlaga());
+            modificarAsesoriaAgroquimico.setFinca(finca);
+            modificarAsesoriaAgroquimico.setProductor(usuarioCapturado);
             modificarAsesoriaAgroquimico.fechaModificacionAsesoriaAgroquimico();
             modificarAsesoriaAgroquimico.setFechaEstimadaAplicacion(modificarAsesoriaAgroquimicoDto.getFechaEstimadaAplicacion());
+
 
             asesoriaAgroquimicoService.actualizarAsesoriaAgroquimico(modificarAsesoriaAgroquimico);
 
             if(modificarAsesoriaAgroquimico!=null){
-
                 logService.modificarAsesoriaAgroquimico(modificarAsesoriaAgroquimico,usuario);
                 return new ResponseEntity<>(new Mensaje(" Asesoría de aplicación de agroquímico actualizada correctamente"), HttpStatus.OK);
             }
             return new ResponseEntity(new Mensaje("Asesoría de aplicación de agroquímico no se actualizó correctamente"),HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            return new ResponseEntity(new Mensaje("Fallo la operacion, asesoría de aplicación de agroquímico"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new Mensaje("Fallo la operacion, modificar asesoría  de agroquímico"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -184,6 +193,30 @@ public class AsesoriaAgroquimicoController {
         AsesoriaAgroquimico asesoria = asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
         return new ResponseEntity(asesoria,HttpStatus.OK);
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total")
+    public ResponseEntity<?> cantidadTotalAsesoriaAgro(){
+        Integer cantidad = asesoriaAgroquimicoService.obtenerCantidadAsesoriasAgroquimico();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-Aplicados")
+    public ResponseEntity<?> cantidadTotalDeAsesoriaAplicada(){
+        Integer cantidad = asesoriaAgroquimicoService.cantidadDeAplicacionAsesoria();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-NoAplicados")
+    public ResponseEntity<?> cantidadTotalDeAsesoriaNoAplicada(){
+        Integer cantidad = asesoriaAgroquimicoService.cantidadDeAsesoriaNoAplicada();
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+
 
 
 

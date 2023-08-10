@@ -146,7 +146,7 @@ public class AsesoriaRiegoController {
             modificar.setFechaEstimadaAplicacion(modiAseRiegoDto.getFechaEstimadaAplicacion());
 
             asesoriaRiegoService.actualizarAsesoriaRiego(modificar);
-            if(modiAseRiegoDto!=null){
+            if(modificar!=null){
                 logService.modificarAsesoriaRiego(modificar,usuario);
                 return new ResponseEntity<>(new Mensaje(" Asesoria de riego actualizada correctamente"), HttpStatus.OK);
             }
