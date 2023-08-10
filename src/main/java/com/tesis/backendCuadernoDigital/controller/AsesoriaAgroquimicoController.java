@@ -111,6 +111,14 @@ public class AsesoriaAgroquimicoController {
         return new ResponseEntity<>(listar,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/listadoAsesoriaAgroDeUnaFinca/{idFinca}")
+    public ResponseEntity<List<Cuadro>> listadoAsesoriaAgroDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+        Finca finca = fincaService.getFincas(idFinca);
+        List<AsesoriaAgroquimico> asesoria = asesoriaAgroquimicoService.getListadoAsesoriaAgroqimicoDeUnaFincaPorId(finca.getIdFinca());
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")
@@ -215,6 +223,54 @@ public class AsesoriaAgroquimicoController {
         Integer cantidad = asesoriaAgroquimicoService.cantidadDeAsesoriaNoAplicada();
         return new ResponseEntity(cantidad, HttpStatus.OK);
     }
+
+
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/aplico/{id}")
+    public ResponseEntity<?> aplicar(@PathVariable("id") Long id){
+
+        if(!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id)){
+            return new ResponseEntity(new Mensaje("La asesoría de agroquíico no existe"), HttpStatus.NOT_FOUND);
+        }
+
+        AsesoriaAgroquimico asesoriaAgroquimico = asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.getUsuarioLogeado(auth);
+
+        if (asesoriaAgroquimico.isAsesoriaAplicada()) {
+            return new ResponseEntity(new Mensaje("La asesoría de agroquímico ya se aplico"), HttpStatus.BAD_REQUEST);
+        }
+        asesoriaAgroquimicoService.modificarEstado(id);
+        logService.modificarEstadoAsesoriaAgroTrue(asesoriaAgroquimico,usuarioLogueado);
+        return  new ResponseEntity(new Mensaje("Se aplicó exitosamente la asesoria de agroquímico "),HttpStatus.OK);
+    }
+
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PutMapping("/canceloAplica/{id}")
+    public ResponseEntity<?> cancelarAplica(@PathVariable("id") Long id){
+
+        if(!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id)){
+            return new ResponseEntity(new Mensaje("La asesoría de agroquímico no existe"), HttpStatus.NOT_FOUND);
+        }
+
+        AsesoriaAgroquimico asesoriaAgroquimico =  asesoriaAgroquimicoService.getUnaAsesoriaAgroquimico(id).get();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.getUsuarioLogeado(auth);
+
+        if (!asesoriaAgroquimico.isAsesoriaAplicada()) {
+            return new ResponseEntity(new Mensaje("La asesoría de agroquímico no se aplico"), HttpStatus.BAD_REQUEST);
+        }
+
+        asesoriaAgroquimicoService.modificarEstado(id);
+        logService.modificarEstadoAsesoriaAgroFalse(asesoriaAgroquimico,usuarioLogueado);
+        return  new ResponseEntity(new Mensaje("Se canceló exitosamente la asesoría de agroquínico "),HttpStatus.OK);
+    }
+
 
 
 

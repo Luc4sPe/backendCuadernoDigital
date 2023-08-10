@@ -273,4 +273,15 @@ public class LogService {
         Log log = new Log(productor,LogAccion.MODIFICACIÓN_ASESORAMIENTO_AGROQUÍMICO," El Encargado Agricola: "+productor.getNombreUsuario()+"Modificó la asesoría de la aplicación de agroquímico : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
         logRepository.save(log);
     }
+
+    public void modificarEstadoAsesoriaAgroTrue(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
+        Log log = new Log(productor,LogAccion.SE_APLIÓ_ASESORÍA_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+"Aplicó la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        logRepository.save(log);
+    }
+
+    public void modificarEstadoAsesoriaAgroFalse(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
+        Log log = new Log(productor,LogAccion.CANCELO_APLICACIÓN_ASESORÍA_AGROÍMICO," El productor: "+productor.getNombreUsuario()+"Canceló la aplicación de la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        logRepository.save(log);
+    }
+
 }
