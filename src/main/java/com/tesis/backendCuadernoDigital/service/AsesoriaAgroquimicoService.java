@@ -30,7 +30,7 @@ public class AsesoriaAgroquimicoService {
     }
 
     public List<AsesoriaAgroquimico> listarAsesoriaAgroquimico(){
-        return asesoriaAgroquimicoRepository.findAllByOrderByIdAsc();
+        return asesoriaAgroquimicoRepository.findAllByOrderByFechaEstimadaAplicacionAsc();
     }
 
 

@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface AsesoriaAgroquimicoRepository extends JpaRepository<AsesoriaAgroquimico, Long> {
 
-    List<AsesoriaAgroquimico> findAllByOrderByIdAsc();
+    List<AsesoriaAgroquimico> findAllByOrderByFechaEstimadaAplicacionAsc();
+
     Optional<AsesoriaAgroquimico> findById(Long id);
     List<AsesoriaAgroquimico> findByFinca_IdFinca(Long idFinca);
     Integer countAsesoriaAgroquimicoBy();

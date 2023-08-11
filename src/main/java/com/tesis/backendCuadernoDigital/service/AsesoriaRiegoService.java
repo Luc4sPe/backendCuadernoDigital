@@ -32,7 +32,7 @@ public class AsesoriaRiegoService {
     }
 
     public List<AsesoriaRiego> listarAsesoriaRiego(){
-        return asesoriaRiegoRepository.findAllByOrderByIdAsc();
+        return asesoriaRiegoRepository.findAllByOrderByFechaEstimadaAplicacionAsc();
     }
 
 

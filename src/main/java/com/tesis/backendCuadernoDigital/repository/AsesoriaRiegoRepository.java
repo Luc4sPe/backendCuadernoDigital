@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface AsesoriaRiegoRepository extends JpaRepository<AsesoriaRiego, Long> {
 
-    List<AsesoriaRiego> findAllByOrderByIdAsc();
+    List<AsesoriaRiego> findAllByOrderByFechaEstimadaAplicacionAsc();
     Optional<AsesoriaRiego> findById(Long id );
      List<AsesoriaRiego> findByFinca_IdFinca(Long idFinca);
      Integer countAsesoriaRiegoBy();
