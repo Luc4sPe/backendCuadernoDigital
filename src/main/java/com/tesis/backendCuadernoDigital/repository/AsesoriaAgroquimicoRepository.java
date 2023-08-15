@@ -1,6 +1,7 @@
 package com.tesis.backendCuadernoDigital.repository;
 
 import com.tesis.backendCuadernoDigital.entity.AsesoriaAgroquimico;
+import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,9 @@ public interface AsesoriaAgroquimicoRepository extends JpaRepository<AsesoriaAgr
     Integer countAsesoriaAgroquimicoBy();
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaTrue();
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaFalse();
+    Integer countAsesoriaAgroquimicoByAsesoriaAplicadaTrueAndProductor(Optional<Usuario>  nombre);
+    Integer countAsesoriaAgroquimicoByAsesoriaAplicadaFalseAndProductor(Optional<Usuario>  nombre);
+    Integer countAsesoriaAgroquimicoByProductor(Optional<Usuario>  nombre);
     boolean existsById(Long id);
 
 
