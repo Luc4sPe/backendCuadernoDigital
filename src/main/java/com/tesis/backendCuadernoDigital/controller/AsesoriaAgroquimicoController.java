@@ -225,6 +225,29 @@ public class AsesoriaAgroquimicoController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-asesoriaAgroByProductor/{nombre}")
+    public ResponseEntity<?> cantidadTotalAsesoriaAgroByProductor(@PathVariable ("nombre") String nombre){
+        Integer cantidad = asesoriaAgroquimicoService.obtenerTotalAsesoriaByProductor(usuarioService.getByNombreUsuario(nombre));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-asesoriaAgroAplicadaByProductor/{nombre}")
+    public ResponseEntity<?> cantidadTotalAsesoriaAgroAplicadaByProductor(@PathVariable ("nombre") String nombre){
+        Integer cantidad = asesoriaAgroquimicoService.obtenerTotalAsesoriaAplicadaByProductor(usuarioService.getByNombreUsuario(nombre));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
+    @GetMapping("/total-asesoriaAgroNoAplicadaByProductor/{nombre}")
+    public ResponseEntity<?> cantidadTotalAsesoriaAroNoAplicadaByProductor(@PathVariable ("nombre") String nombre){
+        Integer cantidad = asesoriaAgroquimicoService.obtenerTotalAsesoriaNoAplicadaByProductor(usuarioService.getByNombreUsuario(nombre));
+        return new ResponseEntity(cantidad, HttpStatus.OK);
+    }
+
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
