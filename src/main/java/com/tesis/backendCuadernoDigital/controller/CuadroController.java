@@ -41,7 +41,7 @@ public class CuadroController {
     @Autowired
     FincaService fincaService;
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','ADMIN')")
     @PostMapping("/crearcuadro")
     public ResponseEntity<?> crearCultivo(@Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -71,7 +71,7 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA','ADMIN')")
     @GetMapping("/listadoCuadro")
     public ResponseEntity<List<Cuadro>> listadoCuadro() {
         List<Cuadro> listado = cuadroService.listarCuadros();
@@ -79,7 +79,7 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','ADMIN')")
     @PutMapping("/modificarCuadro/{id}")
     public ResponseEntity<?> modificarCuadro(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
 
@@ -108,14 +108,14 @@ public class CuadroController {
         }
 
     }
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','ADMIN')")
     @GetMapping("/CantidadCuadro")
     public ResponseEntity<Integer> cantidadTotalDeCuadros(){
         Integer cantidad =cuadroService.getCantidadDeCuadros();
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR', 'ENCARGADO_AGRICOLA','ADMIN')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Cuadro> obteberDetalleDeUnCuadro(@PathVariable("id") Long id){
         if(!cuadroService.existsByIDCuadro(id))
@@ -125,7 +125,7 @@ public class CuadroController {
         return new ResponseEntity(cuadro,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA','ADMIN')")
     @PutMapping("/agregarCultivoAnterior/{id}")
     public ResponseEntity<?> agregarCultivoAnterior(@PathVariable ("id") Long id, @Valid @RequestBody CuadroDto cuadroDto, BindingResult bindingResult){
 
@@ -153,7 +153,7 @@ public class CuadroController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR','ADMIN')")
     @GetMapping("/detalleCuadros/{idFinca}")
     public ResponseEntity<List<Cuadro>> listaCuadrosDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
        Finca finca = fincaService.getFincas(idFinca);
