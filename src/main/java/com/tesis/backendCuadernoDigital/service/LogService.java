@@ -141,7 +141,7 @@ public class LogService {
     //Metodos logs de Cultivo
 
     public void guardarAltaCultivo(Cultivo cultivo, Usuario usuarioCreador){
-        Log log = new Log(usuarioCreador, LogAccion.CREACIÓN_CULTIVO,"El Encargado Agricola: "+usuarioCreador.getNombreUsuario()+"Creo el Cultivo: "+cultivo.getNombre(),cultivo.getIdCultivo());
+        Log log = new Log(usuarioCreador, LogAccion.CREACIÓN_CULTIVO,"El Encargado Agricola: "+usuarioCreador.getNombreUsuario()+" Creo el Cultivo: "+cultivo.getNombre(),cultivo.getIdCultivo());
         logRepository.save(log);
     }
 
@@ -153,12 +153,12 @@ public class LogService {
     //Metodos Logs de Plantacion
 
     public void guardarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
-        Log log = new Log(usuarioProductor,LogAccion.CREACIÓN_PLANTACIÓN,"El productor: "+usuarioProductor.getNombreUsuario()+" Creao la Plantacion: "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        Log log = new Log(usuarioProductor,LogAccion.CREACIÓN_PLANTACIÓN,"El productor: "+usuarioProductor.getNombreUsuario()+" Creao la Plantacion: "+plantacion.getNombreTipoCultivo().getNombre(),plantacion.getIdPlantacion());
         logRepository.save(log);
     }
 
     public void modificarPlantacion(Plantacion plantacion, Usuario usuarioProductor){
-        Log log = new Log(usuarioProductor,LogAccion.MODIFICACIÓN_PLANTACIÓN,"El productor: "+usuarioProductor.getNombreUsuario()+" Modifico la plantacion "+plantacion.getNombreTipoCultivo(),plantacion.getIdPlantacion());
+        Log log = new Log(usuarioProductor,LogAccion.MODIFICACIÓN_PLANTACIÓN,"El productor: "+usuarioProductor.getNombreUsuario()+" Modifico la plantacion "+plantacion.getNombreTipoCultivo().getNombre(),plantacion.getIdPlantacion());
         logRepository.save(log);
     }
 
@@ -180,24 +180,24 @@ public class LogService {
 
      //Metodos Logs Finca
     public void guardarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
-        Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACIÓN_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Creao la Finca: "+finca.getNombre(),finca.getIdFinca());
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.CREACIÓN_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+" Creao la Finca: "+finca.getNombre(),finca.getIdFinca());
         logRepository.save(log);
     }
 
     public void modificarFinca(Finca finca, Usuario usuarioEcargadoAgricola){
-        Log log = new Log(usuarioEcargadoAgricola, LogAccion.MODIFICACIÓN_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+"Modifico la Finca: "+finca.getNombre(),finca.getIdFinca());
+        Log log = new Log(usuarioEcargadoAgricola, LogAccion.MODIFICACIÓN_FINCA,"El Encargado Agricola: "+usuarioEcargadoAgricola.getNombreUsuario()+" Modifico la Finca: "+finca.getNombre(),finca.getIdFinca());
         logRepository.save(log);
     }
 
     //Metodos Logs Labor de Suelo
 
     public void guardarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
-        Log log = new Log(productor,LogAccion.CREACIÓN_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Creao la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        Log log = new Log(productor,LogAccion.CREACIÓN_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+" Creao la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
         logRepository.save(log);
     }
 
     public void modificarLaborSuelo(LaborSuelo laborSuelo, Usuario productor){
-        Log log = new Log(productor,LogAccion.MODIFICACIÓN_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+"Modifico la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
+        Log log = new Log(productor,LogAccion.MODIFICACIÓN_LABOR_SUELO," El productor: "+productor.getNombreUsuario()+" Modifico la Labor de Suelo: "+laborSuelo.getLabor(),laborSuelo.getId());
         logRepository.save(log);
     }
 
@@ -205,59 +205,59 @@ public class LogService {
     //Metodos Logs Riego
 
     public void guardarRiego(Riego riego, Usuario productor){
-        Log log = new Log(productor,LogAccion.CREACIÓN_RIEGO," El productor: "+productor.getNombreUsuario()+"Realizo un riego de : "+riego.getDuracionEnHoras(),riego.getId());
+        Log log = new Log(productor,LogAccion.CREACIÓN_RIEGO," El productor: "+productor.getNombreUsuario()+" Realizo un riego de : "+riego.getDuracionEnHoras(),riego.getId());
         logRepository.save(log);
     }
 
     public void modificarRiego(Riego riego, Usuario productor){
-        Log log = new Log(productor,LogAccion.MODIFICACIÓN_RIEGO," El productor: "+productor.getNombreUsuario()+"Modifico el riego de: "+riego.getMilimetrosAplicados(),riego.getId());
+        Log log = new Log(productor,LogAccion.MODIFICACIÓN_RIEGO," El productor: "+productor.getNombreUsuario()+" Modifico el riego de: "+riego.getMilimetrosAplicados(),riego.getId());
         logRepository.save(log);
     }
 
     //Metodos Logs Agroquimico
 
     public void guardarAgroquimico(Agroquimico agroquimico, Usuario encargadoAgricola){
-        Log log = new Log(encargadoAgricola,LogAccion.CREACIÓN_AGROQUÍMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+"Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
+        Log log = new Log(encargadoAgricola,LogAccion.CREACIÓN_AGROQUÍMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+" Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
         logRepository.save(log);
     }
 
     public void modificarAgroquimico(Agroquimico agroquimico, Usuario encargadoAgricola){
-        Log log = new Log(encargadoAgricola,LogAccion.MODIFICACIÓN_AGROQUÍMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+"Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
+        Log log = new Log(encargadoAgricola,LogAccion.MODIFICACIÓN_AGROQUÍMICO," El Encargado Agricola: "+encargadoAgricola.getNombreUsuario()+" Creo el agroquimico : "+agroquimico.getNombreComercial(),agroquimico.getId());
         logRepository.save(log);
     }
 
     //Metodos Logs AplicacionAgroquimico
 
     public void guardarAplicacionAgroquimico(AplicacionDeAgroquimico agroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.APLICACIÓN_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+"Realiso la aplicacion de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
+        Log log = new Log(productor,LogAccion.APLICACIÓN_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+" Realiso la aplicacion de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
         logRepository.save(log);
     }
 
     public void modificarAplicacionAgroquimico(AplicacionDeAgroquimico agroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.MODIFICACIÓN_APLICACIÓN_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+"Modifico la aplicación de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
+        Log log = new Log(productor,LogAccion.MODIFICACIÓN_APLICACIÓN_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+" Modifico la aplicación de  : "+agroquimico.getAgroquimico().getNombreComercial(),agroquimico.getId());
         logRepository.save(log);
     }
 
     //Metodos Logs Asesoramiento de los Riegos
 
     public void guardarAsesoriaRiego(AsesoriaRiego asesoriaRiego, Usuario productor){
-        Log log = new Log(productor,LogAccion.CREACIÓN_ASESORAMIENTO_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+"Realizo la asesoria del riego de  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
+        Log log = new Log(productor,LogAccion.CREACIÓN_ASESORAMIENTO_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+" Realizo la asesoria del riego de  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
         logRepository.save(log);
     }
 
     public void modificarAsesoriaRiego(AsesoriaRiego asesoriaRiego, Usuario productor){
-        Log log = new Log(productor,LogAccion.MODIFICAR_ASESORÍA_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+"Modifico la asesoria del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
+        Log log = new Log(productor,LogAccion.MODIFICAR_ASESORÍA_RIEGO," El Encargado Agricola: "+productor.getNombreUsuario()+" Modifico la asesoria del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
         logRepository.save(log);
     }
 
 
     public void modificarEstadoAsesoriaRiegoTrue(AsesoriaRiego asesoriaRiego, Usuario productor){
-        Log log = new Log(productor,LogAccion.SE_APLICÓ_ASESORÍA_RIEGO," El productor: "+productor.getNombreUsuario()+"Aplicó la asesoría del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
+        Log log = new Log(productor,LogAccion.SE_APLICÓ_ASESORÍA_RIEGO," El productor: "+productor.getNombreUsuario()+" Aplicó la asesoría del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
         logRepository.save(log);
     }
 
     public void modificarEstadoAsesoriaRiegoFalse(AsesoriaRiego asesoriaRiego, Usuario productor){
-        Log log = new Log(productor,LogAccion.CANCELO_APLICACIÓN_ASESORIA_RIEGO," El productor: "+productor.getNombreUsuario()+"Canceló la aplicación de la asesoría del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
+        Log log = new Log(productor,LogAccion.CANCELO_APLICACIÓN_ASESORIA_RIEGO," El productor: "+productor.getNombreUsuario()+" Canceló la aplicación de la asesoría del riego  : "+asesoriaRiego.getCuadro().getNumeroCuadro(),asesoriaRiego.getId());
         logRepository.save(log);
     }
 
@@ -265,22 +265,22 @@ public class LogService {
 
 
     public void guardarAsesoriaAgroquimico(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.CREACIÓN_ASESORAMIENTO_AGROQUÍMICO," El Encargado Agricola: "+productor.getNombreUsuario()+"Realizo la asesoría de aplicación de agroquímico de  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        Log log = new Log(productor,LogAccion.CREACIÓN_ASESORAMIENTO_AGROQUÍMICO," El Encargado Agricola: "+productor.getNombreUsuario()+" Realizo la asesoría de aplicación de agroquímico de  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
         logRepository.save(log);
     }
 
     public void modificarAsesoriaAgroquimico(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.MODIFICACIÓN_ASESORAMIENTO_AGROQUÍMICO," El Encargado Agricola: "+productor.getNombreUsuario()+"Modificó la asesoría de la aplicación de agroquímico : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        Log log = new Log(productor,LogAccion.MODIFICACIÓN_ASESORAMIENTO_AGROQUÍMICO," El Encargado Agricola: "+productor.getNombreUsuario()+" Modificó la asesoría de la aplicación de agroquímico : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
         logRepository.save(log);
     }
 
     public void modificarEstadoAsesoriaAgroTrue(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.SE_APLIÓ_ASESORÍA_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+"Aplicó la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        Log log = new Log(productor,LogAccion.SE_APLIÓ_ASESORÍA_AGROQUÍMICO," El productor: "+productor.getNombreUsuario()+" Aplicó la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
         logRepository.save(log);
     }
 
     public void modificarEstadoAsesoriaAgroFalse(AsesoriaAgroquimico asesoriaAgroquimico, Usuario productor){
-        Log log = new Log(productor,LogAccion.CANCELO_APLICACIÓN_ASESORÍA_AGROÍMICO," El productor: "+productor.getNombreUsuario()+"Canceló la aplicación de la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
+        Log log = new Log(productor,LogAccion.CANCELO_APLICACIÓN_ASESORÍA_AGROÍMICO," El productor: "+productor.getNombreUsuario()+" Canceló la aplicación de la asesoría del riego  : "+asesoriaAgroquimico.getCuadro().getNumeroCuadro(),asesoriaAgroquimico.getId());
         logRepository.save(log);
     }
 

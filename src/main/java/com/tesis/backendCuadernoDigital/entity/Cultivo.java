@@ -110,6 +110,19 @@ public class Cultivo {
     }
 
 
+    @Override
+    public String toString() {
+        return "Cultivo{" +
+                "idCultivo=" + idCultivo +
+                ", nombre='" + nombre + '\'' +
+                ", remito='" + remito + '\'' +
+                ", timpoCarencia=" + timpoCarencia +
+                ", variedadCultivo='" + variedadCultivo + '\'' +
+                ", viveroProvedor='" + viveroProvedor + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                ", fechaModificacion=" + fechaModificacion +
+                '}';
+    }
 }
 
 
