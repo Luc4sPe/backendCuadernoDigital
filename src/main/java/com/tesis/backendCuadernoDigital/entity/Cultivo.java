@@ -19,8 +19,7 @@ public class Cultivo {
     private String nombre;
     @NotNull
     private String remito;
-    @NotNull
-    private int timpoCarencia;
+
     @NotNull
     private String variedadCultivo;
     @NotNull
@@ -32,17 +31,20 @@ public class Cultivo {
     @UpdateTimestamp
     private Date fechaModificacion;
 
+    @NotNull
+    private int tiempoDeCultivo;
+
     public Cultivo() {
     }
 
-    public Cultivo(@NotNull String nombre, @NotNull String remito, @NotNull int timpoCarencia, @NotNull String variedadCultivo, @NotNull String viveroProvedor) {
+    public Cultivo(@NotNull String nombre, @NotNull String remito,@NotNull String variedadCultivo, @NotNull String viveroProvedor, @NotNull int tiempoDeCultivo) {
         this.nombre = nombre;
         this.remito = remito;
-        this.timpoCarencia = timpoCarencia;
         this.variedadCultivo = variedadCultivo;
         this.viveroProvedor = viveroProvedor;
         this.fechaCreacion = null;
         this.fechaModificacion = null;
+        this.tiempoDeCultivo = tiempoDeCultivo;
     }
 
     public Long getIdCultivo() {
@@ -67,14 +69,6 @@ public class Cultivo {
 
     public void setRemito(String remito) {
         this.remito = remito;
-    }
-
-    public int getTimpoCarencia() {
-        return timpoCarencia;
-    }
-
-    public void setTimpoCarencia(int timpoCarencia) {
-        this.timpoCarencia = timpoCarencia;
     }
 
     public String getVariedadCultivo() {
@@ -109,6 +103,13 @@ public class Cultivo {
         this.fechaModificacion = fechaModificacion;
     }
 
+    public int getTiempoDeCultivo() {
+        return tiempoDeCultivo;
+    }
+
+    public void setTiempoDeCultivo(int tiempoDeCultivo) {
+        this.tiempoDeCultivo = tiempoDeCultivo;
+    }
 
     @Override
     public String toString() {
@@ -116,11 +117,11 @@ public class Cultivo {
                 "idCultivo=" + idCultivo +
                 ", nombre='" + nombre + '\'' +
                 ", remito='" + remito + '\'' +
-                ", timpoCarencia=" + timpoCarencia +
                 ", variedadCultivo='" + variedadCultivo + '\'' +
                 ", viveroProvedor='" + viveroProvedor + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaModificacion=" + fechaModificacion +
+                ", tiempoDeCultivo=" + tiempoDeCultivo +
                 '}';
     }
 }

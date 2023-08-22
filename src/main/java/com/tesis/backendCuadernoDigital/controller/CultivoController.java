@@ -59,14 +59,14 @@ public class CultivoController {
         if (cultivoService.existByRemito(cultivoDto.getRemito()))
             return new ResponseEntity(new Mensaje("Ese remito ya existe"), HttpStatus.BAD_REQUEST);
 
-        if(cultivoDto.getTimpoCarencia()<0)
-            return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+        if(cultivoDto.getTiempoDeCultivo()<0)
+            return new ResponseEntity(new Mensaje("El timepo de cultivo debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Cultivo nuevoCultivo = new Cultivo(cultivoDto.getNombre(),cultivoDto.getRemito(),cultivoDto.getTimpoCarencia(),
-                    cultivoDto.getVariedadCultivo(),cultivoDto.getViveroProvedor());
+            Cultivo nuevoCultivo = new Cultivo(cultivoDto.getNombre(),cultivoDto.getRemito(),
+                    cultivoDto.getVariedadCultivo(),cultivoDto.getViveroProvedor(),cultivoDto.getTiempoDeCultivo());
             boolean result = cultivoService.guardarCultivo(nuevoCultivo);
             if(result){
                 logService.guardarAltaCultivo(nuevoCultivo,usuario);
@@ -93,6 +93,9 @@ public class CultivoController {
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
         if(!cultivoService.existsByIdCultivo(id))
             return new ResponseEntity(new Mensaje("no existe ese Cultivo"), HttpStatus.NOT_FOUND);
+        if(cultivoDto.getTiempoDeCultivo()<0)
+            return new ResponseEntity(new Mensaje("El timepo de cultivo debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
+
         if (StringUtils.isBlank(cultivoDto.getNombre()))
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
 
@@ -102,9 +105,9 @@ public class CultivoController {
             Cultivo cultivoModificado = cultivoService.getUnCultivo(id).get();
             cultivoModificado.setNombre(cultivoDto.getNombre());
             cultivoModificado.setRemito(cultivoDto.getRemito());
-            cultivoModificado.setTimpoCarencia(cultivoDto.getTimpoCarencia());
             cultivoModificado.setVariedadCultivo(cultivoDto.getVariedadCultivo());
             cultivoModificado.setViveroProvedor(cultivoDto.getViveroProvedor());
+            cultivoModificado.setTiempoDeCultivo(cultivoDto.getTiempoDeCultivo());
             cultivoService.actualizarCultivo(cultivoModificado);
             if (cultivoModificado !=null){
                 logService.modificarCultivo(cultivoModificado,usuario);

@@ -16,7 +16,7 @@ public class EditarAgroquimico {
     private String tipo;
     @NotNull(message = "El tiempo de carencia no debe estar vacio")
     @Min(value = 1, message = "El minimo valor del tiempo de carencia es 1")
-    private Long tiempoDeCarencia;
+    private int tiempoDeCarencia;
     @NotNull(message = "La dosis por hectaria no debe estar vacio")
     @Min(value = 1, message = "El minimo valor de dosis por hectaria es 1")
     private float dosisPorHectaria;
@@ -62,11 +62,11 @@ public class EditarAgroquimico {
         this.tipo = tipo;
     }
 
-    public Long getTiempoDeCarencia() {
+    public int getTiempoDeCarencia() {
         return tiempoDeCarencia;
     }
 
-    public void setTiempoDeCarencia(Long tiempoDeCarencia) {
+    public void setTiempoDeCarencia(int tiempoDeCarencia) {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 

@@ -26,7 +26,7 @@ public class Agroquimico {
     @NotNull
     private String tipo;
     @NotNull
-    private Long tiempoDeCarencia;
+    private int tiempoDeCarencia;
     @NotNull
     private float dosisPorHectaria;
     @NotNull
@@ -45,7 +45,8 @@ public class Agroquimico {
     public Agroquimico() {
     }
 
-    public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull Long tiempoDeCarencia, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String numLote) {
+    public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull int tiempoDeCarencia, @NotNull float dosisPorHectaria,
+                       @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String numLote) {
         this.nombreComercial = nombreComercial;
         this.formulaYconcentracion = formulaYconcentracion;
         this.principioActivo = principioActivo;
@@ -99,11 +100,11 @@ public class Agroquimico {
         this.tipo = tipo;
     }
 
-    public Long getTiempoDeCarencia() {
+    public int getTiempoDeCarencia() {
         return tiempoDeCarencia;
     }
 
-    public void setTiempoDeCarencia(Long tiempoDeCarencia) {
+    public void setTiempoDeCarencia(int tiempoDeCarencia) {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 
