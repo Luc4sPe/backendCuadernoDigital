@@ -17,11 +17,12 @@ public interface PlantacionRepository extends JpaRepository<Plantacion, Long> {
     List<Plantacion> findByNombreTipoCultivo_Nombre(String nombre);
     List<Plantacion> findByNombreTipoCultivo_IdCultivo(Long id);
     List<Plantacion> findByFinca_IdFinca(Long id);
-    
+
+    //List<Plantacion>  findByFinca_Cuadros(Long id);
     Optional<Plantacion> findByIdPlantacion(Long id);
     Optional<Plantacion> findByNombreTipoCultivo(String nombre);
     Optional<Plantacion> findByJustificacion(String justificacion);
-    Optional<Plantacion> findByNumerosDeCuadros_IdCuadro(Long idCuadro);
+   // Optional<Plantacion> findByNumerosDeCuadros_IdCuadro(Long idCuadro);
     boolean existsByIdPlantacion(Long id);
     boolean existsByNombreTipoCultivo(String nombreCultivo);
     boolean existsByJustificacion(String justificacion);

@@ -35,9 +35,12 @@ public class PlantacionService {
         return  plantacionRepository.findByJustificacion(justificacion);
     }
 
+    /*
     public Optional<Plantacion> getPlantacionPorCuadro(Long idCuadro){
         return  plantacionRepository.findByNumerosDeCuadros_IdCuadro(idCuadro);
     }
+
+     */
 
     public List<Plantacion> ListarPlantacion(){
         return plantacionRepository.findAllByOrderByNombreTipoCultivoAsc();

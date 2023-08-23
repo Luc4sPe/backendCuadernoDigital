@@ -71,28 +71,35 @@ public class PlantacionController {
         Optional<Cultivo> cultivoOptional = cultivoService.getUnCultivo(plantacionDto.getTipoCultivo());
         Cultivo nombreCultivo= cultivoOptional.get();
 
+        Cuadro getIdCuadro= cuadroService.getCuadro(plantacionDto.getIdCuadro());
+
         try {
             Finca finca = fincaService.getFincas(plantacionDto.getIdFinca());
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
-            Plantacion nuevaPlantacion = new Plantacion(plantacionDto.getEntreIleras(),plantacionDto.getEntrePlantas(),plantacionDto.getObservacion(),
+            Plantacion nuevaPlantacion = new Plantacion(plantacionDto.getEntreIleras(),plantacionDto.getEntrePlantas(),getIdCuadro,plantacionDto.getObservacion(),
                     "",plantacionDto.getSistemaRiego(),plantacionDto.getSistemaTrasplante(),nombreCultivo,
                     plantacionDto.getCantidadPlantines(),finca);
 
+
+
             // recorre la lista para ir guardando cada plantacion en un cuadro de la lista
 
-           List<Cuadro> cuadros = plantacionDto.getNumerosDeCuadros()
+          /* List<Cuadro> cuadros = plantacionDto.getNumerosDeCuadros()
                    .stream()
                    .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                    .distinct()
                    .collect(Collectors.toList());
            nuevaPlantacion.setNumerosDeCuadros(cuadros);
 
-            if (plantacionDto.getNumerosDeCuadros().contains(nuevaPlantacion))
+           */
+
+            //if (plantacionDto.getNumerosDeCuadros().contains(nuevaPlantacion))
+            if(plantacionDto.getIdCuadro().equals(nuevaPlantacion))
                 return new ResponseEntity(new Mensaje("Ya existe una plantación"), HttpStatus.BAD_REQUEST);
 
             boolean result = plantacionService.guardarPlantacion(nuevaPlantacion);
-
+            nuevaPlantacion.setFechaCosecha(nuevaPlantacion.calculoFechaCosecha(nuevaPlantacion.getFechaCreacionPlantacion(),nombreCultivo.getTiempoDeCultivo()));
             if(result) {
                 logService.guardarPlantacion(nuevaPlantacion, usuario);
                 return new ResponseEntity<>(new Mensaje("La plantación se guardado correctamente"), HttpStatus.CREATED);
@@ -146,6 +153,7 @@ public class PlantacionController {
 
             Optional<Cultivo> cultivoOptional = cultivoService.getUnCultivo(modificacionPlantacionDto.getTipoCultivo());
             Cultivo nombreCultivo= cultivoOptional.get();
+            Cuadro getIdCuadro= cuadroService.getCuadro(modificacionPlantacionDto.getIdCuadro());
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
@@ -153,11 +161,13 @@ public class PlantacionController {
             Optional<Finca> fincaOptional = fincaService.getFinca(modificacionPlantacionDto.getIdFinca());
             Finca fincaCapturado = fincaOptional.get();
 
-             */
+
             List<Cuadro> cuadros = modificacionPlantacionDto.getNumerosDeCuadros()
                     .stream()
                     .map(cuadro -> cuadroService.getCuadro(cuadro.getIdCuadro()))
                     .collect(Collectors.toList());
+
+             */
 
             Plantacion modificarPlantacion = plantacionService.getPlantacion(id).get();
             modificarPlantacion.setEntreIleras(modificacionPlantacionDto.getEntreIleras());
@@ -168,8 +178,7 @@ public class PlantacionController {
             modificarPlantacion.setSistemaTrasplante(modificacionPlantacionDto.getSistemaTrasplante());
             modificarPlantacion.setNombreTipoCultivo(nombreCultivo);
             modificarPlantacion.setCantidadPlantines(modificacionPlantacionDto.getCantidadPlantines());
-            //modificarPlantacion.setFinca(fincaCapturado);
-            //modificacionPlantacionDto.setNumerosDeCuadros(cuadros);
+            modificarPlantacion.setCuadro(getIdCuadro);
             plantacionService.actualizarPlantacion(modificarPlantacion);
 
             if(modificarPlantacion!=null) {

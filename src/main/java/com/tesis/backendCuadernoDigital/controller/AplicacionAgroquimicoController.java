@@ -55,9 +55,8 @@ public class AplicacionAgroquimicoController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        //if (aplicacionAgroquimicoService.existeById(aplicacionAgroquimicoDto.getId()))
-          //  return new ResponseEntity(new Mensaje("Esa aplicacion de agroquimico ya existe"), HttpStatus.BAD_REQUEST);
-
+       // if (!aplicacionAgroquimicoService.existeById(aplicacionAgroquimicoDto.getId()))
+         //   return new ResponseEntity(new Mensaje("Esa aplicacion de agroquimico ya existe"), HttpStatus.BAD_REQUEST);
 
         if(aplicacionAgroquimicoDto.getDosisPorHectaria()<0)
             return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
@@ -74,8 +73,8 @@ public class AplicacionAgroquimicoController {
         if (StringUtils.isBlank(aplicacionAgroquimicoDto.getObservaciones()))
             return new ResponseEntity(new Mensaje("La observacion es obligatoria"), HttpStatus.BAD_REQUEST);
 
-        if (aplicacionAgroquimicoDto.getIdFinca()<0)
-            return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
+       // if (aplicacionAgroquimicoDto.getIdFinca()<0)
+         //   return new ResponseEntity(new Mensaje("El id de la finca no puede ser negativo"), HttpStatus.BAD_REQUEST);
 
 
         try {
@@ -84,25 +83,25 @@ public class AplicacionAgroquimicoController {
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
             Finca finca = fincaService.getFincas(aplicacionAgroquimicoDto.getIdFinca());
 
-           // Optional<Cuadro> cuadroOptional = cuadroService.findByIdCuadro(aplicacionAgroquimicoDto.getIdCuadro());
-            //Cuadro getIdCuadro = cuadroOptional.get();
             Cuadro getIdCuadro= cuadroService.getCuadro(aplicacionAgroquimicoDto.getIdCuadro());
-           Agroquimico getIdAgroquimico=agroquimicoService.getAgroquimico(aplicacionAgroquimicoDto.getIdAgroquimico());
+            Agroquimico getIdAgroquimico=agroquimicoService.getAgroquimico(aplicacionAgroquimicoDto.getIdAgroquimico());
 
-           // Optional<Agroquimico> agroquimicoOptional = agroquimicoService.getUnAgroquimico(aplicacionAgroquimicoDto.getIdCuadro());
-            //Agroquimico getIdAgroquimico = agroquimicoOptional.get();
             AplicacionDeAgroquimico aplicacionDeAgroquimico = new AplicacionDeAgroquimico(getIdAgroquimico,getIdCuadro,aplicacionAgroquimicoDto.getDosisPorHectaria(),
                     aplicacionAgroquimicoDto.getDosisPorHl(),aplicacionAgroquimicoDto.getVolumenPorHectaria(),aplicacionAgroquimicoDto.getObjetivo(),aplicacionAgroquimicoDto.getObservaciones(),"",aplicacionAgroquimicoDto.getPlaga(),finca);
 
+
+            //if( aplicacionDeAgroquimico.getPlantacion().getFechaCosecha().after(aplicacionDeAgroquimico.getFechaDeAplicacion()))
+              //  return new ResponseEntity(new Mensaje("El tiempo de carencia es superior al permitido"), HttpStatus.BAD_REQUEST);
+
             boolean resultado = aplicacionAgroquimicoService.guardarAplicaAgroquimico(aplicacionDeAgroquimico);
+
             if(resultado){
                 logService.guardarAplicacionAgroquimico(aplicacionDeAgroquimico,usuario);
                 return new ResponseEntity<>(new Mensaje("La  aplicación de agroquímico se guardado correctamente"),HttpStatus.CREATED);
             }
             return new ResponseEntity(new Mensaje(" Fallo la operacion, la  aplicación de agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            return new ResponseEntity(new Mensaje("Fallo la operacion, de aplicacion de Agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
-
+            return new ResponseEntity(new Mensaje("Fallo la operacionnn, de aplicacion de Agroquímico no registrada"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

@@ -1,5 +1,6 @@
 package com.tesis.backendCuadernoDigital.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tesis.backendCuadernoDigital.security.entity.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,7 +41,7 @@ public class AplicacionDeAgroquimico {
     @NotNull
     private String observaciones;
 
-    @NotNull
+
     private String justificacion;
 
     @NotNull
@@ -56,12 +57,16 @@ public class AplicacionDeAgroquimico {
     @JoinColumn(name = "idFinca")
     private Finca finca;
 
+    //@ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@JsonIgnore
+    //private Plantacion plantacion;
+
 
 
     public AplicacionDeAgroquimico() {
     }
 
-    public AplicacionDeAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String observaciones, @NotNull String justificacion, @NotNull String plaga,@NotNull Finca finca) {
+    public AplicacionDeAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String observaciones,  String justificacion, @NotNull String plaga,@NotNull Finca finca) {
         this.agroquimico = agroquimico;
         this.cuadro = cuadro;
         this.dosisPorHectaria = dosisPorHectaria;
@@ -180,6 +185,18 @@ public class AplicacionDeAgroquimico {
     public void setFinca(Finca finca) {
         this.finca = finca;
     }
+
+   /* public Plantacion getPlantacion() {
+        return plantacion;
+    }
+
+    public void setPlantacion(Plantacion plantacion) {
+        this.plantacion = plantacion;
+    }
+
+    */
+
+
 }
 
 

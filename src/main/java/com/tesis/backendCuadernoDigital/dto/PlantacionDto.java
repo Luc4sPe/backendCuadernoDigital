@@ -21,8 +21,12 @@ public class PlantacionDto {
     @Min(value = 1, message = "El minimo de entre plantas es 1")
     private float entrePlantas;
 
-    @NotEmpty(message = "La lista no puede estar vacia")
-    private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
+   // @NotEmpty(message = "La lista no puede estar vacia")
+   // private List<@NotNull Cuadro> numerosDeCuadros = new ArrayList<>();
+
+    @NotNull(message = "El id no puede ser un valor nulo")
+    @Min(value = 1, message = "El minimo es 1")
+    private Long idCuadro;
 
 
     @NotBlank(message = "El campo observacion no puede estar vacio")
@@ -67,12 +71,12 @@ public class PlantacionDto {
         this.entrePlantas = entrePlantas;
     }
 
-    public List<Cuadro> getNumerosDeCuadros() {
-        return numerosDeCuadros;
+    public Long getIdCuadro() {
+        return idCuadro;
     }
 
-    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
-        this.numerosDeCuadros = numerosDeCuadros;
+    public void setIdCuadro(Long idCuadro) {
+        this.idCuadro = idCuadro;
     }
 
     public String getObservacion() {

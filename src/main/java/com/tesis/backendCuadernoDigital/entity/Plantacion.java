@@ -23,9 +23,16 @@ public class Plantacion {
     @UpdateTimestamp
     private Date fechaModificacionPlantacion;
 
+    /*
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnoreProperties("finca")
     private List<Cuadro> numerosDeCuadros = new ArrayList<>();
+     */
+
+    @ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("riegos")
+    @JoinColumn(name = "cuadroId")
+    private Cuadro cuadro;
 
     @NotNull
     private String observacion;
@@ -49,12 +56,15 @@ public class Plantacion {
     @JoinColumn(name = "idFinca")
     private Finca finca;
 
+    private Date fechaCosecha;
+
     public Plantacion() {
     }
 
-    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas, @NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull float cantidadPlantines,@NotNull Finca finca) {
+    public Plantacion(@NotNull float entreIleras, @NotNull float entrePlantas,@NotNull Cuadro cuadro ,@NotNull String observacion, @NotNull String justificacion, @NotNull String sistemaRiego, @NotNull String sistemaTrasplante, @NotNull Cultivo nombreTipoCultivo, @NotNull float cantidadPlantines,@NotNull Finca finca) {
         this.entreIleras = entreIleras;
         this.entrePlantas = entrePlantas;
+        this.cuadro = cuadro;
         this.observacion = observacion;
         this.justificacion = justificacion;
         this.sistemaRiego = sistemaRiego;
@@ -106,12 +116,12 @@ public class Plantacion {
         this.fechaModificacionPlantacion = fechaModificacionPlantacion;
     }
 
-    public List<Cuadro> getNumerosDeCuadros() {
-        return numerosDeCuadros;
+    public Cuadro getCuadro() {
+        return cuadro;
     }
 
-    public void setNumerosDeCuadros(List<Cuadro> numerosDeCuadros) {
-        this.numerosDeCuadros = numerosDeCuadros;
+    public void setCuadro(Cuadro cuadro) {
+        this.cuadro = cuadro;
     }
 
     public String getObservacion() {
@@ -170,23 +180,21 @@ public class Plantacion {
         this.finca = finca;
     }
 
-    @Override
-    public String toString() {
-        return "Plantacion{" +
-                "idPlantacion=" + idPlantacion +
-                ", entreIleras=" + entreIleras +
-                ", entrePlantas=" + entrePlantas +
-                ", fechaCreacionPlantacion=" + fechaCreacionPlantacion +
-                ", fechaModificacionPlantacion=" + fechaModificacionPlantacion +
-                ", numerosDeCuadros=" + numerosDeCuadros +
-                ", observacion='" + observacion + '\'' +
-                ", justificacion='" + justificacion + '\'' +
-                ", sistemaRiego='" + sistemaRiego + '\'' +
-                ", sistemaTrasplante='" + sistemaTrasplante + '\'' +
-                ", nombreTipoCultivo=" + nombreTipoCultivo +
-                ", cantidadPlantines=" + cantidadPlantines +
-                ", finca=" + finca +
-                '}';
+    public Date getFechaCosecha() {
+        return fechaCosecha;
     }
+
+    public void setFechaCosecha(Date fechaCosecha) {
+        this.fechaCosecha = fechaCosecha;
+    }
+
+    public Date calculoFechaCosecha(Date fecha, int dias){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.add(Calendar.DAY_OF_YEAR,dias);
+        return calendar.getTime();
+    }
+
+
 }
 
