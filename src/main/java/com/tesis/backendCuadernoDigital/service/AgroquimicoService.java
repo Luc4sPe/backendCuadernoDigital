@@ -41,7 +41,7 @@ public class AgroquimicoService {
        return agroquimicoRepository.existsByNombreComercial(nombre);
     }
 
-  
+
 
     public boolean existsByIdAgro(Long id){
         return agroquimicoRepository.existsById(id);
