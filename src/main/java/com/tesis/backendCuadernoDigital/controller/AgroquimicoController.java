@@ -45,29 +45,18 @@ public class AgroquimicoController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        if(agroquimicoService.existetsByNumLote(agroquimicoDto.getNumLote()))
-            return new ResponseEntity(new Mensaje("Ese numero de lote ya existe"), HttpStatus.BAD_REQUEST);
-
+        if(agroquimicoService.existsByNombreComercial(agroquimicoDto.getNombreComercial()))
+            return new ResponseEntity(new Mensaje("Ese nombre comersial ya existe"), HttpStatus.BAD_REQUEST);
 
         if(agroquimicoDto.getTiempoDeCarencia()<0)
             return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(agroquimicoDto.getDosisPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(agroquimicoDto.getDosisPorHl()<0)
-            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(agroquimicoDto.getVolumenPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
             Agroquimico agroquimico = new Agroquimico(agroquimicoDto.getNombreComercial(),agroquimicoDto.getFormulaYconcentracion(),agroquimicoDto.getPrincipioActivo(),
-                    agroquimicoDto.getTipo(),agroquimicoDto.getTiempoDeCarencia(),agroquimicoDto.getDosisPorHectaria(),agroquimicoDto.getDosisPorHl(),agroquimicoDto.getVolumenPorHectaria(),
-                    agroquimicoDto.getNumLote());
+                    agroquimicoDto.getTipo(),agroquimicoDto.getTiempoDeCarencia(),agroquimicoDto.getDosisPorHectaria(),agroquimicoDto.getDosisPorHl(),agroquimicoDto.getVolumenPorHectaria());
 
             boolean result = agroquimicoService.guardarAgroquimico(agroquimico);
 
@@ -107,17 +96,11 @@ public class AgroquimicoController {
         if (!agroquimicoService.existsByIdAgro(id))
             return new ResponseEntity(new Mensaje("no existe ese de agroquímico"), HttpStatus.NOT_FOUND);
 
+        if(agroquimicoService.existsByNombreComercial(editarAgroquimico.getNombreComercial()))
+            return new ResponseEntity(new Mensaje("Ese nombre comersial ya existe"), HttpStatus.BAD_REQUEST);
+
         if(editarAgroquimico.getTiempoDeCarencia()<0)
             return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(editarAgroquimico.getDosisPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(editarAgroquimico.getDosisPorHl()<0)
-            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(editarAgroquimico.getVolumenPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
         try {
 
@@ -132,7 +115,6 @@ public class AgroquimicoController {
             modificarAgroquimico.setDosisPorHectaria(editarAgroquimico.getDosisPorHectaria());
             modificarAgroquimico.setDosisPorHl(editarAgroquimico.getDosisPorHl());
             modificarAgroquimico.setVolumenPorHectaria(editarAgroquimico.getVolumenPorHectaria());
-            modificarAgroquimico.setNumLote(editarAgroquimico.getNumLote());
 
             if (modificarAgroquimico !=null){
                 logService.modificarAgroquimico(modificarAgroquimico,usuario);
@@ -142,9 +124,6 @@ public class AgroquimicoController {
         }catch (Exception e){
             return new ResponseEntity(new Mensaje("Fallo la operacion, agroquímico  no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
-
 
     }
 
@@ -156,14 +135,6 @@ public class AgroquimicoController {
     }
 
     /*
-
-
-
-
-
-
-
-
 
 
     @DeleteMapping("borrar/{id}")

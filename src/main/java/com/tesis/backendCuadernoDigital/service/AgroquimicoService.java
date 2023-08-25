@@ -37,13 +37,11 @@ public class AgroquimicoService {
         return  agroquimicoRepository.findAllByOrderByIdAsc();
     }
 
-    public boolean existsByNombreComun(String nombre){
+    public boolean existsByNombreComercial(String nombre){
        return agroquimicoRepository.existsByNombreComercial(nombre);
     }
 
-    public boolean existetsByNumLote(String numLote){
-       return agroquimicoRepository.existsByNumLote(numLote);
-    }
+  
 
     public boolean existsByIdAgro(Long id){
         return agroquimicoRepository.existsById(id);

@@ -15,7 +15,7 @@ public interface AgroquimicoRepository extends JpaRepository<Agroquimico,Long> {
 
     Optional<Agroquimico> findById(Long id);
     boolean existsByNombreComercial(String nombreComercial);
-    boolean existsByNumLote(String numLote);
+
     boolean existsById(Long id);
     Integer countAgroquimicoBy();
 

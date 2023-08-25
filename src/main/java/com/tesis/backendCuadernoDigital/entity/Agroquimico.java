@@ -18,6 +18,7 @@ public class Agroquimico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Column(unique = true)
     private String nombreComercial;
     @NotNull
     private String formulaYconcentracion;
@@ -28,14 +29,14 @@ public class Agroquimico {
     @NotNull
     private int tiempoDeCarencia;
     @NotNull
-    private float dosisPorHectaria;
+    private String dosisPorHectaria;
     @NotNull
-    private float dosisPorHl;
+    private String dosisPorHl;
     @NotNull
-    private float volumenPorHectaria;
-    @NotNull
-    @Column(unique = true)
-    private String numLote;
+    private String volumenPorHectaria;
+   // @NotNull
+    //@Column(unique = true)
+    //private String numLote;
 
     @CreationTimestamp
     private Date fechaCreacionAgro;
@@ -45,8 +46,8 @@ public class Agroquimico {
     public Agroquimico() {
     }
 
-    public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull int tiempoDeCarencia, @NotNull float dosisPorHectaria,
-                       @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String numLote) {
+    public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull int tiempoDeCarencia, @NotNull String dosisPorHectaria,
+                       @NotNull String dosisPorHl, @NotNull String volumenPorHectaria) {
         this.nombreComercial = nombreComercial;
         this.formulaYconcentracion = formulaYconcentracion;
         this.principioActivo = principioActivo;
@@ -55,7 +56,6 @@ public class Agroquimico {
         this.dosisPorHectaria = dosisPorHectaria;
         this.dosisPorHl = dosisPorHl;
         this.volumenPorHectaria = volumenPorHectaria;
-        this.numLote = numLote;
         this.fechaCreacionAgro=null;
         this.fechaModificacionAgro=null;
     }
@@ -108,37 +108,31 @@ public class Agroquimico {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 
-    public float getDosisPorHectaria() {
+    public String getDosisPorHectaria() {
         return dosisPorHectaria;
     }
 
-    public void setDosisPorHectaria(float dosisPorHectaria) {
+    public void setDosisPorHectaria(String dosisPorHectaria) {
         this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public float getDosisPorHl() {
+    public String getDosisPorHl() {
         return dosisPorHl;
     }
 
-    public void setDosisPorHl(float dosisPorHl) {
+    public void setDosisPorHl(String dosisPorHl) {
         this.dosisPorHl = dosisPorHl;
     }
 
-    public float getVolumenPorHectaria() {
+    public String getVolumenPorHectaria() {
         return volumenPorHectaria;
     }
 
-    public void setVolumenPorHectaria(float volumenPorHectaria) {
+    public void setVolumenPorHectaria(String volumenPorHectaria) {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 
-    public String getNumLote() {
-        return numLote;
-    }
 
-    public void setNumLote(String numLote) {
-        this.numLote = numLote;
-    }
 
     public Date getFechaCreacionAgro() {
         return fechaCreacionAgro;

@@ -17,17 +17,14 @@ public class AgroquimicoDto {
     @NotNull(message = "El tiempo de carencia no debe estar vacio")
     @Min(value = 1, message = "El minimo valor del tiempo de carencia es 1")
     private int tiempoDeCarencia;
-    @NotNull(message = "La dosis por hectaria no debe estar vacio")
-    @Min(value = 1, message = "El minimo valor de dosis por hectaria es 1")
-    private float dosisPorHectaria;
-    @NotNull(message = "La dosis por Hl no debe estar vacio")
-    @Min(value = 1, message = "El minimo valor de dosis por Hl es 1")
-    private float dosisPorHl;
-    @NotNull(message = "El volumen por hectaria no debe estar vacio")
-    @Min(value = 1, message = "El minimo valor de dosis por hectaria es 1")
-    private float volumenPorHectaria;
-    @NotBlank(message = "El numero de lote no debe estar vacio")
-    private String numLote;
+    @NotBlank(message = "La docis por hectarea no debe estar vacio")
+    private String dosisPorHectaria;
+    @NotBlank(message = "La docis por HL no debe estar vacio")
+    private String dosisPorHl;
+    @NotBlank(message = "El volumen por hectarea no debe estar vacio")
+    private String volumenPorHectaria;
+   // @NotBlank(message = "El numero de lote no debe estar vacio")
+   // private String numLote;
 
 
     public String getNombreComercial() {
@@ -70,37 +67,31 @@ public class AgroquimicoDto {
         this.tiempoDeCarencia = tiempoDeCarencia;
     }
 
-    public float getDosisPorHectaria() {
+    public String getDosisPorHectaria() {
         return dosisPorHectaria;
     }
 
-    public void setDosisPorHectaria(float dosisPorHectaria) {
+    public void setDosisPorHectaria(String dosisPorHectaria) {
         this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public float getDosisPorHl() {
+    public String getDosisPorHl() {
         return dosisPorHl;
     }
 
-    public void setDosisPorHl(float dosisPorHl) {
+    public void setDosisPorHl(String dosisPorHl) {
         this.dosisPorHl = dosisPorHl;
     }
 
-    public float getVolumenPorHectaria() {
+    public String getVolumenPorHectaria() {
         return volumenPorHectaria;
     }
 
-    public void setVolumenPorHectaria(float volumenPorHectaria) {
+    public void setVolumenPorHectaria(String volumenPorHectaria) {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 
-    public String getNumLote() {
-        return numLote;
-    }
 
-    public void setNumLote(String numLote) {
-        this.numLote = numLote;
-    }
 }
 
 
