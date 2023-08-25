@@ -181,8 +181,9 @@ public class AplicacionAgroquimicoController {
             return new ResponseEntity(new Mensaje("Fallo la operacion, aplicacion Agroquímico  no actualizado"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+
+
     }
-    /*
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA','PRODUCTOR')")
     @GetMapping("/listarAplicacionAgroquimico")
@@ -190,6 +191,9 @@ public class AplicacionAgroquimicoController {
         List<AplicacionDeAgroquimico> lista = aplicacionAgroquimicoService.listarAplicacionAgroquimico();
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
+    /*
+
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA','PRODUCTOR')")
     @GetMapping("/detalle/{id}")
