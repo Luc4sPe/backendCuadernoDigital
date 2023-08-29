@@ -95,8 +95,8 @@ public class PlantacionController {
            */
 
             //if (plantacionDto.getNumerosDeCuadros().contains(nuevaPlantacion))
-            if(plantacionDto.getIdCuadro().equals(nuevaPlantacion))
-                return new ResponseEntity(new Mensaje("Ya existe una plantación"), HttpStatus.BAD_REQUEST);
+            if(plantacionDto.getIdCuadro().equals(nuevaPlantacion.getCuadro().getIdCuadro()))
+                return new ResponseEntity(new Mensaje("Ya existe una plantación en este cuadro"), HttpStatus.BAD_REQUEST);
 
             boolean result = plantacionService.guardarPlantacion(nuevaPlantacion);
             nuevaPlantacion.setFechaCosecha(nuevaPlantacion.calculoFechaCosecha(nuevaPlantacion.getFechaCreacionPlantacion(),nombreCultivo.getTiempoDeCultivo()));
