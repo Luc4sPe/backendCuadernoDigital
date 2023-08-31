@@ -96,8 +96,8 @@ public class AgroquimicoController {
         if (!agroquimicoService.existsByIdAgro(id))
             return new ResponseEntity(new Mensaje("no existe ese de agroquímico"), HttpStatus.NOT_FOUND);
 
-        if(agroquimicoService.existsByNombreComercial(editarAgroquimico.getNombreComercial()))
-            return new ResponseEntity(new Mensaje("Ese nombre comersial ya existe"), HttpStatus.BAD_REQUEST);
+        //if(agroquimicoService.existsByNombreComercial(editarAgroquimico.getNombreComercial()))
+          //  return new ResponseEntity(new Mensaje("Ese nombre comersial ya existe"), HttpStatus.BAD_REQUEST);
 
         if(editarAgroquimico.getTiempoDeCarencia()<0)
             return new ResponseEntity(new Mensaje("El timepo de carencia debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
