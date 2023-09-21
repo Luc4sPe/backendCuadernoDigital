@@ -108,6 +108,14 @@ public class AplicacionAgroquimicoController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @GetMapping("/listadoAplicacionAgroDeUnaFincaPorNombre/{nombre}")
+    public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFincaPorNombre(@PathVariable ("nombre") String nombre){
+        Finca finca = fincaService.getFincasNombre(nombre);
+        List<AplicacionDeAgroquimico> aplicacion = aplicacionAgroquimicoService.getListadoAplicacionAgroDeUnaFincaPorNombre(finca.getNombre());
+        return new ResponseEntity(aplicacion,HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/detalleAplicacionAgro/{id}")
     ResponseEntity<AplicacionDeAgroquimico> obteberDetalleDeUnaAplicacionAgro(@PathVariable("id") Long id){
         if(!aplicacionAgroquimicoService.existeById(id))

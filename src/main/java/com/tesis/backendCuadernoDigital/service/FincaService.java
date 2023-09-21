@@ -64,5 +64,10 @@ public class FincaService {
         return finca;
     }
 
+    public  Finca getFincasNombre(String nombre){
+        Finca finca = getByNombre(nombre).orElseThrow(()-> new ResourceNotFoundException("La finca con el nombre: " + nombre + " no existe"));
+        return finca;
+    }
+
 
 }

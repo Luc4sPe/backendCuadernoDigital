@@ -49,6 +49,10 @@ public class AplicacionAgroquimicoService {
         return aplicacionAgroquimicoRepository.findByFinca_IdFinca(idFinca);
     }
 
+    public List<AplicacionDeAgroquimico> getListadoAplicacionAgroDeUnaFincaPorNombre(String nombre){
+        return aplicacionAgroquimicoRepository.findByFinca_Nombre(nombre);
+    }
+
     public void borrar(Long id){
         aplicacionAgroquimicoRepository.deleteById(id);
     }

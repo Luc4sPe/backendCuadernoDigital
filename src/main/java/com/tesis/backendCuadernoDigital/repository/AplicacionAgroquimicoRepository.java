@@ -20,6 +20,7 @@ public interface AplicacionAgroquimicoRepository extends JpaRepository<Aplicacio
     //Optional<AplicacionDeAgroquimico> findByJustificacion(String justificacion);
 
     List<AplicacionDeAgroquimico> findByFinca_IdFinca(Long idFinca);
+    List<AplicacionDeAgroquimico> findByFinca_Nombre(String nombre);
 
     boolean existsById(Long id);
     boolean existsByJustificacion(String justificacion);
