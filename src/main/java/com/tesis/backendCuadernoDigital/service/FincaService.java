@@ -34,6 +34,8 @@ public class FincaService {
         return fincaRepository.findByNombre(nombreFinca);
     }
 
+
+
     public Optional<Finca> getById(Long id){
         return fincaRepository.findByIdFinca(id);
     }
@@ -68,6 +70,8 @@ public class FincaService {
         Finca finca = getByNombre(nombre).orElseThrow(()-> new ResourceNotFoundException("La finca con el nombre: " + nombre + " no existe"));
         return finca;
     }
+
+
 
 
 }
