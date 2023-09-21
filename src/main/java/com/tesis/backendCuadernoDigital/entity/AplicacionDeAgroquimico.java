@@ -57,7 +57,7 @@ public class AplicacionDeAgroquimico {
     @JoinColumn(name = "idFinca")
     private Finca finca;
 
-   
+
 
     //@ManyToOne(optional = false,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     //@JsonIgnore

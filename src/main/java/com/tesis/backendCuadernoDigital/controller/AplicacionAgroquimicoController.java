@@ -101,7 +101,7 @@ public class AplicacionAgroquimicoController {
 
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/listadoAplicacionAgroDeUnaFinca/{idFinca}")
-    public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
+    public ResponseEntity<List<Cuadro>> listadoAplicacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);
         List<AplicacionDeAgroquimico> aplicacion = aplicacionAgroquimicoService.getListadoAplicacionAgroDeUnaFincaPorId(finca.getIdFinca());
         return new ResponseEntity(aplicacion,HttpStatus.OK);
@@ -109,15 +109,15 @@ public class AplicacionAgroquimicoController {
 
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
     @GetMapping("/listadoAplicacionAgroDeUnaFincaPorNombre/{nombre}")
-    public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFincaPorNombre(@PathVariable ("nombre") String nombre){
+    public ResponseEntity<List<Cuadro>> listadoAplicacionAgroDeUnaFincaPorNombre(@PathVariable ("nombre") String nombre){
         Finca finca = fincaService.getFincasNombre(nombre);
         List<AplicacionDeAgroquimico> aplicacion = aplicacionAgroquimicoService.getListadoAplicacionAgroDeUnaFincaPorNombre(finca.getNombre());
         return new ResponseEntity(aplicacion,HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
-    @GetMapping("/listadoAplicacionAgroDeUnaFincaPorNombrePro/{nombre}")
-    public ResponseEntity<List<AplicacionDeAgroquimico>> listadoPlantacionDeUnaFincaPorNombrePro(@PathVariable ("nombre") String nombre){
+    @GetMapping("/listadoAplicacionAgroPorNombreProductor/{nombre}")
+    public ResponseEntity<List<AplicacionDeAgroquimico>> listadoAplicaciDeAgroPorNombrePro(@PathVariable ("nombre") String nombre){
         List<AplicacionDeAgroquimico> aplicacion = aplicacionAgroquimicoService.getListadoAplicacionAgroDeUnaFincaPorProductor(nombre);
         return new ResponseEntity(aplicacion,HttpStatus.OK);
     }
