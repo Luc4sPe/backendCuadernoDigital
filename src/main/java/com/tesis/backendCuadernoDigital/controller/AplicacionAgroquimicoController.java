@@ -115,7 +115,7 @@ public class AplicacionAgroquimicoController {
         return new ResponseEntity(aplicacion,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoAplicacionAgroPorNombreProductor/{nombre}")
     public ResponseEntity<List<AplicacionDeAgroquimico>> listadoAplicaciDeAgroPorNombrePro(@PathVariable ("nombre") String nombre){
         List<AplicacionDeAgroquimico> aplicacion = aplicacionAgroquimicoService.getListadoAplicacionAgroDeUnaFincaPorProductor(nombre);

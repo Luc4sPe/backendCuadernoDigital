@@ -266,6 +266,7 @@ public class AsesoriaAgroquimicoController {
         if (asesoriaAgroquimico.isAsesoriaAplicada()) {
             return new ResponseEntity(new Mensaje("La asesoría de agroquímico ya se aplico"), HttpStatus.BAD_REQUEST);
         }
+
         asesoriaAgroquimicoService.modificarEstado(id);
         logService.modificarEstadoAsesoriaAgroTrue(asesoriaAgroquimico,usuarioLogueado);
         return  new ResponseEntity(new Mensaje("Se aplicó exitosamente la asesoria de agroquímico "),HttpStatus.OK);
