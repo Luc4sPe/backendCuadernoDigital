@@ -15,6 +15,7 @@ public interface AsesoriaRiegoRepository extends JpaRepository<AsesoriaRiego, Lo
     List<AsesoriaRiego> findAllByOrderByFechaEstimadaAplicacionAsc();
     Optional<AsesoriaRiego> findById(Long id );
      List<AsesoriaRiego> findByFinca_IdFinca(Long idFinca);
+     List<AsesoriaRiego> findByProductor_NombreUsuario(String nombre);
      Integer countAsesoriaRiegoBy();
      Integer countAsesoriaRiegoByAsesoriaAplicadaTrue();
      Integer countAsesoriaRiegoByAsesoriaAplicadaFalse();

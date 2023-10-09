@@ -119,6 +119,14 @@ public class AsesoriaAgroquimicoController {
         return new ResponseEntity(asesoria,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/listadoAsesoriaAgroDeUnProductor/{nombre}")
+    public ResponseEntity<List<AsesoriaAgroquimico>> listadoAsesoriaAgroDeUnProductor(@PathVariable ("nombre") String nombre){
+        List<AsesoriaAgroquimico> asesoria = asesoriaAgroquimicoService.getListadoAgroquimicoDeUnProductor(nombre);
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @PutMapping("/update/{id}")

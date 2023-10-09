@@ -40,6 +40,10 @@ public class AsesoriaRiegoService {
         return asesoriaRiegoRepository.findByFinca_IdFinca(idFinca);
     }
 
+    public List<AsesoriaRiego> getListadoAsesoriaRiegoPorNombreUsuario(String nombre){
+        return asesoriaRiegoRepository.findByProductor_NombreUsuario(nombre);
+    }
+
     public boolean existeByIdAsesoriaRiego(Long id){
         return asesoriaRiegoRepository.existsById(id);
     }

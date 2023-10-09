@@ -15,6 +15,7 @@ public interface AsesoriaAgroquimicoRepository extends JpaRepository<AsesoriaAgr
 
     Optional<AsesoriaAgroquimico> findById(Long id);
     List<AsesoriaAgroquimico> findByFinca_IdFinca(Long idFinca);
+    List<AsesoriaAgroquimico> findByProductor_NombreUsuario(String nombre);
     Integer countAsesoriaAgroquimicoBy();
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaTrue();
     Integer countAsesoriaAgroquimicoByAsesoriaAplicadaFalse();

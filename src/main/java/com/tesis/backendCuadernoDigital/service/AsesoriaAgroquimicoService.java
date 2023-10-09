@@ -39,6 +39,10 @@ public class AsesoriaAgroquimicoService {
         return asesoriaAgroquimicoRepository.findByFinca_IdFinca(idFinca);
     }
 
+    public List<AsesoriaAgroquimico> getListadoAgroquimicoDeUnProductor(String nombre){
+        return asesoriaAgroquimicoRepository.findByProductor_NombreUsuario(nombre);
+    }
+
     public boolean existeByIdAsesoriaAgroquimico(Long id){
         return asesoriaAgroquimicoRepository.existsById(id);
     }

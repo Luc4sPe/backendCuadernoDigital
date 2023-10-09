@@ -175,6 +175,14 @@ public class AsesoriaRiegoController {
         return new ResponseEntity(asesoria,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
+    @GetMapping("/listadoAsesoriaRiegoDeUnProductor/{nombre}")
+    public ResponseEntity<List<AsesoriaRiego>> listadoAsesoriaRiegoDeUnProductor(@PathVariable ("nombre") String nombre){
+        List<AsesoriaRiego> asesoria = asesoriaRiegoService.getListadoAsesoriaRiegoPorNombreUsuario(nombre);
+        return new ResponseEntity(asesoria,HttpStatus.OK);
+    }
+
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR', 'ENCARGADO_AGRICOLA')")
