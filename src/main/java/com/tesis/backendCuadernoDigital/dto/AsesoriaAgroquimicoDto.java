@@ -48,6 +48,9 @@ public class AsesoriaAgroquimicoDto {
     @NotBlank(message = "El campo Sistema de Trasplante no puede estar vacio")
     private String nombreProductor;
 
+    @NotBlank(message = "No puede ser un valor nulo")
+    private String nombreEncargado;
+
     public Long getId() {
         return id;
     }
@@ -134,5 +137,13 @@ public class AsesoriaAgroquimicoDto {
 
     public void setNombreProductor(String nombreProductor) {
         this.nombreProductor = nombreProductor;
+    }
+
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
+
+    public void setNombreEncargado(String nombreEncargado) {
+        this.nombreEncargado = nombreEncargado;
     }
 }

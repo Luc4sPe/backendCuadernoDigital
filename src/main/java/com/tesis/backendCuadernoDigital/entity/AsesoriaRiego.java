@@ -62,6 +62,8 @@ public class AsesoriaRiego {
     private Date fechaAplicacionAsesoria;
 
     private LocalDate fechaEstimadaAplicacion;
+    @NotNull
+    private String nombreEncargado;
 
 
 
@@ -71,7 +73,7 @@ public class AsesoriaRiego {
     public AsesoriaRiego() {
     }
 
-    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor, LocalDate fechaEstimadaAplicacion) {
+    public AsesoriaRiego(@NotNull LocalTime duracionEnHoras, @NotNull float milimetrosAplicados,Finca finca,Cuadro cuadro,Usuario productor, LocalDate fechaEstimadaAplicacion, String nombreEncargado) {
         this.duracionEnHoras = duracionEnHoras;
         this.milimetrosAplicados = milimetrosAplicados;
         this.finca = finca;
@@ -79,6 +81,7 @@ public class AsesoriaRiego {
         this.productor = productor;
         this.fechaAsesoriaRiego = null;
         this.fechaEstimadaAplicacion=fechaEstimadaAplicacion;
+        this.nombreEncargado = nombreEncargado;
 
        // this.fechaModificacionRiego = null;
 
@@ -191,9 +194,13 @@ public class AsesoriaRiego {
     }
 
 
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
 
-
-
+    public void setNombreEncargado(String nombreEncargado) {
+        this.nombreEncargado = nombreEncargado;
+    }
 }
 
 

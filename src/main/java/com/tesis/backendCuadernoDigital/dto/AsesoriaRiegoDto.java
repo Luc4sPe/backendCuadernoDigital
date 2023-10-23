@@ -40,6 +40,9 @@ public class AsesoriaRiegoDto {
 
     private LocalDate fechaEstimadaAplicacion;
 
+    @NotBlank(message = "No puede ser un valor nulo")
+    private String nombreEncargado;
+
 
 
     public Long getId() {
@@ -96,5 +99,14 @@ public class AsesoriaRiegoDto {
 
     public void setFechaEstimadaAplicacion(LocalDate fechaEstimadaAplicacion) {
         this.fechaEstimadaAplicacion = fechaEstimadaAplicacion;
+    }
+
+
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
+
+    public void setNombreEncargado(String nombreEncargado) {
+        this.nombreEncargado = nombreEncargado;
     }
 }

@@ -85,7 +85,8 @@ public class AsesoriaAgroquimicoController {
             Usuario usuarioCapturado = usuarioOptional.get();
 
             AsesoriaAgroquimico asesoriaAgroquimico = new AsesoriaAgroquimico(getIdAgroquimico,getIdCuadro,asesoriaAgroquimicoDto.getDosisPorHectaria(),
-                    asesoriaAgroquimicoDto.getDosisPorHl(),asesoriaAgroquimicoDto.getVolumenPorHectaria(),asesoriaAgroquimicoDto.getObjetivo(),asesoriaAgroquimicoDto.getPlaga(),asesoriaAgroquimicoDto.getFechaEstimadaAplicacion(),finca,usuarioCapturado);
+                    asesoriaAgroquimicoDto.getDosisPorHl(),asesoriaAgroquimicoDto.getVolumenPorHectaria(),asesoriaAgroquimicoDto.getObjetivo(),asesoriaAgroquimicoDto.getPlaga(),asesoriaAgroquimicoDto.getFechaEstimadaAplicacion(),finca,usuarioCapturado,
+                    usuario.getNombre());
 
             boolean resultado = asesoriaAgroquimicoService.guardarAsesoramientoAgroquimico(asesoriaAgroquimico);
 

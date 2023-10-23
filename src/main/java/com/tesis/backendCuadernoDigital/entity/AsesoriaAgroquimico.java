@@ -66,10 +66,14 @@ public class AsesoriaAgroquimico {
     @NotNull
     private boolean asesoriaAplicada;
 
+    @NotNull
+    private String nombreEncargado;
+
+
     public AsesoriaAgroquimico() {
     }
 
-    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga,LocalDate fechaEstimadaAplicacion,Finca finca, Usuario productor) {
+    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga,LocalDate fechaEstimadaAplicacion,Finca finca, Usuario productor, String nombreEncargado) {
         this.agroquimico = agroquimico;
         this.cuadro = cuadro;
         this.dosisPorHectaria = dosisPorHectaria;
@@ -81,6 +85,7 @@ public class AsesoriaAgroquimico {
         this.productor = productor;
         this.fechaAsesoriaAgroquimico=null;
         this.fechaEstimadaAplicacion=fechaEstimadaAplicacion;
+        this.nombreEncargado = nombreEncargado;
     }
 
 
@@ -224,8 +229,11 @@ public class AsesoriaAgroquimico {
         this.fechaModificacionAsesoriaAgroquimico = new Date();
     }
 
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
 
-
-
-
+    public void setNombreEncargado(String nombreEncargado) {
+        this.nombreEncargado = nombreEncargado;
+    }
 }
