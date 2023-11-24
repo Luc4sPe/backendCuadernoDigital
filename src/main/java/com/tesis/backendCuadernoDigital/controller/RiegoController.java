@@ -183,7 +183,7 @@ public class RiegoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoRiegoDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoRiegoDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);

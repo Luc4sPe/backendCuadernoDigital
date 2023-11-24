@@ -110,7 +110,7 @@ public class PlantacionController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoPlantacion")
     public ResponseEntity<List<Plantacion>> listadoPlantacion(){
         List<Plantacion> listado = plantacionService.ListarPlantacion();
@@ -210,7 +210,7 @@ public class PlantacionController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoPlantacionDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoPlantacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);

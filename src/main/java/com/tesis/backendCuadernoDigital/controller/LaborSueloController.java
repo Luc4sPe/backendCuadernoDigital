@@ -199,7 +199,7 @@ public class LaborSueloController {
         return new ResponseEntity(laborSuelo,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoLaboresDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoLaboresDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);

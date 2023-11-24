@@ -99,7 +99,7 @@ public class AplicacionAgroquimicoController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCTOR','ENCARGADO_AGRICOLA')")
     @GetMapping("/listadoAplicacionAgroDeUnaFinca/{idFinca}")
     public ResponseEntity<List<Cuadro>> listadoAplicacionDeUnaFinca(@PathVariable ("idFinca") Long idFinca){
         Finca finca = fincaService.getFincas(idFinca);
