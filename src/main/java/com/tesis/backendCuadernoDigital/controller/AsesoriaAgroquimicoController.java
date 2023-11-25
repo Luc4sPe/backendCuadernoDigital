@@ -53,14 +53,6 @@ public class AsesoriaAgroquimicoController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("campos mal ingresados"), HttpStatus.BAD_REQUEST);
 
-        if(asesoriaAgroquimicoDto.getDosisPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("La dosis por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(asesoriaAgroquimicoDto.getDosisPorHl()<0)
-            return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-        if(asesoriaAgroquimicoDto.getVolumenPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
         if (asesoriaAgroquimicoDto.getIdCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);
@@ -139,14 +131,6 @@ public class AsesoriaAgroquimicoController {
        if (!asesoriaAgroquimicoService.existeByIdAsesoriaAgroquimico(id))
             return new ResponseEntity(new Mensaje("no existe esa asesoria de agroquímico"), HttpStatus.NOT_FOUND);
 
-       if(modificarAsesoriaAgroquimicoDto.getDosisPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("La dosis por Hectarea debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-       if(modificarAsesoriaAgroquimicoDto.getDosisPorHl()<0 )
-           return new ResponseEntity(new Mensaje("La dosis por Hl debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
-
-       if(modificarAsesoriaAgroquimicoDto.getVolumenPorHectaria()<0)
-            return new ResponseEntity(new Mensaje("El volumen por hectaria debe ser positiva"), HttpStatus.NOT_ACCEPTABLE);
 
        if (modificarAsesoriaAgroquimicoDto.getIdCuadro()<0)
             return new ResponseEntity(new Mensaje("El id del cuadro no puede ser negativo"), HttpStatus.BAD_REQUEST);

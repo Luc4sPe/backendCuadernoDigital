@@ -21,15 +21,15 @@ public class ModificarAsesoriaAgroquimicoDto {
 
     @NotNull(message = "La dosis no debe estar vacia")
     @Min(value = 1, message = "El minimo valor del id es 1")
-    private float dosisPorHectaria;
+    private String dosisPorHectaria;
 
     @NotNull(message = "La dosis no debe estar vacia")
     @Min(value = 1, message = "El minimo valor del id es 1")
-    private float dosisPorHl;
+    private String dosisPorHl;
 
     @NotNull(message = "La dosis no debe estar vacia")
     @Min(value = 1, message = "El minimo valor del id es 1")
-    private float volumenPorHectaria;
+    private String volumenPorHectaria;
 
     @NotBlank(message = "El objetivo no debe estar vacio")
     private String objetivo;
@@ -73,27 +73,27 @@ public class ModificarAsesoriaAgroquimicoDto {
         this.idCuadro = idCuadro;
     }
 
-    public float getDosisPorHectaria() {
+    public String getDosisPorHectaria() {
         return dosisPorHectaria;
     }
 
-    public void setDosisPorHectaria(float dosisPorHectaria) {
+    public void setDosisPorHectaria(String dosisPorHectaria) {
         this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public float getDosisPorHl() {
+    public String getDosisPorHl() {
         return dosisPorHl;
     }
 
-    public void setDosisPorHl(float dosisPorHl) {
+    public void setDosisPorHl(String dosisPorHl) {
         this.dosisPorHl = dosisPorHl;
     }
 
-    public float getVolumenPorHectaria() {
+    public String getVolumenPorHectaria() {
         return volumenPorHectaria;
     }
 
-    public void setVolumenPorHectaria(float volumenPorHectaria) {
+    public void setVolumenPorHectaria(String volumenPorHectaria) {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 

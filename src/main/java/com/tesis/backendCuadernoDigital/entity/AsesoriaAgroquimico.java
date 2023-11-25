@@ -29,12 +29,12 @@ public class AsesoriaAgroquimico {
     private Cuadro cuadro;
 
     @NotNull
-    private float dosisPorHectaria;
+    private String dosisPorHectaria;
     @NotNull
-    private float dosisPorHl;
+    private String dosisPorHl;
 
     @NotNull
-    private float volumenPorHectaria;
+    private String volumenPorHectaria;
 
     @NotNull
     private String objetivo;
@@ -73,7 +73,7 @@ public class AsesoriaAgroquimico {
     public AsesoriaAgroquimico() {
     }
 
-    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull float dosisPorHectaria, @NotNull float dosisPorHl, @NotNull float volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga,LocalDate fechaEstimadaAplicacion,Finca finca, Usuario productor, String nombreEncargado) {
+    public AsesoriaAgroquimico(Agroquimico agroquimico, Cuadro cuadro, @NotNull String dosisPorHectaria, @NotNull String dosisPorHl, @NotNull String volumenPorHectaria, @NotNull String objetivo, @NotNull String plaga,LocalDate fechaEstimadaAplicacion,Finca finca, Usuario productor, String nombreEncargado) {
         this.agroquimico = agroquimico;
         this.cuadro = cuadro;
         this.dosisPorHectaria = dosisPorHectaria;
@@ -113,27 +113,27 @@ public class AsesoriaAgroquimico {
         this.cuadro = cuadro;
     }
 
-    public float getDosisPorHectaria() {
+    public String getDosisPorHectaria() {
         return dosisPorHectaria;
     }
 
-    public void setDosisPorHectaria(float dosisPorHectaria) {
+    public void setDosisPorHectaria(String dosisPorHectaria) {
         this.dosisPorHectaria = dosisPorHectaria;
     }
 
-    public float getDosisPorHl() {
+    public String getDosisPorHl() {
         return dosisPorHl;
     }
 
-    public void setDosisPorHl(float dosisPorHl) {
+    public void setDosisPorHl(String dosisPorHl) {
         this.dosisPorHl = dosisPorHl;
     }
 
-    public float getVolumenPorHectaria() {
+    public String getVolumenPorHectaria() {
         return volumenPorHectaria;
     }
 
-    public void setVolumenPorHectaria(float volumenPorHectaria) {
+    public void setVolumenPorHectaria(String volumenPorHectaria) {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 
