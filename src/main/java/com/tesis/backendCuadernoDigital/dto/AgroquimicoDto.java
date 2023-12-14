@@ -23,8 +23,8 @@ public class AgroquimicoDto {
     private String dosisPorHl;
     @NotBlank(message = "El volumen por hectarea no debe estar vacio")
     private String volumenPorHectaria;
-   // @NotBlank(message = "El numero de lote no debe estar vacio")
-   // private String numLote;
+    @NotBlank(message = "El numero de lote no debe estar vacio")
+    private String numLote;
 
 
     public String getNombreComercial() {
@@ -91,7 +91,13 @@ public class AgroquimicoDto {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 
+    public String getNumLote() {
+        return numLote;
+    }
 
+    public void setNumLote(String numLote) {
+        this.numLote = numLote;
+    }
 }
 
 

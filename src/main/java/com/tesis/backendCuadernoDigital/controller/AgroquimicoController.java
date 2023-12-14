@@ -56,7 +56,8 @@ public class AgroquimicoController {
             Usuario usuario = usuarioService.getUsuarioLogeado(auth);
 
             Agroquimico agroquimico = new Agroquimico(agroquimicoDto.getNombreComercial(),agroquimicoDto.getFormulaYconcentracion(),agroquimicoDto.getPrincipioActivo(),
-                    agroquimicoDto.getTipo(),agroquimicoDto.getTiempoDeCarencia(),agroquimicoDto.getDosisPorHectaria(),agroquimicoDto.getDosisPorHl(),agroquimicoDto.getVolumenPorHectaria());
+                    agroquimicoDto.getTipo(),agroquimicoDto.getTiempoDeCarencia(),agroquimicoDto.getDosisPorHectaria(),agroquimicoDto.getDosisPorHl(),agroquimicoDto.getVolumenPorHectaria(),
+                    agroquimicoDto.getNumLote());
 
             boolean result = agroquimicoService.guardarAgroquimico(agroquimico);
 
@@ -115,6 +116,7 @@ public class AgroquimicoController {
             modificarAgroquimico.setDosisPorHectaria(editarAgroquimico.getDosisPorHectaria());
             modificarAgroquimico.setDosisPorHl(editarAgroquimico.getDosisPorHl());
             modificarAgroquimico.setVolumenPorHectaria(editarAgroquimico.getVolumenPorHectaria());
+            modificarAgroquimico.setNumLote((editarAgroquimico.getNumLote()));
 
             if (modificarAgroquimico !=null){
                 logService.modificarAgroquimico(modificarAgroquimico,usuario);

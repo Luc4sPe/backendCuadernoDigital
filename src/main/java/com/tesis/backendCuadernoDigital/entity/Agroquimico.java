@@ -34,9 +34,9 @@ public class Agroquimico {
     private String dosisPorHl;
     @NotNull
     private String volumenPorHectaria;
-   // @NotNull
-    //@Column(unique = true)
-    //private String numLote;
+   @NotNull
+    @Column(unique = true)
+    private String numLote;
 
     @CreationTimestamp
     private Date fechaCreacionAgro;
@@ -47,7 +47,7 @@ public class Agroquimico {
     }
 
     public Agroquimico(@NotNull String nombreComercial, @NotNull String formulaYconcentracion, @NotNull String principioActivo, @NotNull String tipo, @NotNull int tiempoDeCarencia, @NotNull String dosisPorHectaria,
-                       @NotNull String dosisPorHl, @NotNull String volumenPorHectaria) {
+                       @NotNull String dosisPorHl, @NotNull String volumenPorHectaria, @NotNull String numLote) {
         this.nombreComercial = nombreComercial;
         this.formulaYconcentracion = formulaYconcentracion;
         this.principioActivo = principioActivo;
@@ -56,6 +56,7 @@ public class Agroquimico {
         this.dosisPorHectaria = dosisPorHectaria;
         this.dosisPorHl = dosisPorHl;
         this.volumenPorHectaria = volumenPorHectaria;
+        this.numLote=numLote;
         this.fechaCreacionAgro=null;
         this.fechaModificacionAgro=null;
     }
@@ -132,7 +133,13 @@ public class Agroquimico {
         this.volumenPorHectaria = volumenPorHectaria;
     }
 
+    public String getNumLote() {
+        return numLote;
+    }
 
+    public void setNumLote(String numLote) {
+        this.numLote = numLote;
+    }
 
     public Date getFechaCreacionAgro() {
         return fechaCreacionAgro;
