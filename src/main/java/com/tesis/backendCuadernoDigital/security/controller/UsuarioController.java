@@ -156,7 +156,7 @@ public class UsuarioController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ENCARGADO_AGRICOLA')")
     @GetMapping("/list")
     public ResponseEntity<List<Usuario>> list(){
         List<Usuario> list = usuarioService.list();
