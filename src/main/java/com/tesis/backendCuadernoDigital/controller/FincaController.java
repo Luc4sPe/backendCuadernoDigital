@@ -157,7 +157,7 @@ public class FincaController {
         return new ResponseEntity<>(cantidad, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR')")
+    @PreAuthorize("hasAnyRole('ENCARGADO_AGRICOLA','PRODUCTOR','ADMIN')")
     @GetMapping("/detalle/{id}")
     ResponseEntity<Finca> obteberDetalleDeUnaFinca(@PathVariable("id") Long id) {
         if (!fincaService.existsByIdFinca(id))
